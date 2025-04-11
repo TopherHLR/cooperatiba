@@ -1,0 +1,69 @@
+@import 'tailwindcss';
+
+/* Tailwind CSS imports */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* Custom styles */
+@layer components {
+    /* Initial state for all animated images */
+    .animated-img {
+        position: absolute;
+        transition: top 1s ease, opacity 1s ease;
+        top: 80%; /* Start lower */
+        opacity: 0;
+        visibility: hidden;
+    }
+    /* Initial state for all animated images */
+    .animated-unif {
+        position: absolute;
+        transition: top 1s ease, opacity 1s ease;
+        top: 80%; /* Start lower */
+        opacity: 0;
+        visibility: hidden;
+    }
+    .animate-unif2 {
+        top: 0%;
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* When hovering (animation activated) */
+    .animate-top {
+        top: 0%;
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .animate-middle {
+        top: 15%;
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .animate-middle2 {
+        top: 30%;
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .animate-clearer {
+        top: 45%;
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .animate-clear {
+        top: 60%;
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Responsive handling for image scaling */
+    img.img-fluid {
+        width: 100%;
+        height: auto;
+        max-width: 100%;
+    }
+}
