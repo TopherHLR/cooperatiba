@@ -48,8 +48,10 @@
     <!-- Main Content -->
     <main > <!-- Added padding to account for fixed nav -->
         @yield('content')
+        @yield('styles')
+        @yield('scripts')
     </main>
 
-    @stack('scripts')
+
 </body>
 </html>
