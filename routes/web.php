@@ -2,10 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/home', function () {
-    return view('home');
+// Main website routes
+Route::name('web.')->group(function () {
+    Route::get('/', function () {
+        return view('welcome');
+    })->name('welcome'); // Accessible as route('web.welcome')
+    
+    Route::get('/home', function () {
+        return view('home');
+    })->name('home'); // Accessible as route('web.home')
 });
