@@ -40,7 +40,7 @@
   .animate-middle2 { top: 30%; opacity: 1; visibility: visible; }
   .animate-clearer { top: 45%; opacity: 1; visibility: visible; }
   .animate-clear { top: 60%; opacity: 1; visibility: visible; }
-
+  .animate-btn { top: 55%; opacity: 1; visibility: visible; }
   .animate-unif2 { top: 10%; opacity: 1; visibility: visible; }
 
   /* Responsive handling for image scaling */
@@ -139,6 +139,10 @@
         <img src="/images/homepage/medjmalinaw.png" alt="Medyo Malinaw" class="img-fluid absolute z-30 animated-img" style="width:80%;">
         <img src="/images/homepage/medjmalinaw.png" alt="Medyo Malinaw" class="img-fluid absolute z-30 animated-img" style="width:80%;">
         <img src="/images/homepage/trio.png" alt="Trio" class="img-fluid absolute z-40 animated-unif" style="width:55%;">
+        <a href="{{ route('web.login') }}"
+                          class="inline-block mt-4 animated-img text-white px-6 py-2 rounded-[20px] hover:brightness-110 transition font-[Inria Sans] bg-[#047705] hover:bg-[#036603] z-50 ">
+                          Login Account
+        </a>
         <img src="/images/homepage/malinaw.png" alt="Malinaw" class="img-fluid absolute z-40 animated-img" style="width:80%;">
     </div>
 
@@ -282,6 +286,7 @@
         images[2].classList.add('animate-middle2');
         images[3].classList.add('animate-clearer');
         images[4].classList.add('animate-clear');
+        images[5].classList.add('animate-btn');
     }
     
     function animateImages2() {
@@ -296,6 +301,7 @@
         images[2].classList.remove('animate-middle2');
         images[3].classList.remove('animate-clearer');
         images[4].classList.remove('animate-clear');
+        images[5].classList.remove('animate-btn');
 
         const unif = document.querySelectorAll('.animated-unif');
         unif[0].classList.remove('animate-unif2');
