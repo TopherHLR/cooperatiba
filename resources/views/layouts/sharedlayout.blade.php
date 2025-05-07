@@ -89,7 +89,7 @@
 <body>
     <!---------------------------------------------------- NAVIGATION BAR ---------------------------------------------------->
     <header>
-        <nav class="fixed top-0 left-0 z-[100] w-[calc(100%-80px)] mx-10 mt-7 h-[70px] shadow-lg shadow-[#000000]/40 bg-gradient-to-r from-[#1F1E1E]/100 to-[#001C00]/60 border-[.5px] border-white rounded-[44px] gh">
+        <nav class="fixed top-0 left-0 z-[100] w-[calc(100%-80px)] mx-10 mt-7 h-[70px] shadow-lg shadow-[#000000]/40 bg-gradient-to-r from-[#1F1E1E]/100 to-[#001C00]/60 border-[.5px] border-white rounded-[44px] backdrop-blur-sm">
             <div class="px-2 flex justify-between items-center h-full w-full">
                 <!-- Left: Logo and Cooperatiba Text -->
                 <div class="flex items-center">
@@ -109,7 +109,7 @@
                     <a href="{{ route('web.orders') }}" class="nav-link text-white" style="font-family: 'Inria Sans', sans-serif; font-weight: 300; text-shadow: -2px 2px 4px #000000;">
                         Orders
                     </a>
-                    <a href="#" class="nav-link text-white" style="font-family: 'Inria Sans', sans-serif; font-weight: 300; text-shadow: -2px 2px 4px #000000;">
+                    <a href="{{ route('web.about') }}" class="nav-link text-white" style="font-family: 'Inria Sans', sans-serif; font-weight: 300; text-shadow: -2px 2px 4px #000000;">
                         About
                     </a>
                     <a href="{{ route('web.accountsettings') }}" class="nav-link text-white" style="font-family: 'Inria Sans', sans-serif; font-weight: 300; text-shadow: -2px 2px 4px #000000;">

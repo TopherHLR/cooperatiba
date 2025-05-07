@@ -33,4 +33,7 @@ Route::name('web.')->group(function () {
     Route::get('/payment', function () {
         return view('payment');
     })->name('payment'); // Accessible as route('web.home')
+    Route::get('/about', function () {
+        return view('about');
+    })->name('about'); // Accessible as route('web.home')
 });
