@@ -211,7 +211,7 @@
                     
                     <!-- Register Link -->
                     <div class="text-center">
-                        <p class="text-gray-400">Don't have an account? <a href="#" class="text-[#047705] hover:underline">Sign up</a></p>
+                        <p class="text-gray-400">Don't have an account? <a href="{{ route('web.register') }}" class="text-[#047705] hover:underline">Sign up</a></p>
                     </div>
                 </form>
             </div>

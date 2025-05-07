@@ -15,10 +15,19 @@ Route::name('web.')->group(function () {
     Route::get('/items', function () {
         return view('items');
     })->name('items'); // Accessible as route('web.home')
+
     Route::get('/login', function () {
         return view('login');
     })->name('login'); // Accessible as route('web.home')
+
     Route::get('/orders', function () {
         return view('orders');
     })->name('orders'); // Accessible as route('web.home')
+
+    Route::get('/accountsettings', function () {
+        return view('accountsettings');
+    })->name('accountsettings'); // Accessible as route('web.home')
+    Route::get('/register', function () {
+        return view('register');
+    })->name('register'); // Accessible as route('web.home')
 });
