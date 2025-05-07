@@ -30,4 +30,7 @@ Route::name('web.')->group(function () {
     Route::get('/register', function () {
         return view('register');
     })->name('register'); // Accessible as route('web.home')
+    Route::get('/payment', function () {
+        return view('payment');
+    })->name('payment'); // Accessible as route('web.home')
 });

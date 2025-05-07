@@ -24,6 +24,7 @@
         background-repeat: no-repeat;
         background-attachment: fixed;
     }
+
 </style>
 @endsection
 
@@ -174,58 +175,36 @@
                     <!-- Items Grid -->
                     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6">
                         <!-- Product Tile 1 -->
-                        <div class="bg-white w-48 h-98 rounded-[15px] overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group relative transform hover:-translate-y-1">
-                            <!-- Product Image -->
-                            <div class="h-[70%] bg-gray-100/80 flex items-center justify-center p-2 group-hover:bg-gray-100 transition-colors duration-300">
+                        <div class="bg-white w-58 h-108 rounded-[15px] overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group relative transform hover:-translate-y-1">
+                            <!-- Product Image - Now clickable -->
+                            <div class="h-[70%] bg-gray-100/80 flex items-center justify-center p-2 group-hover:bg-gray-100 transition-colors duration-300 cursor-pointer" 
+                                onclick="openImageGalleryModal('PE Uniform', ['/images/clothes/pe.png', '/images/clothes/pe2.png', '/images/clothes/pe3.png'])">
                                 <img src="/images/clothes/pe.png" alt="PE Uniform" class="h-full w-full object-contain group-hover:scale-105 transition-transform duration-300">
                             </div>
                             <!-- Product Info -->
-                            <div class="absolute bottom-0 left-0 right-0 p-3 bg-[#008E01] text-white group-hover:bg-[#007a01] transition-colors duration-300">
+                            <div class="absolute bottom-0 left-0 right-0 p-2 bg-[#008E01] text-white group-hover:bg-[#007a01] transition-colors duration-300">
                                 <h3 class="font-bold text-sm truncate">PE Uniform</h3>
                                 <div class="flex justify-between items-center mt-1.5">
                                     <span class="text-xs font-medium">₱250.00</span>
                                     <button onclick="openAddToCartModal('PE Uniform', '₱250.00', '/images/clothes/pe.png')" 
-                                            class="flex items-center justify-center bg-[#047705] hover:bg-[#036603] text-white text-xs font-medium py-1 px-2.5 rounded-full transition-all duration-200 shadow-sm hover:shadow-md active:scale-95">
+                                            class="flex items-center ms-1 justify-center bg-[#047705] hover:bg-[#036603] text-white text-xs font-medium py-1 px-2.5 rounded-full transition-all duration-200 shadow-sm hover:shadow-md active:scale-95">
                                         <!-- Plus sign -->
                                         <svg class="h-3 w-3 mr-1" viewBox="0 0 20 20" fill="currentColor">
                                             <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
                                         </svg>
                                         <span>Add</span>
                                     </button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Product Tile 2 -->
-                        <div class="bg-white w-48 h-98 rounded-[15px] overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group relative transform hover:-translate-y-1">
-                            <!-- Product Image -->
-                            <div class="h-[70%] bg-gray-100/80 flex items-center justify-center p-2 group-hover:bg-gray-100 transition-colors duration-300">
-                                <img src="/images/clothes/pe.png" alt="PE Uniform (Large)" class="h-full w-full object-contain group-hover:scale-105 transition-transform duration-300">
-                            </div>
-                            <!-- Product Info -->
-                            <div class="absolute bottom-0 left-0 right-0 p-3 bg-[#008E01] text-white group-hover:bg-[#007a01] transition-colors duration-300">
-                                <h3 class="font-bold text-sm truncate">PE Uniform (Large)</h3>
-                                <div class="flex justify-between items-center mt-1.5">
-                                    <span class="text-xs font-medium">₱275.00</span>
-                                    <button class="flex items-center justify-center bg-[#047705] hover:bg-[#036603] text-white text-xs font-medium py-1 px-2.5 rounded-full transition-all duration-200 shadow-sm hover:shadow-md active:scale-95">
-                                        <!-- Plus sign and cart icon container -->
-                                        <div class="relative h-3 w-3 mr-1">
-                                            <!-- Plus sign -->
-                                            <svg class="absolute top-0 left-0 h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-                                            </svg>
-                                            <!-- Cart icon (smaller and positioned) -->
-                                            <svg class="absolute top-0 left-0 h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" viewBox="0 0 20 20" fill="currentColor">
-                                                <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
-                                            </svg>
-                                        </div>
+                                    <button onclick="openBuyerModal('PE Uniform', '₱250.00', '/images/clothes/pe.png')" 
+                                            class="flex items-center justify-center bg-[#047705] hover:bg-[#036603] text-white text-xs font-medium py-1 px-2.5 rounded-full transition-all duration-200 shadow-sm hover:shadow-md active:scale-95">
+                                        <!-- Shopping bag icon -->
+                                        <svg class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                        </svg>
                                         <span>Add</span>
                                     </button>
                                 </div>
                             </div>
                         </div>
-                    
-                        <!-- Add more product tiles as needed -->
                     </div>
                 </div>
             </div>
@@ -300,7 +279,7 @@
                             Cancel
                         </button>
                         <button id="proceedToPayment" class="px-4 py-2 rounded-lg bg-[#047705] hover:bg-[#036603] text-white font-medium transition-colors flex items-center">
-                            Proceed to Payment
+                            Add to Cart
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                             </svg>
@@ -308,13 +287,161 @@
                     </div>
                 </div>
             </div>
+            <!-- buy Modal -->
+            <div id="openBuyModal" class="fixed inset-0 z-[1000] flex items-center justify-center bg-black/70 hidden">
+                <div class="bg-gradient-to-r from-[#1F1E1E] to-[#001C00] border-[.5px] border-white rounded-[30px] p-6 w-full max-w-md relative">
+                    <button onclick="closeBuyModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                    
+                    <div class="flex items-center mb-4">
+                        <div class="bg-[#047705]/20 p-2 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#047705]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white ml-3" id="cartModalTitle">Add to Cart</h3>
+                    </div>
+                    
+                    <hr class="border-[.5px] border-white mb-4 -mx-2">
+                    
+                    <div class="text-white mb-4 text-sm">
+                        <!-- Product Info -->
+                        <div class="flex mb-4">
+                            <div class="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center mr-4">
+                                <img id="modalProductImage" src="" alt="Product" class="max-h-full max-w-full object-contain">
+                            </div>
+                            <div>
+                                <h4 class="font-bold" id="modalProductName">PE Uniform</h4>
+                                <p class="text-[#EDD100] font-medium" id="modalProductPrice">₱250.00</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Size Selection -->
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium mb-2">Select Size</label>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button class="size-option py-2 px-3 rounded-lg border border-white/30 hover:border-[#047705] transition-all" data-size="XS">XS</button>
+                                <button class="size-option py-2 px-3 rounded-lg border border-white/30 hover:border-[#047705] transition-all" data-size="S">S</button>
+                                <button class="size-option py-2 px-3 rounded-lg border border-white/30 hover:border-[#047705] transition-all" data-size="M">M</button>
+                                <button class="size-option py-2 px-3 rounded-lg border border-white/30 hover:border-[#047705] transition-all" data-size="L">L</button>
+                                <button class="size-option py-2 px-3 rounded-lg border border-white/30 hover:border-[#047705] transition-all" data-size="XL">XL</button>
+                                <button class="size-option py-2 px-3 rounded-lg border border-white/30 hover:border-[#047705] transition-all" data-size="XXL">XXL</button>
+                            </div>
+                            
+                            <!-- BMI Recommendation -->
+                            <div id="bmiRecommendation" class="mt-3 p-2 bg-[#047705]/10 rounded-lg hidden">
+                                <p class="text-xs text-[#EDD100] flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <span id="recommendedSizeText">Based on your BMI, we recommend size <strong>M</strong></span>
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Quantity -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium mb-2">Quantity</label>
+                            <div class="flex items-center">
+                                <button id="decrementQty" class="bg-[#047705] text-white w-8 h-8 rounded-l-lg flex items-center justify-center">-</button>
+                                <input type="number" id="quantity" value="1" min="1" class="bg-[#1F1E1E] text-white text-center w-12 h-8 border-t border-b border-white/30">
+                                <button id="incrementQty" class="bg-[#047705] text-white w-8 h-8 rounded-r-lg flex items-center justify-center">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between">
+                        <button onclick="closeBuyModal()" class="px-4 py-2 rounded-lg border text-white border-white/30 hover:bg-white/10 transition-colors">
+                            Cancel
+                        </button>
+                        <a href="{{ route('web.payment') }}" 
+                        class="px-4 py-2 rounded-lg bg-[#047705] hover:bg-[#036603] text-white font-medium transition-colors flex items-center">
+                            Buy now
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- Liquid UI Image Gallery Modal -->
+            <div id="imageGalleryModal" class="fixed inset-0 z-[1000] flex items-center justify-center bg-black/70 hidden">
+                <div class="bg-gradient-to-r from-[#1F1E1E] to-[#001C00] border-[.5px] border-white rounded-[30px] p-8 w-full max-w-3xl mx-4 relative">
+                    <!-- Close Button (Matched to Buy Modal) -->
+                    <button onclick="closeImageGalleryModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                    
+                    <!-- Header (Matched Style) -->
+                    <div class="flex items-center mb-4">
+                        <div class="bg-[#047705]/20 p-2 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#047705]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white ml-3">Product Gallery</h3>
+                    </div>
+                    
+                    <hr class="border-[.5px] border-white mb-4 -mx-2">
+                    
+                    <!-- Main Content Area -->
+                    <div class="text-white">
+                        <!-- Main Image Container -->
+                        <div class="relative mb-4 rounded-xl overflow-hidden bg-[#1F1E1E] border border-white/20">
+                            <img id="galleryMainImage" src="" alt="" class="w-full h-auto max-h-[45vh] object-contain mx-auto">
+                            
+                            <!-- Loading Indicator (Matched Style) -->
+                            <div id="galleryLoader" class="absolute inset-0 flex items-center justify-center bg-black/50 hidden">
+                                <div class="relative w-16 h-16">
+                                    <div class="absolute inset-0 rounded-full border-4 border-transparent border-t-[#047705] border-r-[#047705] animate-spin"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Thumbnail Navigation -->
+                        <div class="relative">
+                            <!-- Gradient Fade Edges -->
+                            <div class="absolute left-0 top-0 bottom-0 w-10 bg-gradient-to-r from-[#1F1E1E] to-transparent z-10 pointer-events-none"></div>
+                            <div class="absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-[#1F1E1E] to-transparent z-10 pointer-events-none"></div>
+                            
+                            <!-- Thumbnail Track -->
+                            <div id="thumbnailTrack" class="flex space-x-3 overflow-x-auto scroll-smooth py-2 scrollbar-hide -mx-2 px-2">
+                                <!-- Thumbnails will be injected here by JavaScript -->
+                            </div>
+                        </div>
+                        
+                        <!-- Navigation Arrows (Matched Style) -->
+                        <div class="flex justify-between mt-4">
+                            <button id="prevImage" class="px-3 py-1 rounded-lg border text-white border-white/30 hover:bg-white/10 transition-colors flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                </svg>
+                                Previous
+                            </button>
+                            <button id="nextImage" class="px-3 py-1 rounded-lg border text-white border-white/30 hover:bg-white/10 transition-colors flex items-center">
+                                Next
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 <script>
+    
     // Initialize modal close button event listener
     document.getElementById('modalCloseBtn').addEventListener('click', closeNotificationModal);
     
+    // Notification Modal Functions
     function openNotificationModal(type, title, content, time) {
         const modal = document.getElementById('notificationModal');
         const modalTitle = document.getElementById('modalTitle');
@@ -374,66 +501,153 @@
         document.getElementById('notificationModal').classList.add('hidden');
         document.body.style.overflow = 'auto';
     }
-    // Function to open the add to cart modal
-    function openAddToCartModal(productName, productPrice, productImage) {
-        const modal = document.getElementById('addToCartModal');
+
+    // Buy Modal Functions
+    function openBuyerModal(productName, productPrice, productImage) {
+        const modal = document.getElementById('openBuyModal');
         document.getElementById('modalProductName').textContent = productName;
         document.getElementById('modalProductPrice').textContent = productPrice;
         document.getElementById('modalProductImage').src = productImage;
         
-        // Show BMI recommendation (simulated - in real app you would calculate BMI)
+        // Show BMI recommendation
         const bmiRecommendation = document.getElementById('bmiRecommendation');
         bmiRecommendation.classList.remove('hidden');
         
-        // Simulate BMI calculation (replace with actual BMI logic)
+        // Calculate and display recommended size
         const recommendedSize = calculateRecommendedSize(); 
         document.getElementById('recommendedSizeText').innerHTML = 
             `Based on your BMI, we recommend size <strong>${recommendedSize}</strong>`;
         
         // Highlight recommended size
         document.querySelectorAll('.size-option').forEach(btn => {
+            btn.classList.remove('bg-[#047705]', 'border-[#047705]');
+            btn.classList.add('border-white/30');
+            
             if(btn.dataset.size === recommendedSize) {
                 btn.classList.add('bg-[#047705]', 'border-[#047705]');
                 btn.classList.remove('border-white/30');
             }
         });
         
+        // Reset quantity to 1
+        document.getElementById('quantity').value = 1;
+        
         modal.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
     }
     
-    // Function to close the modal
+    function closeBuyModal() {
+        document.getElementById('openBuyModal').classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }
+
+    // Add to Cart Modal Functions
+    function openAddToCartModal(productName, productPrice, productImage) {
+        const modal = document.getElementById('addToCartModal');
+        document.getElementById('modalProductName').textContent = productName;
+        document.getElementById('modalProductPrice').textContent = productPrice;
+        document.getElementById('modalProductImage').src = productImage;
+        
+        // Show BMI recommendation
+        const bmiRecommendation = document.getElementById('bmiRecommendation');
+        bmiRecommendation.classList.remove('hidden');
+        
+        // Calculate and display recommended size
+        const recommendedSize = calculateRecommendedSize(); 
+        document.getElementById('recommendedSizeText').innerHTML = 
+            `Based on your BMI, we recommend size <strong>${recommendedSize}</strong>`;
+        
+        // Highlight recommended size
+        document.querySelectorAll('.size-option').forEach(btn => {
+            btn.classList.remove('bg-[#047705]', 'border-[#047705]');
+            btn.classList.add('border-white/30');
+            
+            if(btn.dataset.size === recommendedSize) {
+                btn.classList.add('bg-[#047705]', 'border-[#047705]');
+                btn.classList.remove('border-white/30');
+            }
+        });
+        
+        // Reset quantity to 1
+        document.getElementById('quantity').value = 1;
+        
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+    
     function closeAddToCartModal() {
         document.getElementById('addToCartModal').classList.add('hidden');
         document.body.style.overflow = 'auto';
     }
     
-    // Simulated BMI calculation (replace with real calculation)
+    // Shared Functions
     function calculateRecommendedSize() {
-        // This is a placeholder - in a real app you would:
-        // 1. Get user's height/weight from profile
-        // 2. Calculate BMI (weight kg / (height m)^2)
-        // 3. Return size recommendation based on BMI ranges
-        
         const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
-        const randomIndex = Math.floor(Math.random() * sizes.length); // Simulate different recommendations
+        const randomIndex = Math.floor(Math.random() * sizes.length);
         return sizes[randomIndex];
     }
+        // Image Gallery Modal Functions
+    function openImageGalleryModal(productName, images) {
+    const modal = document.getElementById('imageGalleryModal');
+    const mainImage = document.getElementById('galleryMainImage');
+    const thumbnailContainer = document.getElementById('thumbnailTrack'); // Changed selector
     
-    // Event listeners for quantity buttons
-    document.getElementById('incrementQty').addEventListener('click', () => {
+    // Set the first image as main
+    mainImage.src = images[0];
+    mainImage.alt = productName;
+    
+    // Clear any existing thumbnails
+    thumbnailContainer.innerHTML = '';
+    
+    // Add thumbnails
+    images.forEach((image, index) => {
+        const thumbnail = document.createElement('img');
+        thumbnail.src = image;
+        thumbnail.alt = `${productName} - View ${index + 1}`;
+        thumbnail.className = 'w-16 h-16 object-cover cursor-pointer border-2 border-transparent hover:border-[#047705] rounded';
+        thumbnail.onclick = () => {
+            mainImage.src = image;
+            // Highlight selected thumbnail
+            thumbnailContainer.querySelectorAll('img').forEach(img => {
+                img.classList.remove('border-[#047705]');
+                img.classList.add('border-transparent');
+            });
+            thumbnail.classList.add('border-[#047705]');
+            thumbnail.classList.remove('border-transparent');
+        };
+        
+        // Highlight first thumbnail by default
+        if (index === 0) {
+            thumbnail.classList.add('border-[#047705]');
+            thumbnail.classList.remove('border-transparent');
+        }
+        
+        thumbnailContainer.appendChild(thumbnail);
+    });
+    
+    // Show modal
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+    function closeImageGalleryModal() {
+        document.getElementById('imageGalleryModal').classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }
+    
+    // Event listeners for quantity buttons (shared between modals)
+    document.getElementById('incrementQty')?.addEventListener('click', () => {
         const input = document.getElementById('quantity');
         input.value = parseInt(input.value) + 1;
     });
     
-    document.getElementById('decrementQty').addEventListener('click', () => {
+    document.getElementById('decrementQty')?.addEventListener('click', () => {
         const input = document.getElementById('quantity');
         if(parseInt(input.value) > 1) {
             input.value = parseInt(input.value) - 1;
         }
     });
     
-    // Size selection
+    // Size selection (shared between modals)
     document.querySelectorAll('.size-option').forEach(btn => {
         btn.addEventListener('click', function() {
             document.querySelectorAll('.size-option').forEach(b => {
@@ -445,13 +659,14 @@
         });
     });
     
-    // Proceed to payment
-    document.getElementById('proceedToPayment').addEventListener('click', function() {
+    // Proceed to payment (for add to cart modal)
+    document.getElementById('proceedToPayment')?.addEventListener('click', function() {
         const selectedSize = document.querySelector('.size-option.bg-[#047705]')?.dataset.size || 'Not selected';
         const quantity = document.getElementById('quantity').value;
         
         alert(`Proceeding to payment with:\nProduct: ${document.getElementById('modalProductName').textContent}\nSize: ${selectedSize}\nQuantity: ${quantity}`);
         closeAddToCartModal();
     });
+
 </script>
 @endsection
