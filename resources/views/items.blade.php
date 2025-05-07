@@ -144,6 +144,108 @@
                     </div>
                 </div>
             </div>
+            <!-- Global Cart Modal -->
+            <div id="cartModal" class="fixed inset-0 z-[2000] flex items-center justify-center bg-black/70 hidden">
+                <div class="bg-gradient-to-r from-[#1F1E1E] to-[#001C00] border-[.5px] border-white rounded-[30px] p-6 w-full max-w-2xl mx-4 relative animate-float">
+                    <!-- Close Button -->
+                    <button onclick="closeCartModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                    
+                    <!-- Header -->
+                    <div class="flex items-center mb-4">
+                        <div class="bg-[#047705]/20 p-2 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#047705]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white ml-3">Your Cart</h3>
+                        <span id="cartItemCount" class="ml-2 text-sm text-gray-300">(3 items)</span>
+                    </div>
+                    
+                    <hr class="border-[.5px] border-white mb-4 -mx-2">
+                    
+                    <!-- Cart Items -->
+                    <div class="max-h-[60vh] overflow-y-auto scrollbar-hide">
+                        <!-- Sample Cart Item - Now Selectable -->
+                        <div class="flex items-center justify-between py-3 border-b border-white/10 hover:bg-white/5 transition-colors">
+                            <div class="flex items-center space-x-3">
+                                <input type="checkbox" class="h-5 w-5 rounded border-gray-300 text-[#047705] focus:ring-[#047705]" unchecked>
+                                <div class="flex items-center space-x-4">
+                                    <img src="/images/clothes/pe.png" alt="Product" class="w-12 h-12 rounded-lg object-cover">
+                                    <div>
+                                        <h4 class="text-white font-medium">Product Name</h4>
+                                        <p class="text-sm text-gray-400">₱350.00 × 2</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <span class="text-white font-medium">₱700.00</span>
+                                <button class="text-red-400 hover:text-red-300">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Second Sample Cart Item -->
+                        <div class="flex items-center justify-between py-3 border-b border-white/10 hover:bg-white/5 transition-colors">
+                            <div class="flex items-center space-x-3">
+                                <input type="checkbox" class="h-5 w-5 rounded border-gray-300 text-[#047705] focus:ring-[#047705]" unchecked>
+                                <div class="flex items-center space-x-4">
+                                    <img src="/images/clothes/pe.png" alt="Product" class="w-12 h-12 rounded-lg object-cover">
+                                    <div>
+                                        <h4 class="text-white font-medium">Another Product</h4>
+                                        <p class="text-sm text-gray-400">₱550.00 × 1</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <span class="text-white font-medium">₱550.00</span>
+                                <button class="text-red-400 hover:text-red-300">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Cart Summary -->
+                    <div class="mt-6 pt-4 border-t border-white/10">
+                        <div class="flex justify-between mb-2">
+                            <span class="text-gray-400">Subtotal (2 items):</span>
+                            <span class="text-white font-medium">₱1,250.00</span>
+                        </div>
+                        <div class="flex justify-between mb-4">
+                            <span class="text-gray-400">Shipping:</span>
+                            <span class="text-white font-medium">₱0.00</span>
+                        </div>
+                        <div class="flex justify-between text-lg">
+                            <span class="text-white">Total:</span>
+                            <span class="text-[#EDD100] font-bold">₱1,250.00</span>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="flex justify-between mt-6">
+                            <button onclick="selectAllItems()" class="py-2 px-4 border border-white/30 hover:bg-white/10 text-white rounded-lg transition-colors">
+                                Select All
+                            </button>
+                            <div class="space-x-3">
+                                <button onclick="removeSelected()" class="py-2 px-4 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-lg transition-colors">
+                                    Remove Selected
+                                </button>
+                                <a href="{{ route('web.payment') }}" class="py-3 px-6 bg-[#047705] hover:bg-[#036504] text-white font-bold rounded-lg transition-colors">
+                                    Proceed to Checkout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- Right Container - Items (80%) -->
             <div class="w-[80%] mt-40">
@@ -151,8 +253,7 @@
                     <!-- Title Section with Enhanced Cart Button -->
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="text-2xl font-bold text-white" style="font-family: 'Kalam', cursive; text-shadow: -2px 1px 0px #047705;">COOPERATIBA ITEMS</h2>
-                        <button class="relative group flex items-center space-x-2 px-4 py-2 rounded-[20px] bg-white/90 hover:bg-white transition-all duration-300 border border-white/30 hover:border-[#047705] shadow-sm">
-                            <!-- Cart Icon -->
+                        <button class="relative group flex items-center space-x-2 px-4 py-2 rounded-[20px] bg-white/90 hover:bg-white transition-all duration-300 border border-white/30 hover:border-[#047705] shadow-sm">                            <!-- Cart Icon -->
                             <div class="relative">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#047705] group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -633,7 +734,55 @@
         document.getElementById('imageGalleryModal').classList.add('hidden');
         document.body.style.overflow = 'auto';
     }
+    // Cart Modal Functions
+    function openCartModal() {
+        document.getElementById('cartModal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeCartModal() {
+        document.getElementById('cartModal').classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }
+    function selectAllItems() {
+        const checkboxes = document.querySelectorAll('#cartModal input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = true;
+        });
+        updateCartSummary();
+    }
     
+    function removeSelected() {
+        const checkboxes = document.querySelectorAll('#cartModal input[type="checkbox"]:checked');
+        checkboxes.forEach(checkbox => {
+            // In a real implementation, you would remove the item from the cart
+            // Here we'll just remove the DOM element
+            checkbox.closest('.border-b').remove();
+        });
+        updateCartSummary();
+    }
+    
+    function updateCartSummary() {
+        // In a real implementation, you would recalculate totals based on selected items
+        // This is just a placeholder for the functionality
+        const selectedCount = document.querySelectorAll('#cartModal input[type="checkbox"]:checked').length;
+        document.querySelector('#cartItemCount').textContent = `(${selectedCount} items)`;
+    }
+    
+    // Add event listeners to checkboxes
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkboxes = document.querySelectorAll('#cartModal input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateCartSummary);
+        });
+    });
+    // Make the cart button open the modal
+    document.addEventListener('DOMContentLoaded', function() {
+        const cartButton = document.querySelector('.relative.group.flex.items-center.space-x-2'); // Target your cart button
+        if (cartButton) {
+            cartButton.addEventListener('click', openCartModal);
+        }
+    });
     // Event listeners for quantity buttons (shared between modals)
     document.getElementById('incrementQty')?.addEventListener('click', () => {
         const input = document.getElementById('quantity');
