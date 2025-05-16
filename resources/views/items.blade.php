@@ -378,15 +378,15 @@
                         <div class="bg-white w-58 h-108 rounded-[15px] overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group relative transform hover:-translate-y-1">
                             <!-- Product Image - Now clickable -->
                             <div class="h-[70%] bg-gray-100/80 flex items-center justify-center p-2 group-hover:bg-gray-100 transition-colors duration-300 cursor-pointer" 
-                                onclick="openImageGalleryModal('PE Uniform', ['/images/clothes/pe.png', '/images/clothes/pe2.png', '/images/clothes/pe3.png'])">
+                                onclick="openImageGalleryModal('PE Uniform', ['/images/clothes/realpe1.png', '/images/clothes/realpe2.png', '/images/clothes/pe.png', '/images/clothes/kurt.png'])">
                                 <img src="/images/clothes/pe.png" alt="PE Uniform" class="h-full w-full object-contain group-hover:scale-105 transition-transform duration-300">
                             </div>
                             <!-- Product Info -->
                             <div class="absolute bottom-0 left-0 right-0 p-2 bg-[#008E01] text-white group-hover:bg-[#007a01] transition-colors duration-300">
                                 <h3 class="font-bold text-sm truncate">PE Uniform</h3>
                                 <div class="flex justify-between items-center mt-1.5">
-                                    <span class="text-xs font-medium">₱250.00</span>
-                                    <button onclick="openAddToCartModal('PE Uniform', '₱250.00', '/images/clothes/pe.png')" 
+                                    <span class="text-xs font-medium">₱1000.00</span>
+                                    <button onclick="openAddToCartModal('PE Uniform', '₱1000.00', '/images/clothes/pe.png')" 
                                             class="flex items-center ms-1 justify-center bg-[#047705] hover:bg-[#036603] text-white text-xs font-medium py-1 px-2.5 rounded-full transition-all duration-200 shadow-sm hover:shadow-md active:scale-95">
                                         <!-- Plus sign -->
                                         <svg class="h-3 w-3 mr-1" viewBox="0 0 20 20" fill="currentColor">
@@ -394,7 +394,7 @@
                                         </svg>
                                         <span>Add</span>
                                     </button>
-                                    <button onclick="openBuyerModal('PE Uniform', '₱250.00', '/images/clothes/pe.png')" 
+                                    <button onclick="openBuyerModal('PE Uniform', '₱1000.00', '/images/clothes/pe.png')" 
                                             class="flex items-center justify-center bg-[#047705] hover:bg-[#036603] text-white text-xs font-medium py-1 px-2.5 rounded-full transition-all duration-200 shadow-sm hover:shadow-md active:scale-95">
                                         <!-- Shopping bag icon -->
                                         <svg class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -405,19 +405,19 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Product Tile 1 -->
+                        <!-- Product Tile 2 -->
                         <div class="bg-white w-58 h-108 rounded-[15px] overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group relative transform hover:-translate-y-1">
                             <!-- Product Image - Now clickable -->
                             <div class="h-[70%] bg-gray-100/80 flex items-center justify-center p-2 group-hover:bg-gray-100 transition-colors duration-300 cursor-pointer" 
-                                onclick="openImageGalleryModal('PE Uniform', ['/images/clothes/pe.png', '/images/clothes/pe2.png', '/images/clothes/pe3.png'])">
-                                <img src="/images/clothes/pe.png" alt="PE Uniform" class="h-full w-full object-contain group-hover:scale-105 transition-transform duration-300">
+                                onclick="openImageGalleryModal('PE Uniform', ['/images/clothes/realwomensunif1.png', '/images/clothes/realwomensunif2.png', '/images/clothes/womensunif.png', '/images/clothes/franz.png'])">
+                                <img src="/images/clothes/womensunif.png" alt="Womens School Uniform" class="h-full w-full object-contain group-hover:scale-105 transition-transform duration-300">
                             </div>
                             <!-- Product Info -->
                             <div class="absolute bottom-0 left-0 right-0 p-2 bg-[#008E01] text-white group-hover:bg-[#007a01] transition-colors duration-300">
-                                <h3 class="font-bold text-sm truncate">PE Uniform</h3>
+                                <h3 class="font-bold text-sm truncate">Women's School Uniform</h3>
                                 <div class="flex justify-between items-center mt-1.5">
-                                    <span class="text-xs font-medium">₱250.00</span>
-                                    <button onclick="openAddToCartModal('PE Uniform', '₱250.00', '/images/clothes/pe.png')" 
+                                    <span class="text-xs font-medium">₱1000.00</span>
+                                    <button onclick="openAddToCartModal('Womens School Uniform', '₱1000.00', '/images/clothes/womensunif.png')" 
                                             class="flex items-center ms-1 justify-center bg-[#047705] hover:bg-[#036603] text-white text-xs font-medium py-1 px-2.5 rounded-full transition-all duration-200 shadow-sm hover:shadow-md active:scale-95">
                                         <!-- Plus sign -->
                                         <svg class="h-3 w-3 mr-1" viewBox="0 0 20 20" fill="currentColor">
@@ -425,7 +425,7 @@
                                         </svg>
                                         <span>Add</span>
                                     </button>
-                                    <button onclick="openBuyerModal('PE Uniform', '₱250.00', '/images/clothes/pe.png')" 
+                                    <button onclick="openBuyerModal('Womens School Uniform', '₱1000.00', '/images/clothes/womensunif.png')" 
                                             class="flex items-center justify-center bg-[#047705] hover:bg-[#036603] text-white text-xs font-medium py-1 px-2.5 rounded-full transition-all duration-200 shadow-sm hover:shadow-md active:scale-95">
                                         <!-- Shopping bag icon -->
                                         <svg class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -436,19 +436,19 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Product Tile 1 -->
+                        <!-- Product Tile 3 -->
                         <div class="bg-white w-58 h-108 rounded-[15px] overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group relative transform hover:-translate-y-1">
                             <!-- Product Image - Now clickable -->
                             <div class="h-[70%] bg-gray-100/80 flex items-center justify-center p-2 group-hover:bg-gray-100 transition-colors duration-300 cursor-pointer" 
-                                onclick="openImageGalleryModal('PE Uniform', ['/images/clothes/pe.png', '/images/clothes/pe2.png', '/images/clothes/pe3.png'])">
-                                <img src="/images/clothes/pe.png" alt="PE Uniform" class="h-full w-full object-contain group-hover:scale-105 transition-transform duration-300">
+                                onclick="openImageGalleryModal('Mens School Uniform', ['/images/clothes/realmenunif1.png', '/images/clothes/realmenunif2.png', '/images/clothes/mensunif.png', '/images/clothes/topher.png'])">
+                                <img src="/images/clothes/mensunif.png" alt="Mens School Uniform" class="h-full w-full object-contain group-hover:scale-105 transition-transform duration-300">
                             </div>
                             <!-- Product Info -->
                             <div class="absolute bottom-0 left-0 right-0 p-2 bg-[#008E01] text-white group-hover:bg-[#007a01] transition-colors duration-300">
-                                <h3 class="font-bold text-sm truncate">PE Uniform</h3>
+                                <h3 class="font-bold text-sm truncate">Men's School Uniform</h3>
                                 <div class="flex justify-between items-center mt-1.5">
-                                    <span class="text-xs font-medium">₱250.00</span>
-                                    <button onclick="openAddToCartModal('PE Uniform', '₱250.00', '/images/clothes/pe.png')" 
+                                    <span class="text-xs font-medium">₱1000.00</span>
+                                    <button onclick="openAddToCartModal('Mens School Uniform', '₱1000.00', '/images/clothes/mensunif.png')" 
                                             class="flex items-center ms-1 justify-center bg-[#047705] hover:bg-[#036603] text-white text-xs font-medium py-1 px-2.5 rounded-full transition-all duration-200 shadow-sm hover:shadow-md active:scale-95">
                                         <!-- Plus sign -->
                                         <svg class="h-3 w-3 mr-1" viewBox="0 0 20 20" fill="currentColor">
@@ -456,7 +456,7 @@
                                         </svg>
                                         <span>Add</span>
                                     </button>
-                                    <button onclick="openBuyerModal('PE Uniform', '₱250.00', '/images/clothes/pe.png')" 
+                                    <button onclick="openBuyerModal('Mens School Uniform', '₱1000.00', '/images/clothes/mensunif.png')" 
                                             class="flex items-center justify-center bg-[#047705] hover:bg-[#036603] text-white text-xs font-medium py-1 px-2.5 rounded-full transition-all duration-200 shadow-sm hover:shadow-md active:scale-95">
                                         <!-- Shopping bag icon -->
                                         <svg class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
