@@ -15,24 +15,55 @@
     .kalam-font {
         font-family: 'Kalam', cursive;
     }
+        /* Liquid UI Background Effects */
+    body {
+        background: linear-gradient(135deg, #1F1E1E 0%, #001C00 100%);
+        min-height: 100vh;
+        font-family: 'Inria Sans', sans-serif;
+        overflow-x: hidden;
+    }
+        
+    .liquid-card {
+        position: relative;
+        overflow: hidden;
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+        background: rgba(31, 30, 30, 0.7);
+        box-shadow: 0 8px 32px rgba(0, 28, 0, 0.3);
+        transition: all 0.5s ease;
+    }
     
+    .liquid-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            45deg,
+            rgba(4, 119, 5, 0.1) 0%,
+            rgba(237, 209, 0, 0.1) 50%,
+            rgba(4, 119, 5, 0.1) 100%
+        );
+        animation: cardShine 8s ease infinite;
+        z-index: -1;
+    }
+        @keyframes cardShine {
+        0% { opacity: 0.3; }
+        50% { opacity: 0.1; }
+        100% { opacity: 0.3; }
+    }
     /* Main content background */
     .content-section {
-        background-image: url('/images/cooperatibaitems/2ndBG.png');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        min-height: 100vh;
         padding-top: 100px;
     }
     
     /* Container styling based on notification theme */
     .gradient-container {
-        background: linear-gradient(to right, #1F1E1E, #001C00);
         border: 0.5px solid white;
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
-        border-radius: 30px;
+        border-radius: 15px;
         padding: 30px;
         backdrop-filter: blur(10px);
         margin-bottom: 40px;
@@ -87,7 +118,7 @@
     
     .team-card {
         background: rgba(31, 30, 30, 0.7);
-        border-radius: 20px;
+        border-radius: 15px;
         padding: 20px;
         border: 0.5px solid rgba(255, 255, 255, 0.2);
         transition: all 0.3s ease;
@@ -196,40 +227,36 @@
         scroll-snap-align: start;
         transition: transform 0.3s ease;
     }
-
+    /* Navigation Buttons */
     .carousel-button {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 40px;
-        height: 40px;
-        background: rgba(255, 255, 255, 0.7);
-        border: none;
+        background: white;
+        border: 2px solid #047705;
         border-radius: 50%;
+        width: 50px;
+        height: 50px;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        z-index: 10;
         transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(4, 119, 5, 0.2);
+        margin-top: 15px;
     }
 
     .carousel-button:hover {
-        background: rgba(255, 255, 255, 0.9);
+        background: #047705;
+        transform: scale(1.05);
+    }
+
+    .carousel-button:hover svg {
+        stroke: white;
     }
 
     .carousel-button svg {
         width: 24px;
         height: 24px;
-        stroke: #333;
-    }
-
-    .prev {
-        left: 0;
-    }
-
-    .next {
-        right: 0;
+        stroke: #047705;
+        transition: stroke 0.3s ease;
     }
 
     .carousel-indicators {
@@ -274,7 +301,7 @@
 @section('content')
 <section class="content-section p-11">
         <!-- About Section -->
-        <div class="gradient-container mt-10 ">
+        <div class="liquid-card gradient-container mt-10 ">
             <div class="section-header">
                 <svg xmlns="http://www.w3.org/2000/svg" class="section-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -312,7 +339,7 @@
             </div>
         </div>
         <!-- Mission Section -->
-        <div class="gradient-container">
+        <div class=" liquid-card gradient-container">
             <div class="section-header">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="section-icon">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 3v1.5M3 21v-6m0 0 2.77-.693a9 9 0 0 1 6.208.682l.108.054a9 9 0 0 0 6.086.71l3.114-.732a48.524 48.524 0 0 1-.005-10.499l-3.11.732a9 9 0 0 1-6.085-.711l-.108-.054a9 9 0 0 0-6.208-.682L3 4.5M3 15V4.5" />
@@ -343,7 +370,7 @@
             </div>
         </div>
         <!-- Team Section -->
-        <div class="gradient-container">
+        <div class="liquid-card gradient-container">
             <div class="section-header">
                 <svg xmlns="http://www.w3.org/2000/svg" class="section-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -352,13 +379,7 @@
             </div>
             <hr class="divider">
             
-            <div class="team-carousel-container">
-                <button class="carousel-button prev" aria-label="Previous team member">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                    </svg>
-                </button>
-                
+            <div class="team-carousel-container">          
                 <div class="team-carousel">
                     <!-- Team Member 1 -->
                     <div class="team-card">
@@ -444,21 +465,25 @@
                         </div>
                     </div>
                 </div>
-
-                
-                <button class="carousel-button next" aria-label="Next team member">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
-                </button>
             </div>
             
             <div class="carousel-indicators">
                 <!-- Indicators will be added by JavaScript or manually -->
             </div>
+            <!-- Navigation Buttons - Now below indicators -->
+            <div class="flex justify-center items-center gap-8 mt-4">
+                <button class="carousel-button prev" id="prevBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="#047705">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                <button class="carousel-button next" id="nextBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="#047705">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
         </div>
-        
-
 </section>
 
 <!-- Font Awesome for social icons -->

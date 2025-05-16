@@ -159,7 +159,7 @@
     <div class="absolute flex gap-6 z-50 animated-img" style="top: 65%; transform: translateY(-50%);">
         <!-- Login Button with liquid effect -->
         <a href="{{ route('web.login') }}"
-        class="flex items-center justify-center px-8 py-3 rounded-full font-[Inria Sans] text-white relative overflow-hidden transition-all duration-400"
+        class="flex items-center justify-center px-8 py-3 rounded-[10px] font-[Inria Sans] text-white relative overflow-hidden transition-all duration-400"
         style="background: linear-gradient(90deg, #047705 0%, #0aad0a 100%); box-shadow: 0 4px 15px rgba(4, 119, 5, 0.4);">
             <span class="relative z-10 flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -172,7 +172,7 @@
         
         <!-- Shop Now Button with liquid effect -->
         <a href="{{ route('web.items') }}"
-        class="flex items-center justify-center px-8 py-3 rounded-full font-[Inria Sans] text-[#047705] bg-white border-2 border-[#ffffff] relative overflow-hidden transition-all duration-400 hover:bg-gray-50"
+        class="flex items-center justify-center px-8 py-3 rounded-[10px] font-[Inria Sans] text-[#047705] bg-white border-2 border-[#ffffff] relative overflow-hidden transition-all duration-400 hover:bg-gray-50"
         style="box-shadow: 0 4px 15px rgba(4, 119, 5, 0.2);">
             <span class="relative z-10 flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -194,17 +194,17 @@
                 <!-- Slide 1 - PE Uniform -->
                 <div class="carousel-item flex gap-20 group">
                   <!-- LEFT CARD -->
-                  <div class="w-[40%] bg-white rounded-[20px] p-4 flex flex-col items-center relative overflow-hidden " style="box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.25);">
+                  <div class="w-[40%] bg-white rounded-[15px] p-4 flex flex-col items-center relative overflow-hidden " style="box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.25);">
                         <!-- Main Image -->
                         <img src="/images/clothes/pe.png" alt="PE Clothes" 
-                            class="w-full rounded-[20px] object-cover transition-opacity duration-500 group-hover:opacity-20">
+                            class="w-full rounded-[10px] object-cover transition-opacity duration-500 group-hover:opacity-20">
                         
                         <!-- Hover Image -->
                         <img src="/images/clothes/kurt.PNG" alt="PE Clothes Alternate View" 
-                            class="absolute inset-0 w-full h-full rounded-[20px] object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100 p-2">
+                            class="absolute inset-0 w-full h-full rounded-[10px] object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100 p-2">
                         
                         <a href="{{ route('web.items') }}"
-                          class="inline-block mt-4 text-white px-6 py-2 rounded-[20px] hover:brightness-110 transition font-[Inria Sans] bg-[#047705] hover:bg-[#036603] z-10 relative">
+                          class="inline-block mt-4 text-white px-6 py-2 rounded-[10px] hover:brightness-110 transition font-[Inria Sans] bg-[#047705] hover:bg-[#036603] z-10 relative">
                           Order Now
                         </a>
                     </div>
@@ -232,17 +232,17 @@
                 <!-- Slide 2 - Women's Uniform -->
                 <div class="carousel-item flex gap-20 group">
                   <!-- LEFT CARD -->
-                  <div class="w-[40%] bg-white rounded-[20px] p-4 flex flex-col items-center relative overflow-hidden " style="box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.25);">
+                  <div class="w-[40%] bg-white rounded-[15px] p-4 flex flex-col items-center relative overflow-hidden " style="box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.25);">
                         <!-- Main Image -->
                         <img src="/images/clothes/womensunif.png" alt="Women's Uniform" 
-                            class="w-full rounded-[20px] object-cover transition-opacity duration-500 group-hover:opacity-20">
+                            class="w-full rounded-[10px] object-cover transition-opacity duration-500 group-hover:opacity-20">
                         
                         <!-- Hover Image -->
                         <img src="/images/clothes/franz.PNG" alt="Women's Uniform Alternate View" 
-                            class="absolute inset-0 w-full h-full rounded-[20px] object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100 p-2">
+                            class="absolute inset-0 w-full h-full rounded-[10px] object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100 p-2">
                         
                         <a href="{{ route('web.items') }}"
-                          class="inline-block mt-4 text-white px-6 py-2 rounded-[20px] hover:brightness-110 transition font-[Inria Sans] bg-[#047705] hover:bg-[#036603] z-10 relative">
+                          class="inline-block mt-4 text-white px-6 py-2 rounded-[10px] hover:brightness-110 transition font-[Inria Sans] bg-[#047705] hover:bg-[#036603] z-10 relative">
                           Order Now
                         </a>
                     </div>
@@ -270,17 +270,17 @@
                 <!-- Slide 3 - Men's Uniform -->
                 <div class="carousel-item flex gap-20 group">
                   <!-- LEFT CARD -->
-                  <div class="w-[40%] bg-white rounded-[20px] p-4 flex flex-col items-center relative overflow-hidden " style="box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.25);">
+                  <div class="w-[40%] bg-white rounded-[15px] p-4 flex flex-col items-center relative overflow-hidden " style="box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.25);">
                         <!-- Main Image -->
                         <img src="/images/clothes/mensunif.png" alt="Men's Uniform" 
-                            class="w-full rounded-[20px] object-cover transition-opacity duration-500 group-hover:opacity-20">
+                            class="w-full rounded-[10px] object-cover transition-opacity duration-500 group-hover:opacity-20">
                         
                         <!-- Hover Image -->
                         <img src="/images/clothes/topher.PNG" alt="Men's Uniform Alternate View" 
-                            class="absolute inset-0 w-full h-full rounded-[20px] object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100 p-2">
+                            class="absolute inset-0 w-full h-full rounded-[10px] object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100 p-2">
                         
                         <a href="{{ route('web.items') }}"
-                          class="inline-block mt-4 text-white px-6 py-2 rounded-[20px] hover:brightness-110 transition font-[Inria Sans] bg-[#047705] hover:bg-[#036603] z-10 relative">
+                          class="inline-block mt-4 text-white px-6 py-2 rounded-[10px] hover:brightness-110 transition font-[Inria Sans] bg-[#047705] hover:bg-[#036603] z-10 relative">
                           Order Now
                         </a>
                     </div>
