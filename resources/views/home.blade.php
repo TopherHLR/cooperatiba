@@ -229,16 +229,16 @@
                     </div>
                 </div>
                 
-                <!-- Slide 2 - PE Uniform -->
+                <!-- Slide 2 - Women's Uniform -->
                 <div class="carousel-item flex gap-20 group">
                   <!-- LEFT CARD -->
                   <div class="w-[40%] bg-white rounded-[20px] p-4 flex flex-col items-center relative overflow-hidden " style="box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.25);">
                         <!-- Main Image -->
-                        <img src="/images/clothes/womensunif.png" alt="PE Clothes" 
+                        <img src="/images/clothes/womensunif.png" alt="Women's Uniform" 
                             class="w-full rounded-[20px] object-cover transition-opacity duration-500 group-hover:opacity-20">
                         
                         <!-- Hover Image -->
-                        <img src="/images/clothes/franz.PNG" alt="PE Clothes Alternate View" 
+                        <img src="/images/clothes/franz.PNG" alt="Women's Uniform Alternate View" 
                             class="absolute inset-0 w-full h-full rounded-[20px] object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100 p-2">
                         
                         <a href="{{ route('web.items') }}"
@@ -249,34 +249,34 @@
 
                     <!-- RIGHT DESCRIPTION -->
                     <div class="w-[60%] pl-8 flex flex-col justify-center text-gray-800 text-[17px] leading-relaxed">
-                        <h2 class="text-3xl font-bold mb-4">PE Uniform</h2>
+                        <h2 class="text-3xl font-bold mb-4">Women's School Uniform</h2>
                         <p class="mb-4 font-semibold">
-                            Elevate Your Game with Our Premium PE Uniform!
+                            Dress with Confidence and Poise in Our Premium Women's School Uniform!
                         </p>
                         <p class="mb-4">
-                            Get ready to move in style and comfort with our official PE uniform—designed for performance, durability, and school spirit! Featuring a sleek white base for a clean, professional look and bold green sleeves that showcase energy and enthusiasm, this uniform is made to keep you feeling fresh and confident during every activity.
+                            Present yourself with pride and comfort in our official women's school uniform—designed for a smart, professional look and lasting wear throughout the school day! Featuring a classic design with attention to detail, this uniform ensures you feel both comfortable and confident as you focus on your studies and school activities.
                         </p>
                         <ul class="list-disc list-inside mb-4">
-                            <li><span class="font-medium">Perfect Fit</span> – Designed for movement and flexibility.</li>
-                            <li><span class="font-medium">Durable Fabric</span> – Built to last through every game and training session.</li>
-                            <li><span class="font-medium">Breathable & Lightweight</span> – Stay cool and comfortable during workouts.</li>
+                            <li><span class="font-medium">Flattering Fit</span> – Tailored for a comfortable and professional silhouette.</li>
+                            <li><span class="font-medium">Durable Fabric</span> – Made to withstand the demands of the school day.</li>
+                            <li><span class="font-medium">Easy Care</span> – Designed for simple cleaning and maintenance.</li>
                         </ul>
                         <p class="font-semibold">
-                            Gear up with the best—because your performance deserves the best uniform! Order yours today!
+                            Invest in your everyday style and comfort—because a great uniform supports a great day of learning! Order yours today!
                         </p>
                     </div>
                 </div>
 
-                <!-- Slide 3 - PE Uniform -->
+                <!-- Slide 3 - Men's Uniform -->
                 <div class="carousel-item flex gap-20 group">
                   <!-- LEFT CARD -->
                   <div class="w-[40%] bg-white rounded-[20px] p-4 flex flex-col items-center relative overflow-hidden " style="box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.25);">
                         <!-- Main Image -->
-                        <img src="/images/clothes/pe.png" alt="PE Clothes" 
+                        <img src="/images/clothes/mensunif.png" alt="Men's Uniform" 
                             class="w-full rounded-[20px] object-cover transition-opacity duration-500 group-hover:opacity-20">
                         
                         <!-- Hover Image -->
-                        <img src="/images/clothes/kurt.PNG" alt="PE Clothes Alternate View" 
+                        <img src="/images/clothes/topher.PNG" alt="Men's Uniform Alternate View" 
                             class="absolute inset-0 w-full h-full rounded-[20px] object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100 p-2">
                         
                         <a href="{{ route('web.items') }}"
@@ -287,20 +287,20 @@
 
                     <!-- RIGHT DESCRIPTION -->
                     <div class="w-[60%] pl-8 flex flex-col justify-center text-gray-800 text-[17px] leading-relaxed">
-                        <h2 class="text-3xl font-bold mb-4">PE Uniform</h2>
+                        <h2 class="text-3xl font-bold mb-4">Men's School Uniform</h2>
                         <p class="mb-4 font-semibold">
-                            Elevate Your Game with Our Premium PE Uniform!
+                            Project a Smart and Confident Image with Our Men's School Uniform!
                         </p>
                         <p class="mb-4">
-                            Get ready to move in style and comfort with our official PE uniform—designed for performance, durability, and school spirit! Featuring a sleek white base for a clean, professional look and bold green sleeves that showcase energy and enthusiasm, this uniform is made to keep you feeling fresh and confident during every activity.
+                            Step into the school day with a sense of purpose and professionalism in our official men's school uniform—designed for a sharp, respectable appearance and lasting comfort. Crafted with quality and practicality in mind, this uniform helps you focus on your studies and school engagements with ease.
                         </p>
                         <ul class="list-disc list-inside mb-4">
-                            <li><span class="font-medium">Perfect Fit</span> – Designed for movement and flexibility.</li>
-                            <li><span class="font-medium">Durable Fabric</span> – Built to last through every game and training session.</li>
-                            <li><span class="font-medium">Breathable & Lightweight</span> – Stay cool and comfortable during workouts.</li>
+                            <li><span class="font-medium">Tailored Fit</span> – Designed for a comfortable yet polished look.</li>
+                            <li><span class="font-medium">Durable Fabric</span> – Built to withstand the rigors of daily school life.</li>
+                            <li><span class="font-medium">Easy Care</span> – Simple to maintain, keeping you looking your best effortlessly.</li>
                         </ul>
                         <p class="font-semibold">
-                            Gear up with the best—because your performance deserves the best uniform! Order yours today!
+                            Invest in a uniform that supports your success—because looking good helps you feel good and focus on what matters! Order yours today!
                         </p>
                     </div>
                 </div>
