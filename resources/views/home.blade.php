@@ -234,11 +234,11 @@
                   <!-- LEFT CARD -->
                   <div class="w-[40%] bg-white rounded-[20px] p-4 flex flex-col items-center relative overflow-hidden " style="box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.25);">
                         <!-- Main Image -->
-                        <img src="/images/clothes/pe.png" alt="PE Clothes" 
+                        <img src="/images/clothes/womensunif.png" alt="PE Clothes" 
                             class="w-full rounded-[20px] object-cover transition-opacity duration-500 group-hover:opacity-20">
                         
                         <!-- Hover Image -->
-                        <img src="/images/clothes/kurt.PNG" alt="PE Clothes Alternate View" 
+                        <img src="/images/clothes/franz.PNG" alt="PE Clothes Alternate View" 
                             class="absolute inset-0 w-full h-full rounded-[20px] object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100 p-2">
                         
                         <a href="{{ route('web.items') }}"
