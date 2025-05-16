@@ -49,7 +49,20 @@
     height: auto;
     max-width: 100%;
   }
-
+    .liquid-btn-effect {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        transition: all 0.6s ease;
+    }
+    
+    a:hover .liquid-btn-effect {
+        left: 100%;
+    }
   /* Carousel Styles */
   .carousel-container {
     position: relative;
@@ -68,57 +81,59 @@
     box-sizing: border-box;
   }
   
-  .carousel-nav {
-  position: absolute;
-  top: 50%;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  transform: translateY(-50%);
-  z-index: 60;
-  box-sizing: border-box;
+.carousel-nav {
+    position: static;
+    transform: none;
+    justify-content: center;
+    margin-top: 1rem;
 }
 
-.carousel-btn {
-  background: rgba(255, 255, 255, 0.7);
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  font-size: 20px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  /* Adjust margin to create space from content */
-  margin: 0 -20px;
-  transition: background 0.3s;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+.carousel-btn-prev,
+.carousel-btn-next {
+    background: white;
+    border: 2px solid #047705;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(4, 119, 5, 0.2);
 }
 
-  .carousel-btn:hover {
-    background: rgba(255, 255, 255, 0.9);
+.carousel-btn-prev:hover,
+.carousel-btn-next:hover {
+    background: #047705;
     transform: scale(1.05);
-  }
-  
-  .carousel-indicators {
+}
+
+.carousel-btn-prev:hover svg,
+.carousel-btn-next:hover svg {
+    stroke: white;
+}
+
+.carousel-indicators {
     display: flex;
     justify-content: center;
     margin-top: 15px;
-  }
+    gap: 8px;
+}
   
-  .carousel-indicator {
-    width: 10px;
-    height: 10px;
+.carousel-indicator {
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
-    background: #ccc;
-    margin: 0 5px;
+    background: #e0e0e0;
     cursor: pointer;
-  }
-  
-  .carousel-indicator.active {
+    transition: all 0.3s ease;
+}
+
+.carousel-indicator.active {
     background: #047705;
-  }
+    transform: scale(1.2);
+}
   
 </style>
 @endsection
@@ -139,10 +154,36 @@
         <img src="/images/homepage/medjmalinaw.png" alt="Medyo Malinaw" class="img-fluid absolute z-30 animated-img" style="width:80%;">
         <img src="/images/homepage/medjmalinaw.png" alt="Medyo Malinaw" class="img-fluid absolute z-30 animated-img" style="width:80%;">
         <img src="/images/homepage/trio.png" alt="Trio" class="img-fluid absolute z-40 animated-unif" style="width:55%;">
+        
+    <!-- Button Container - positioned absolutely like other elements -->
+    <div class="absolute flex gap-6 z-50 animated-img" style="top: 65%; transform: translateY(-50%);">
+        <!-- Login Button with liquid effect -->
         <a href="{{ route('web.login') }}"
-                          class="inline-block mt-4 animated-img text-white px-6 py-2 rounded-[20px] hover:brightness-110 transition font-[Inria Sans] bg-[#047705] hover:bg-[#036603] z-50 ">
-                          Login Account
+        class="flex items-center justify-center px-8 py-3 rounded-full font-[Inria Sans] text-white relative overflow-hidden transition-all duration-400"
+        style="background: linear-gradient(90deg, #047705 0%, #0aad0a 100%); box-shadow: 0 4px 15px rgba(4, 119, 5, 0.4);">
+            <span class="relative z-10 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                </svg>
+                Login Account
+            </span>
+            <span class="liquid-btn-effect"></span>
         </a>
+        
+        <!-- Shop Now Button with liquid effect -->
+        <a href="{{ route('web.items') }}"
+        class="flex items-center justify-center px-8 py-3 rounded-full font-[Inria Sans] text-[#047705] bg-white border-2 border-[#ffffff] relative overflow-hidden transition-all duration-400 hover:bg-gray-50"
+        style="box-shadow: 0 4px 15px rgba(4, 119, 5, 0.2);">
+            <span class="relative z-10 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+                </svg>
+                Shop Now
+            </span>
+            <span class="liquid-btn-effect" style="background: linear-gradient(90deg, transparent, rgba(4, 119, 5, 0.1), transparent);"></span>
+        </a>
+    </div>
+            
         <img src="/images/homepage/malinaw.png" alt="Malinaw" class="img-fluid absolute z-40 animated-img" style="width:80%;">
     </div>
 
@@ -188,75 +229,81 @@
                     </div>
                 </div>
                 
-                <!-- Slide 2 - School Uniform (example) -->
-                <div class="carousel-item flex gap-20">
-                    <!-- LEFT CARD -->
-                    <div class="w-[40%] bg-white rounded-[20px] p-4 flex flex-col items-center" style="box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.25);">
-                        <img src="/images/clothes/school-uniform.png" alt="School Uniform" class="w-full rounded-[20px] object-cover">
-                        <button 
-                            class="mt-4 text-white px-6 py-2 rounded-[20px] hover:brightness-110 transition font-[Inria Sans]" 
-                            style="background-color: #047705;">
-                            Order Now
-                        </button>
+                <!-- Slide 2 - PE Uniform -->
+                <div class="carousel-item flex gap-20 group">
+                  <!-- LEFT CARD -->
+                  <div class="w-[40%] bg-white rounded-[20px] p-4 flex flex-col items-center relative overflow-hidden " style="box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.25);">
+                        <!-- Main Image -->
+                        <img src="/images/clothes/pe.png" alt="PE Clothes" 
+                            class="w-full rounded-[20px] object-cover transition-opacity duration-500 group-hover:opacity-20">
+                        
+                        <!-- Hover Image -->
+                        <img src="/images/clothes/kurt.PNG" alt="PE Clothes Alternate View" 
+                            class="absolute inset-0 w-full h-full rounded-[20px] object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100 p-2">
+                        
+                        <a href="{{ route('web.items') }}"
+                          class="inline-block mt-4 text-white px-6 py-2 rounded-[20px] hover:brightness-110 transition font-[Inria Sans] bg-[#047705] hover:bg-[#036603] z-10 relative">
+                          Order Now
+                        </a>
                     </div>
 
                     <!-- RIGHT DESCRIPTION -->
                     <div class="w-[60%] pl-8 flex flex-col justify-center text-gray-800 text-[17px] leading-relaxed">
-                        <h2 class="text-3xl font-bold mb-4">School Uniform</h2>
+                        <h2 class="text-3xl font-bold mb-4">PE Uniform</h2>
                         <p class="mb-4 font-semibold">
-                            Professional Look for Academic Excellence!
+                            Elevate Your Game with Our Premium PE Uniform!
                         </p>
                         <p class="mb-4">
-                            Our official school uniform combines tradition with modern comfort. The crisp white shirt and tailored bottoms create a polished appearance while allowing for all-day comfort during classes and activities.
+                            Get ready to move in style and comfort with our official PE uniform—designed for performance, durability, and school spirit! Featuring a sleek white base for a clean, professional look and bold green sleeves that showcase energy and enthusiasm, this uniform is made to keep you feeling fresh and confident during every activity.
                         </p>
                         <ul class="list-disc list-inside mb-4">
-                            <li><span class="font-medium">Premium Cotton Blend</span> – Soft, breathable, and easy to care for.</li>
-                            <li><span class="font-medium">Classic Design</span> – Timeless style that meets school requirements.</li>
-                            <li><span class="font-medium">Comfortable Fit</span> – Designed for sitting through long classes.</li>
+                            <li><span class="font-medium">Perfect Fit</span> – Designed for movement and flexibility.</li>
+                            <li><span class="font-medium">Durable Fabric</span> – Built to last through every game and training session.</li>
+                            <li><span class="font-medium">Breathable & Lightweight</span> – Stay cool and comfortable during workouts.</li>
                         </ul>
                         <p class="font-semibold">
-                            Dress for success with our high-quality school uniforms!
+                            Gear up with the best—because your performance deserves the best uniform! Order yours today!
                         </p>
                     </div>
                 </div>
-                
-                <!-- Slide 3 - Lab Gown (example) -->
-                <div class="carousel-item flex gap-20">
-                    <!-- LEFT CARD -->
-                    <div class="w-[40%] bg-white rounded-[20px] p-4 flex flex-col items-center" style="box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.25);">
-                        <img src="/images/clothes/lab-gown.png" alt="Lab Gown" class="w-full rounded-[20px] object-cover">
-                        <button 
-                            class="mt-4 text-white px-6 py-2 rounded-[20px] hover:brightness-110 transition font-[Inria Sans]" 
-                            style="background-color: #047705;">
-                            Order Now
-                        </button>
+
+                <!-- Slide 3 - PE Uniform -->
+                <div class="carousel-item flex gap-20 group">
+                  <!-- LEFT CARD -->
+                  <div class="w-[40%] bg-white rounded-[20px] p-4 flex flex-col items-center relative overflow-hidden " style="box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.25);">
+                        <!-- Main Image -->
+                        <img src="/images/clothes/pe.png" alt="PE Clothes" 
+                            class="w-full rounded-[20px] object-cover transition-opacity duration-500 group-hover:opacity-20">
+                        
+                        <!-- Hover Image -->
+                        <img src="/images/clothes/kurt.PNG" alt="PE Clothes Alternate View" 
+                            class="absolute inset-0 w-full h-full rounded-[20px] object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100 p-2">
+                        
+                        <a href="{{ route('web.items') }}"
+                          class="inline-block mt-4 text-white px-6 py-2 rounded-[20px] hover:brightness-110 transition font-[Inria Sans] bg-[#047705] hover:bg-[#036603] z-10 relative">
+                          Order Now
+                        </a>
                     </div>
 
                     <!-- RIGHT DESCRIPTION -->
                     <div class="w-[60%] pl-8 flex flex-col justify-center text-gray-800 text-[17px] leading-relaxed">
-                        <h2 class="text-3xl font-bold mb-4">Lab Gown</h2>
+                        <h2 class="text-3xl font-bold mb-4">PE Uniform</h2>
                         <p class="mb-4 font-semibold">
-                            Safety and Professionalism for Science Classes!
+                            Elevate Your Game with Our Premium PE Uniform!
                         </p>
                         <p class="mb-4">
-                            Our durable lab gowns provide protection during science experiments while maintaining a professional appearance. The full-length design with secure closures ensures safety in the laboratory environment.
+                            Get ready to move in style and comfort with our official PE uniform—designed for performance, durability, and school spirit! Featuring a sleek white base for a clean, professional look and bold green sleeves that showcase energy and enthusiasm, this uniform is made to keep you feeling fresh and confident during every activity.
                         </p>
                         <ul class="list-disc list-inside mb-4">
-                            <li><span class="font-medium">Protective Material</span> – Resistant to common lab chemicals.</li>
-                            <li><span class="font-medium">Functional Design</span> – Pockets for tools and secure fastenings.</li>
-                            <li><span class="font-medium">Easy to Clean</span> – Withstands frequent washing.</li>
+                            <li><span class="font-medium">Perfect Fit</span> – Designed for movement and flexibility.</li>
+                            <li><span class="font-medium">Durable Fabric</span> – Built to last through every game and training session.</li>
+                            <li><span class="font-medium">Breathable & Lightweight</span> – Stay cool and comfortable during workouts.</li>
                         </ul>
                         <p class="font-semibold">
-                            Stay safe and look professional in our high-quality lab gowns!
+                            Gear up with the best—because your performance deserves the best uniform! Order yours today!
                         </p>
                     </div>
                 </div>
-            </div>
-            
-            <!-- Navigation Buttons -->
-            <div class="carousel-nav ">
-                <button class="carousel-btn" id="prevBtn">&#10094;</button>
-                <button class="carousel-btn" id="nextBtn">&#10095;</button>
             </div>
             
             <!-- Indicators -->
@@ -264,6 +311,20 @@
                 <span class="carousel-indicator active" data-index="0"></span>
                 <span class="carousel-indicator" data-index="1"></span>
                 <span class="carousel-indicator" data-index="2"></span>
+            </div>
+            
+            <!-- Navigation Buttons - Now below indicators -->
+            <div class="flex justify-center items-center gap-8 mt-4">
+                <button class="carousel-btn-prev" id="prevBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="#047705">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                <button class="carousel-btn-next" id="nextBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="#047705">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
             </div>
         </div>
     </div>

@@ -101,13 +101,27 @@
                     </a>
                 </div>
 
-                <!-- Right: Navigation Links -->
+                <!-- Center: Search Bar -->
+                <div class="flex-1 max-w-4xl mx-4">
+                    <div class="relative flex items-center">
+                        <input 
+                            type="text" 
+                            placeholder="Search..." 
+                            class="w-[90%] py-2 pl-4 pr-2 bg-white/90 border-y border-l border-white/20 rounded-l-full text-[#1F1E1E] placeholder-[#1F1E1E]/70 focus:outline-none focus:ring-1 focus:ring-[#047705]/50 focus:border-transparent transition-all duration-300"
+                            style="font-family: 'Inria Sans', sans-serif; font-weight: 300;"
+                        >
+                        <button class="w-[10%] h-full py-2 px-4 bg-[#047705] hover:bg-[#036504] text-white rounded-r-full border border-[#047705] transition-colors duration-300 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                            <span class="ml-2" style="font-family: 'Inria Sans', sans-serif;"> </span>
+                        </button>
+                    </div>
+                </div>
+                                <!-- Right: Navigation Links -->
                 <div class="flex items-center space-x-1 mr-5">
                     <a href="{{ route('web.home') }}" class="nav-link text-white" style="font-family: 'Inria Sans', sans-serif; font-weight: 300; text-shadow: -2px 2px 4px #000000;">
                         Home
-                    </a>
-                    <a href="{{ route('web.orders') }}" class="nav-link text-white" style="font-family: 'Inria Sans', sans-serif; font-weight: 300; text-shadow: -2px 2px 4px #000000;">
-                        Orders
                     </a>
                     <a href="{{ route('web.about') }}" class="nav-link text-white" style="font-family: 'Inria Sans', sans-serif; font-weight: 300; text-shadow: -2px 2px 4px #000000;">
                         About
@@ -115,8 +129,8 @@
                     <a href="{{ route('web.accountsettings') }}" class="nav-link text-white" style="font-family: 'Inria Sans', sans-serif; font-weight: 300; text-shadow: -2px 2px 4px #000000;">
                         Account Settings
                     </a>
-                    <a href="{{ route('web.items') }}" class="nav-link text-white" style="font-family: 'Inria Sans', sans-serif; font-weight: 300; text-shadow: -2px 2px 4px #000000;">
-                        Items
+                    <a href="{{ route('web.login') }}" class="nav-link text-white" style="font-family: 'Inria Sans', sans-serif; font-weight: 300; text-shadow: -2px 2px 4px #000000;">
+                        Login
                     </a>
                 </div>
             </div>   

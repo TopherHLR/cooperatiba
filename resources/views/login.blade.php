@@ -29,9 +29,11 @@
             height: 200%;
             background: linear-gradient(
                 to bottom right,
-                rgba(4, 119, 5, 0.1) 0%,
-                rgba(237, 209, 0, 0.1) 50%,
-                rgba(4, 119, 5, 0.1) 100%
+                rgba(18, 108, 7, 0.15) 0%,          /* #126C07 */
+                rgba(113, 200, 98, 0.15) 25%,        /* #71C862 */
+                rgba(210, 220, 50, 0.12) 50%,        /* New yellowish tone */
+                rgba(113, 200, 98, 0.15) 75%,        /* #71C862 */
+                rgba(10, 56, 14, 0.15) 100%          /* #0A380E */
             );
             transform: rotate(30deg);
             animation: liquidFlow 15s linear infinite;
