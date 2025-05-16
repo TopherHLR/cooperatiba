@@ -1,4 +1,4 @@
-@extends('layouts.sharedlayout')
+@extends('accountslayout')
 
 @section('title', 'Orders')
 
@@ -102,7 +102,7 @@
 </style>
 @endsection
 
-@section('content')
+@section('account-content')
 <div class="content-section min-h-screen">
     <div class="content-overlay min-h-screen">
         <div class="flex mx-10 justify-center gap-10"> <!-- Centered containers -->

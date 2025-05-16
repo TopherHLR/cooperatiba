@@ -4,36 +4,15 @@ use Illuminate\Support\Facades\Route;
 
 // Main website routes
 Route::name('web.')->group(function () {
-    Route::get('/', function () {
-        return view('home');
-    })->name('home'); // Accessible as route('web.welcome')
-    
-    Route::get('/home', function () {
-        return view('home');
-    })->name('home'); // Accessible as route('web.home')
-
-    Route::get('/items', function () {
-        return view('items');
-    })->name('items'); // Accessible as route('web.home')
-
-    Route::get('/login', function () {
-        return view('login');
-    })->name('login'); // Accessible as route('web.home')
-
-    Route::get('/orders', function () {
-        return view('orders');
-    })->name('orders'); // Accessible as route('web.home')
-
-    Route::get('/accountsettings', function () {
-        return view('accountsettings');
-    })->name('accountsettings'); // Accessible as route('web.home')
-    Route::get('/register', function () {
-        return view('register');
-    })->name('register'); // Accessible as route('web.home')
-    Route::get('/payment', function () {
-        return view('payment');
-    })->name('payment'); // Accessible as route('web.home')
-    Route::get('/about', function () {
-        return view('about');
-    })->name('about'); // Accessible as route('web.home')
+    // Public routes (direct views from root)
+    Route::view('/', 'home')->name('home');
+    Route::view('/home', 'home')->name('home');
+    Route::view('/items', 'items')->name('items');
+    Route::view('/login', 'login')->name('login');
+    Route::view('/register', 'register')->name('register');
+    Route::view('/payment', 'payment')->name('payment');
+    Route::view('/about', 'about')->name('about');
+    Route::view('/accountsettings', 'accountsettings')->name('accountsettings');
+    Route::view('/orders', 'orders')->name('orders');
+    Route::view('accountslayout', 'accountslayout')->name('accountslayout');
 });
