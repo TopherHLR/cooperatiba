@@ -17,24 +17,51 @@
         font-family: 'Jost', sans-serif;
     }
     
-    /* Background for content section */
-    .content-section {
-        background-image: url('/images/cooperatibaitems/2ndBG.png');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
+        /* Liquid UI Background Effects */
+    body {
+        background: linear-gradient(135deg, #1F1E1E 0%, #001C00 100%);
+        min-height: 100vh;
+        font-family: 'Inria Sans', sans-serif;
+        overflow-x: hidden;
     }
+    
+    /* Enhanced Moving Background */
+    body::before {
+        content: '';
+        position: fixed;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+            to bottom right,
+            rgba(18, 108, 7, 0.15) 0%,          /* #126C07 */
+            rgba(113, 200, 98, 0.15) 25%,        /* #71C862 */
+            rgba(210, 220, 50, 0.12) 50%,        /* New yellowish tone */
+            rgba(113, 200, 98, 0.15) 75%,        /* #71C862 */
+            rgba(10, 56, 14, 0.15) 100%          /* #0A380E */
+        );
+        transform: rotate(30deg);
+        animation: liquidFlow 15s linear infinite;
+        z-index: -1;
+        opacity: 0.5;
+    }
+    
+    @keyframes liquidFlow {
+        0% { transform: rotate(30deg) translate(-10%, -10%); }
+        50% { transform: rotate(30deg) translate(10%, 10%); }
+        100% { transform: rotate(30deg) translate(-10%, -10%); }
+    }      
 </style>
 @endsection
 
 @section('account-content')
 <div class="content-section min-h-screen">
     <div class="content-overlay min-h-screen">
-        <div class="flex mx-10 justify-center gap-10">
+        <div class="flex mx-2 justify-center gap-10">
             <!-- Container - Account Settings -->
-            <div class="w-[100%] h-[750px] mt-40 mr-6">
-                <div class="bg-gradient-to-r from-[#1F1E1E]/100 to-[#001C00]/60 border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[30px] p-6 h-full backdrop-blur-sm flex flex-col">
+            <div class="w-[100%] h-[750px]">
+                <div class="bg-gradient-to-r from-[#1F1E1E]/100 to-[#100E00]/80 border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[30px] p-6 h-full backdrop-blur-sm flex flex-col">
                     <!-- Title Section -->
                     <div class="flex items-center mb-4">
                         <h2 class="text-2xl font-bold text-white flex items-center" style="font-family: 'Kalam', cursive; text-shadow: -2px 1px 0px #047705;">

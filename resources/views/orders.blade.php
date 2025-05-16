@@ -17,15 +17,41 @@
         font-family: 'Jost', sans-serif;
     }
     
-    /* Background for content section */
-    .content-section {
-        background-image: url('/images/cooperatibaitems/2ndBG.png');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
+        /* Liquid UI Background Effects */
+    body {
+        background: linear-gradient(135deg, #1F1E1E 0%, #001C00 100%);
+        min-height: 100vh;
+        font-family: 'Inria Sans', sans-serif;
+        overflow-x: hidden;
     }
     
+    /* Enhanced Moving Background */
+    body::before {
+        content: '';
+        position: fixed;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+            to bottom right,
+            rgba(18, 108, 7, 0.15) 0%,          /* #126C07 */
+            rgba(113, 200, 98, 0.15) 25%,        /* #71C862 */
+            rgba(210, 220, 50, 0.12) 50%,        /* New yellowish tone */
+            rgba(113, 200, 98, 0.15) 75%,        /* #71C862 */
+            rgba(10, 56, 14, 0.15) 100%          /* #0A380E */
+        );
+        transform: rotate(30deg);
+        animation: liquidFlow 15s linear infinite;
+        z-index: -1;
+        opacity: 0.5;
+    }
+    
+    @keyframes liquidFlow {
+        0% { transform: rotate(30deg) translate(-10%, -10%); }
+        50% { transform: rotate(30deg) translate(10%, 10%); }
+        100% { transform: rotate(30deg) translate(-10%, -10%); }
+    }       
     /* Order status colors */
     .status-pending {
         color: #EDD100;
@@ -105,10 +131,10 @@
 @section('account-content')
 <div class="content-section min-h-screen">
     <div class="content-overlay min-h-screen">
-        <div class="flex mx-10 justify-center gap-10"> <!-- Centered containers -->
+        <div class="flex mx-2 justify-center gap-10"> <!-- Centered containers -->
             <!-- Left Container - Order History (60%) -->
-            <div class="w-[30%] mt-40 mr-6">
-                <div class="bg-gradient-to-r from-[#1F1E1E]/100 to-[#001C00]/60 border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[30px] p-6 h-full backdrop-blur-sm">
+            <div class="w-[30%] mr-6">
+                <div class="bg-gradient-to-r from-[#1F1E1E]/100 to-[#100E00]/80 border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[30px] p-6 h-full backdrop-blur-sm">
                     <!-- Title Section -->
                     <div class="flex items-center mb-4">
                         <h2 class="text-2xl font-bold text-white flex items-center" style="font-family: 'Kalam', cursive; text-shadow: -2px 1px 0px #047705;">
@@ -157,80 +183,80 @@
                             </div>
                         </div>
                         
-                        <!-- Order Item 2 -->
-                        <div class="bg-[#1F1E1E]/60 hover:bg-[#001C00]/40 rounded-xl p-4 transition-all duration-300 border border-white/10 hover:border-[#047705]/30">
-                            <div class="flex items-start">
-                                <!-- Order Image -->
-                                <div class="w-20 h-20 bg-gray-100 rounded-lg flex-shrink-0 mr-4 overflow-hidden">
-                                    <img src="/images/clothes/school-uniform.png" alt="School Uniform" class="w-full h-full object-contain">
-                                </div>
-                                
-                                <!-- Order Details -->
-                                <div class="flex-1">
-                                    <div class="flex justify-between items-start">
-                                        <div>
-                                            <h3 class="text-white font-medium">School Uniform (Size L)</h3>
-                                            <p class="text-sm text-gray-400">Order #COOP-2023-002</p>
-                                        </div>
-                                        <span class="text-xs px-2 py-1 rounded-full status-processing">Processing</span>
+                            <!-- Order Item 2 -->
+                            <div class="bg-[#1F1E1E]/60 hover:bg-[#001C00]/40 rounded-xl p-4 transition-all duration-300 border border-white/10 hover:border-[#047705]/30">
+                                <div class="flex items-start">
+                                    <!-- Order Image -->
+                                    <div class="w-20 h-20 bg-gray-100 rounded-lg flex-shrink-0 mr-4 overflow-hidden">
+                                        <img src="/images/clothes/school-uniform.png" alt="School Uniform" class="w-full h-full object-contain">
                                     </div>
                                     
-                                    <div class="mt-2 flex justify-between items-end">
-                                        <div>
-                                            <p class="text-sm text-white">₱350.00 × 2</p>
-                                            <p class="text-xs text-gray-400">Ordered: May 10, 2023 - 2:15 PM</p>
+                                    <!-- Order Details -->
+                                    <div class="flex-1">
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <h3 class="text-white font-medium">School Uniform (Size L)</h3>
+                                                <p class="text-sm text-gray-400">Order #COOP-2023-002</p>
+                                            </div>
+                                            <span class="text-xs px-2 py-1 rounded-full status-processing">Processing</span>
                                         </div>
-                                        <button 
-                                            class="text-md text-[#047705] hover:underline view-details-btn" 
-                                            data-order-number="COOP-2023-002"
-                                            onclick="selectOrder('COOP-2023-002')"> <!-- Change this for each order -->
-                                            View Details
-                                        </button>
+                                        
+                                        <div class="mt-2 flex justify-between items-end">
+                                            <div>
+                                                <p class="text-sm text-white">₱350.00 × 2</p>
+                                                <p class="text-xs text-gray-400">Ordered: May 10, 2023 - 2:15 PM</p>
+                                            </div>
+                                            <button 
+                                                class="text-md text-[#047705] hover:underline view-details-btn" 
+                                                data-order-number="COOP-2023-002"
+                                                onclick="selectOrder('COOP-2023-002')"> <!-- Change this for each order -->
+                                                View Details
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <!-- Order Item 3 -->
-                        <div class="bg-[#1F1E1E]/60 hover:bg-[#001C00]/40 rounded-xl p-4 transition-all duration-300 border border-white/10 hover:border-[#047705]/30">
-                            <div class="flex items-start">
-                                <!-- Order Image -->
-                                <div class="w-20 h-20 bg-gray-100 rounded-lg flex-shrink-0 mr-4 overflow-hidden">
-                                    <img src="/images/clothes/lab-gown.png" alt="Lab Gown" class="w-full h-full object-contain">
-                                </div>
-                                
-                                <!-- Order Details -->
-                                <div class="flex-1">
-                                    <div class="flex justify-between items-start">
-                                        <div>
-                                            <h3 class="text-white font-medium">Lab Gown (Size XL)</h3>
-                                            <p class="text-sm text-gray-400">Order #COOP-2023-003</p>
-                                        </div>
-                                        <span class="text-xs px-2 py-1 rounded-full status-completed">Completed</span>
+                            
+                            <!-- Order Item 3 -->
+                            <div class="bg-[#1F1E1E]/60 hover:bg-[#001C00]/40 rounded-xl p-4 transition-all duration-300 border border-white/10 hover:border-[#047705]/30">
+                                <div class="flex items-start">
+                                    <!-- Order Image -->
+                                    <div class="w-20 h-20 bg-gray-100 rounded-lg flex-shrink-0 mr-4 overflow-hidden">
+                                        <img src="/images/clothes/lab-gown.png" alt="Lab Gown" class="w-full h-full object-contain">
                                     </div>
                                     
-                                    <div class="mt-2 flex justify-between items-end">
-                                        <div>
-                                            <p class="text-sm text-white">₱400.00 × 1</p>
-                                            <p class="text-xs text-gray-400">Ordered: May 5, 2023 - 9:45 AM</p>
-                                            <p class="text-xs text-gray-400">Completed: May 8, 2023 - 3:20 PM</p>
+                                    <!-- Order Details -->
+                                    <div class="flex-1">
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <h3 class="text-white font-medium">Lab Gown (Size XL)</h3>
+                                                <p class="text-sm text-gray-400">Order #COOP-2023-003</p>
+                                            </div>
+                                            <span class="text-xs px-2 py-1 rounded-full status-completed">Completed</span>
                                         </div>
-                                        <button 
-                                            class="text-md text-[#047705] hover:underline view-details-btn" 
-                                            data-order-number="COOP-2023-003"
-                                            onclick="selectOrder('COOP-2023-003')"> <!-- Change this for each order -->
-                                            View Details
-                                        </button>
+                                        
+                                        <div class="mt-2 flex justify-between items-end">
+                                            <div>
+                                                <p class="text-sm text-white">₱400.00 × 1</p>
+                                                <p class="text-xs text-gray-400">Ordered: May 5, 2023 - 9:45 AM</p>
+                                                <p class="text-xs text-gray-400">Completed: May 8, 2023 - 3:20 PM</p>
+                                            </div>
+                                            <button 
+                                                class="text-md text-[#047705] hover:underline view-details-btn" 
+                                                data-order-number="COOP-2023-003"
+                                                onclick="selectOrder('COOP-2023-003')"> <!-- Change this for each order -->
+                                                View Details
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                     </div>
                 </div>
             </div>
             
             <!-- Right Container - Track Order (70%) -->
-            <div class="w-[70%] mt-40">
+            <div class="w-[70%]">
                 <div class="bg-gradient-to-r from-[#1F1E1E]/100 to-[#001C00]/60 border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[30px] p-6 h-full backdrop-blur-sm">
                     <!-- Title Section -->
                     <div class="flex items-center mb-4">

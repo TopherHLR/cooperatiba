@@ -11,6 +11,41 @@
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+                /* Liquid UI Background Effects */
+    body {
+        background: linear-gradient(135deg, #1F1E1E 0%, #001C00 100%);
+        min-height: 100vh;
+        font-family: 'Inria Sans', sans-serif;
+        overflow-x: hidden;
+    }
+    
+    /* Enhanced Moving Background */
+    body::before {
+        content: '';
+        position: fixed;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+            to bottom right,
+            rgba(18, 108, 7, 0.15) 0%,          /* #126C07 */
+            rgba(113, 200, 98, 0.15) 25%,        /* #71C862 */
+            rgba(210, 220, 50, 0.12) 50%,        /* New yellowish tone */
+            rgba(113, 200, 98, 0.15) 75%,        /* #71C862 */
+            rgba(10, 56, 14, 0.15) 100%          /* #0A380E */
+        );
+        transform: rotate(30deg);
+        animation: liquidFlow 15s linear infinite;
+        z-index: -1;
+        opacity: 0.5;
+    }
+    
+    @keyframes liquidFlow {
+        0% { transform: rotate(30deg) translate(-10%, -10%); }
+        50% { transform: rotate(30deg) translate(10%, 10%); }
+        100% { transform: rotate(30deg) translate(-10%, -10%); }
+    }      
         /* Liquid UI Navigation Effects */
         .nav-link {
             position: relative;
@@ -43,7 +78,23 @@
             width: 100%;
             background: #EDD100;
         }
+                /* Add this to your existing styles */
+        .nav-link-footer {
+            position: relative;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
         
+        .nav-link-footer:hover {
+            transform: translateY(-2px);
+            text-shadow: 0 2px 4px rgba(237, 209, 0, 0.4);
+        }
+        
+        @keyframes cardShine {
+            0% { opacity: 0.3; }
+            50% { opacity: 0.1; }
+            100% { opacity: 0.3; }
+        }
         /* Ripple effect */
         .nav-link::after {
             content: '';
@@ -145,38 +196,60 @@
     </main>
 
     <!-- ---------------------- FOOTER ---------------------- -->
-    <footer class="bg-[#0F7D00] text-white py-10 px-6 z-10 relative">
+    <footer class="py-10 px-6 z-10 relative" style="
+        background: rgba(31, 30, 30, 0.7);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+    ">
+        <!-- Liquid background effect -->
+        <div style="
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                45deg,
+                rgba(4, 119, 5, 0.1) 0%,
+                rgba(237, 209, 0, 0.1) 50%,
+                rgba(4, 119, 5, 0.1) 100%
+            );
+            animation: cardShine 8s ease infinite;
+            z-index: -1;
+        "></div>
+
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
             <!-- Logo and Brand -->
             <div>
                 <div class="flex items-center mb-4">
                     <img src="/images/homepage/logo.png" alt="Logo" class="h-12 mr-2 transform hover:scale-105 transition-transform duration-300">
-                    <h2 class="text-2xl font-bold" style="font-family: 'Kalam', cursive; text-shadow: -2px 1px 0px #EDD100;">COOPERATIBA</h2>
+                    <h2 class="text-2xl font-bold text-white" style="font-family: 'Kalam', cursive; text-shadow: -2px 1px 0px #047705;">COOPERATIBA</h2>
                 </div>
-                <p class="text-sm text-gray-200">
+                <p class="text-sm text-gray-300">
                     Your go-to platform for school essentials — reliable, stylish, and proudly local.
                 </p>
             </div>
 
             <!-- Quick Links -->
             <div>
-                <h3 class="text-lg font-semibold mb-4" style="font-family: 'Inria Sans', sans-serif;">Quick Links</h3>
-                <ul class="space-y-2 text-gray-100">
-                    <li><a href="{{ route('web.home') }}" class="hover:text-[#EDD100] transition nav-link-footer">Home</a></li>
-                    <li><a href="#" class="hover:text-[#EDD100] transition nav-link-footer">Orders</a></li>
-                    <li><a href="#" class="hover:text-[#EDD100] transition nav-link-footer">About</a></li>
-                    <li><a href="#" class="hover:text-[#EDD100] transition nav-link-footer">Account</a></li>
-                    <li><a href="{{ route('web.items') }}" class="hover:text-[#EDD100] transition nav-link-footer">Items</a></li>
+                <h3 class="text-lg font-semibold mb-4 text-white" style="font-family: 'Inria Sans', sans-serif;">Quick Links</h3>
+                <ul class="space-y-2">
+                    <li><a href="{{ route('web.home') }}" class="text-gray-300 hover:text-[#EDD100] transition nav-link-footer">Home</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-[#EDD100] transition nav-link-footer">Orders</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-[#EDD100] transition nav-link-footer">About</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-[#EDD100] transition nav-link-footer">Account</a></li>
+                    <li><a href="{{ route('web.items') }}" class="text-gray-300 hover:text-[#EDD100] transition nav-link-footer">Items</a></li>
                 </ul>
             </div>
 
             <!-- Contact / Social -->
             <div>
-                <h3 class="text-lg font-semibold mb-4" style="font-family: 'Inria Sans', sans-serif;">Connect with Us</h3>
-                <ul class="space-y-2 text-gray-100">
-                    <li>Email: <a href="mailto:support@cooperatiba.com" class="hover:text-[#EDD100] transition nav-link-footer">support@cooperatiba.com</a></li>
-                    <li>Facebook: <a href="#" class="hover:text-[#EDD100] transition nav-link-footer">fb.com/cooperatiba</a></li>
-                    <li>Phone: <span class="text-white">+63 912 345 6789</span></li>
+                <h3 class="text-lg font-semibold mb-4 text-white" style="font-family: 'Inria Sans', sans-serif;">Connect with Us</h3>
+                <ul class="space-y-2">
+                    <li class="text-gray-300">Email: <a href="mailto:support@cooperatiba.com" class="hover:text-[#EDD100] transition nav-link-footer">support@cooperatiba.com</a></li>
+                    <li class="text-gray-300">Facebook: <a href="#" class="hover:text-[#EDD100] transition nav-link-footer">fb.com/cooperatiba</a></li>
+                    <li class="text-gray-300">Phone: <span class="text-white">+63 912 345 6789</span></li>
                 </ul>
             </div>
         </div>
@@ -185,6 +258,7 @@
             &copy; {{ date('Y') }} Cooperatiba. All rights reserved.
         </div>
     </footer>
+
 
 
     <script>
