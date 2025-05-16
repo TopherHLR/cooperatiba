@@ -89,7 +89,7 @@
 <body>
     <!---------------------------------------------------- NAVIGATION BAR ---------------------------------------------------->
     <header>
-        <nav class="fixed top-0 left-0 z-[100] w-[calc(100%-80px)] mx-10 mt-7 h-[70px] shadow-lg shadow-[#000000]/40 bg-gradient-to-r from-[#1F1E1E]/100 to-[#001C00]/80 border-[.5px] border-white rounded-[44px] backdrop-blur-lg">
+        <nav class="fixed top-0 left-0 z-[100] w-[calc(100%-80px)] mx-10 mt-7 h-[70px] shadow-lg shadow-[#000000]/40 bg-gradient-to-r from-[#1F1E1E]/100 to-[#100E00]/80 border-[.5px] border-white rounded-[15px] backdrop-blur-lg">
             <div class="px-2 flex justify-between items-center h-full w-full">
                 <!-- Left: Logo and Cooperatiba Text -->
                 <div class="flex items-center">

@@ -133,7 +133,7 @@
         <div class="flex  mx-10  justify-center gap-10"> <!-- Centered containers -->
             <!-- Left Container - Notifications (20%) -->
             <div class="w-[20%] mt-40 mr-6">
-                <div class="liquid-card border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[30px] p-6 h-full backdrop-blur-sm">
+                <div class="liquid-card border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[15px] p-6 h-full backdrop-blur-sm">
                     <!-- Title Section -->
                     <div class="flex items-center mb-4">
                         <h2 class="text-2xl font-bold text-white flex items-center" style="font-family: 'Kalam', cursive; text-shadow: -2px 1px 0px #047705;">
@@ -348,7 +348,7 @@
 
             <!-- Right Container - Items (80%) -->
             <div class="w-[80%] mt-40">
-                <div class="liquid-card border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[30px] p-6 h-full backdrop-blur-sm">
+                <div class="liquid-card border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[15px] p-6 h-full backdrop-blur-sm">
                     <!-- Title Section with Enhanced Cart Button -->
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="text-2xl font-bold text-white" style="font-family: 'Kalam', cursive; text-shadow: -2px 1px 0px #047705;">COOPERATIBA ITEMS</h2>
