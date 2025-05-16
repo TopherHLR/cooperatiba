@@ -93,9 +93,9 @@
 @endsection
 
 @section('content')
-<div class="flex mx-10 justify-center gap-10 min-h-screen">
+<div class="flex mx-10 justify-center gap-10 min-h-full">
     <!-- Sidebar Navigation - 20% width -->
-    <div class="w-[20%] mt-40 mr-2">
+    <div class="w-[20%] mt-40 mr-2 mb-20">
         <div class="account-liquid-card border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[15px] p-6 h-auto backdrop-blur-sm">
             <h2 class="text-white text-xl font-semibold mb-6">Account</h2>
             <nav class="space-y-2">
@@ -118,7 +118,7 @@
     </div>
 
     <!-- Main Content Area - 80% width -->
-    <div class="w-[80%] mt-40">
+    <div class="w-[80%] mt-40 mb-20">
         @yield('account-content')
         @yield('account-styles')
     </div>

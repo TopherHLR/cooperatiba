@@ -128,9 +128,9 @@
 
                     <!-- Checkout Button -->
                     <div class="text-right">
-                        <button class="bg-[#047705] hover:bg-[#036603] text-white font-medium py-2 px-6 rounded-full transition-all duration-200 shadow-md hover:shadow-lg">
+                        <a href="{{ route('web.orders') }}" class="bg-[#047705] hover:bg-[#036603] text-white font-medium py-2 px-6 rounded-full transition-all duration-200 shadow-md hover:shadow-lg">
                             Complete Payment
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>

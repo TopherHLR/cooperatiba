@@ -129,8 +129,8 @@
 @endsection
 
 @section('account-content')
-<div class="content-section min-h-screen">
-    <div class="content-overlay min-h-screen">
+<div class="content-section min-h-full">
+    <div class="content-overlay min-h-full">
         <div class="flex mx-2 justify-center gap-10"> <!-- Centered containers -->
             <!-- Left Container - Order History (60%) -->
             <div class="w-[30%] mr-6">
@@ -173,7 +173,7 @@
                                         </div>
                                         <!-- In each order item, modify the "View Details" button like this: -->
                                         <button 
-                                            class="text-md text-[#047705] hover:underline view-details-btn" 
+                                            class="text-sm text-[#ffffff] hover:underline view-details-btn" 
                                             data-order-number="COOP-2023-001"
                                             onclick="selectOrder('COOP-2023-001')"> <!-- Change this for each order -->
                                             View Details
@@ -207,7 +207,7 @@
                                                 <p class="text-xs text-gray-400">Ordered: May 10, 2023 - 2:15 PM</p>
                                             </div>
                                             <button 
-                                                class="text-md text-[#047705] hover:underline view-details-btn" 
+                                                class="text-sm text-[#ffffff] hover:underline view-details-btn" 
                                                 data-order-number="COOP-2023-002"
                                                 onclick="selectOrder('COOP-2023-002')"> <!-- Change this for each order -->
                                                 View Details
@@ -242,7 +242,7 @@
                                                 <p class="text-xs text-gray-400">Completed: May 8, 2023 - 3:20 PM</p>
                                             </div>
                                             <button 
-                                                class="text-md text-[#047705] hover:underline view-details-btn" 
+                                                class="text-sm   text-[#ffffff] hover:underline view-details-btn" 
                                                 data-order-number="COOP-2023-003"
                                                 onclick="selectOrder('COOP-2023-003')"> <!-- Change this for each order -->
                                                 View Details

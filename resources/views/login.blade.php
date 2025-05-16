@@ -207,9 +207,9 @@
                     </div>
                     
                     <!-- Login Button -->
-                    <button type="submit" class="w-full py-3 px-4 rounded-lg text-white font-medium liquid-btn hover:shadow-lg transition">
+                    <a href="{{ route('web.items') }}" class="w-full py-3 px-4 rounded-lg text-white font-medium liquid-btn hover:shadow-lg transition">
                         Sign In
-                    </button>
+                    </a>
                     
                     <!-- Register Link -->
                     <div class="text-center">
