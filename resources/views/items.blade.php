@@ -16,13 +16,112 @@
     button {
       font-family: 'Jost', sans-serif;
     }
-        /* Background for content section */
-        .content-section {
-        background-image: url('/images/cooperatibaitems/2ndBG.png');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
+    /* Liquid UI Background Effects */
+    body {
+        background: linear-gradient(135deg, #1F1E1E 0%, #001C00 100%);
+        min-height: 100vh;
+        font-family: 'Inria Sans', sans-serif;
+        overflow-x: hidden;
+    }
+    
+    /* Enhanced Moving Background */
+    body::before {
+        content: '';
+        position: fixed;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+            to bottom right,
+            rgba(18, 108, 7, 0.15) 0%,          /* #126C07 */
+            rgba(113, 200, 98, 0.15) 25%,        /* #71C862 */
+            rgba(210, 220, 50, 0.12) 50%,        /* New yellowish tone */
+            rgba(113, 200, 98, 0.15) 75%,        /* #71C862 */
+            rgba(10, 56, 14, 0.15) 100%          /* #0A380E */
+        );
+        transform: rotate(30deg);
+        animation: liquidFlow 15s linear infinite;
+        z-index: -1;
+        opacity: 0.5;
+    }
+    
+    @keyframes liquidFlow {
+        0% { transform: rotate(30deg) translate(-10%, -10%); }
+        50% { transform: rotate(30deg) translate(10%, 10%); }
+        100% { transform: rotate(30deg) translate(-10%, -10%); }
+    }
+    
+    .liquid-card {
+        position: relative;
+        overflow: hidden;
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+        background: rgba(31, 30, 30, 0.7);
+        box-shadow: 0 8px 32px rgba(0, 28, 0, 0.3);
+        transition: all 0.5s ease;
+    }
+    
+    .liquid-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            45deg,
+            rgba(4, 119, 5, 0.1) 0%,
+            rgba(237, 209, 0, 0.1) 50%,
+            rgba(4, 119, 5, 0.1) 100%
+        );
+        animation: cardShine 8s ease infinite;
+        z-index: -1;
+    }
+    
+    @keyframes cardShine {
+        0% { opacity: 0.3; }
+        50% { opacity: 0.1; }
+        100% { opacity: 0.3; }
+    }
+    
+    .liquid-btn {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s ease;
+        background: linear-gradient(90deg, #047705 0%, #0aad0a 100%);
+        box-shadow: 0 4px 15px rgba(4, 119, 5, 0.4);
+    }
+    
+    .liquid-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: all 0.6s ease;
+    }
+    
+    .liquid-btn:hover::before {
+        left: 100%;
+    }
+    
+    .liquid-input {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .liquid-input:focus {
+        border-color: #047705;
+        box-shadow: 0 0 0 2px rgba(4, 119, 5, 0.3);
+    }
+
+    /* Content section with transparent background */
+    .content-section {
+        background-color: transparent;
     }
 
 </style>
@@ -34,7 +133,7 @@
         <div class="flex  mx-10  justify-center gap-10"> <!-- Centered containers -->
             <!-- Left Container - Notifications (20%) -->
             <div class="w-[20%] mt-40 mr-6">
-                <div class="bg-gradient-to-r from-[#1F1E1E]/100 to-[#001C00]/60 border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[30px] p-6 h-full backdrop-blur-sm">
+                <div class="liquid-card border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[30px] p-6 h-full backdrop-blur-sm">
                     <!-- Title Section -->
                     <div class="flex items-center mb-4">
                         <h2 class="text-2xl font-bold text-white flex items-center" style="font-family: 'Kalam', cursive; text-shadow: -2px 1px 0px #047705;">
@@ -249,7 +348,7 @@
 
             <!-- Right Container - Items (80%) -->
             <div class="w-[80%] mt-40">
-                <div class="bg-gradient-to-r from-[#1F1E1E]/100 to-[#001C00]/60 border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[30px] p-6 h-full backdrop-blur-sm">
+                <div class="liquid-card border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[30px] p-6 h-full backdrop-blur-sm">
                     <!-- Title Section with Enhanced Cart Button -->
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="text-2xl font-bold text-white" style="font-family: 'Kalam', cursive; text-shadow: -2px 1px 0px #047705;">COOPERATIBA ITEMS</h2>
@@ -275,6 +374,68 @@
                     
                     <!-- Items Grid -->
                     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6">
+                        <!-- Product Tile 1 -->
+                        <div class="bg-white w-58 h-108 rounded-[15px] overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group relative transform hover:-translate-y-1">
+                            <!-- Product Image - Now clickable -->
+                            <div class="h-[70%] bg-gray-100/80 flex items-center justify-center p-2 group-hover:bg-gray-100 transition-colors duration-300 cursor-pointer" 
+                                onclick="openImageGalleryModal('PE Uniform', ['/images/clothes/pe.png', '/images/clothes/pe2.png', '/images/clothes/pe3.png'])">
+                                <img src="/images/clothes/pe.png" alt="PE Uniform" class="h-full w-full object-contain group-hover:scale-105 transition-transform duration-300">
+                            </div>
+                            <!-- Product Info -->
+                            <div class="absolute bottom-0 left-0 right-0 p-2 bg-[#008E01] text-white group-hover:bg-[#007a01] transition-colors duration-300">
+                                <h3 class="font-bold text-sm truncate">PE Uniform</h3>
+                                <div class="flex justify-between items-center mt-1.5">
+                                    <span class="text-xs font-medium">₱250.00</span>
+                                    <button onclick="openAddToCartModal('PE Uniform', '₱250.00', '/images/clothes/pe.png')" 
+                                            class="flex items-center ms-1 justify-center bg-[#047705] hover:bg-[#036603] text-white text-xs font-medium py-1 px-2.5 rounded-full transition-all duration-200 shadow-sm hover:shadow-md active:scale-95">
+                                        <!-- Plus sign -->
+                                        <svg class="h-3 w-3 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+                                        </svg>
+                                        <span>Add</span>
+                                    </button>
+                                    <button onclick="openBuyerModal('PE Uniform', '₱250.00', '/images/clothes/pe.png')" 
+                                            class="flex items-center justify-center bg-[#047705] hover:bg-[#036603] text-white text-xs font-medium py-1 px-2.5 rounded-full transition-all duration-200 shadow-sm hover:shadow-md active:scale-95">
+                                        <!-- Shopping bag icon -->
+                                        <svg class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                        </svg>
+                                        <span>Add</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product Tile 1 -->
+                        <div class="bg-white w-58 h-108 rounded-[15px] overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group relative transform hover:-translate-y-1">
+                            <!-- Product Image - Now clickable -->
+                            <div class="h-[70%] bg-gray-100/80 flex items-center justify-center p-2 group-hover:bg-gray-100 transition-colors duration-300 cursor-pointer" 
+                                onclick="openImageGalleryModal('PE Uniform', ['/images/clothes/pe.png', '/images/clothes/pe2.png', '/images/clothes/pe3.png'])">
+                                <img src="/images/clothes/pe.png" alt="PE Uniform" class="h-full w-full object-contain group-hover:scale-105 transition-transform duration-300">
+                            </div>
+                            <!-- Product Info -->
+                            <div class="absolute bottom-0 left-0 right-0 p-2 bg-[#008E01] text-white group-hover:bg-[#007a01] transition-colors duration-300">
+                                <h3 class="font-bold text-sm truncate">PE Uniform</h3>
+                                <div class="flex justify-between items-center mt-1.5">
+                                    <span class="text-xs font-medium">₱250.00</span>
+                                    <button onclick="openAddToCartModal('PE Uniform', '₱250.00', '/images/clothes/pe.png')" 
+                                            class="flex items-center ms-1 justify-center bg-[#047705] hover:bg-[#036603] text-white text-xs font-medium py-1 px-2.5 rounded-full transition-all duration-200 shadow-sm hover:shadow-md active:scale-95">
+                                        <!-- Plus sign -->
+                                        <svg class="h-3 w-3 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+                                        </svg>
+                                        <span>Add</span>
+                                    </button>
+                                    <button onclick="openBuyerModal('PE Uniform', '₱250.00', '/images/clothes/pe.png')" 
+                                            class="flex items-center justify-center bg-[#047705] hover:bg-[#036603] text-white text-xs font-medium py-1 px-2.5 rounded-full transition-all duration-200 shadow-sm hover:shadow-md active:scale-95">
+                                        <!-- Shopping bag icon -->
+                                        <svg class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                        </svg>
+                                        <span>Add</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                         <!-- Product Tile 1 -->
                         <div class="bg-white w-58 h-108 rounded-[15px] overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group relative transform hover:-translate-y-1">
                             <!-- Product Image - Now clickable -->
