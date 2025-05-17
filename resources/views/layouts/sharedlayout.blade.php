@@ -236,9 +236,8 @@
                 <h3 class="text-lg font-semibold mb-4 text-white" style="font-family: 'Inria Sans', sans-serif;">Quick Links</h3>
                 <ul class="space-y-2">
                     <li><a href="{{ route('web.home') }}" class="text-gray-300 hover:text-[#EDD100] transition nav-link-footer">Home</a></li>
-                    <li><a href="#" class="text-gray-300 hover:text-[#EDD100] transition nav-link-footer">Orders</a></li>
-                    <li><a href="#" class="text-gray-300 hover:text-[#EDD100] transition nav-link-footer">About</a></li>
-                    <li><a href="#" class="text-gray-300 hover:text-[#EDD100] transition nav-link-footer">Account</a></li>
+                    <li><a href="{{ route('web.about') }}" class="text-gray-300 hover:text-[#EDD100] transition nav-link-footer">About</a></li>
+                    <li><a href="{{ route('web.accountsettings') }}" class="text-gray-300 hover:text-[#EDD100] transition nav-link-footer">My Account</a></li>
                     <li><a href="{{ route('web.items') }}" class="text-gray-300 hover:text-[#EDD100] transition nav-link-footer">Items</a></li>
                 </ul>
             </div>
