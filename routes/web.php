@@ -18,5 +18,6 @@ Route::name('web.')->group(function () {
 });
 // Main website routes
 Route::name('admin.')->group(function () {
-    Route::view('/admin', 'admin')->name('admin');
+    Route::view('/adminslayout', 'adminslayout')->name('adminslayout');
+        Route::view('/orderManage', 'orderManage')->name('orderManage');
 });
