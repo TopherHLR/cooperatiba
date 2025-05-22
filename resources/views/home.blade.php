@@ -148,7 +148,7 @@
     </div>
 
     <!-- MAIN IMAGE CONTENT (like Topher, blurry layers, etc) -->
-    <div class="relative flex justify-center items-center w-full min-h-screen z-30" onmouseover="animateImages(); animateImages2();" onmouseleave="resetImages();">
+    <div class="relative flex justify-center items-center w-full min-h-screen z-30" onmouseover="animateImages(); animateImages2();">
         <img src="/images/homepage/malabo.png" alt="Malabo" class="img-fluid absolute z-10 animated-img" style="width:80%;">
         <img src="/images/homepage/medjmalabo.png" alt="Medyo Malabo" class="img-fluid absolute z-20 animated-img" style="width:80%;">
         <img src="/images/homepage/medjmalinaw.png" alt="Medyo Malinaw" class="img-fluid absolute z-30 animated-img" style="width:80%;">

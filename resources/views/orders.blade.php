@@ -182,75 +182,7 @@
                                 </div>
                             </div>
                         </div>
-                        
-                            <!-- Order Item 2 -->
-                            <div class="bg-[#1F1E1E]/60 hover:bg-[#001C00]/40 rounded-xl p-4 transition-all duration-300 border border-white/10 hover:border-[#047705]/30">
-                                <div class="flex items-start">
-                                    <!-- Order Image -->
-                                    <div class="w-20 h-20 bg-gray-100 rounded-lg flex-shrink-0 mr-4 overflow-hidden">
-                                        <img src="/images/clothes/school-uniform.png" alt="School Uniform" class="w-full h-full object-contain">
-                                    </div>
-                                    
-                                    <!-- Order Details -->
-                                    <div class="flex-1">
-                                        <div class="flex justify-between items-start">
-                                            <div>
-                                                <h3 class="text-white font-medium">School Uniform (Size L)</h3>
-                                                <p class="text-sm text-gray-400">Order #COOP-2023-002</p>
-                                            </div>
-                                            <span class="text-xs px-2 py-1 rounded-full status-processing">Processing</span>
-                                        </div>
-                                        
-                                        <div class="mt-2 flex justify-between items-end">
-                                            <div>
-                                                <p class="text-sm text-white">₱350.00 × 2</p>
-                                                <p class="text-xs text-gray-400">Ordered: May 10, 2023 - 2:15 PM</p>
-                                            </div>
-                                            <button 
-                                                class="text-sm text-[#ffffff] hover:underline view-details-btn" 
-                                                data-order-number="COOP-2023-002"
-                                                onclick="selectOrder('COOP-2023-002')"> <!-- Change this for each order -->
-                                                View Details
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Order Item 3 -->
-                            <div class="bg-[#1F1E1E]/60 hover:bg-[#001C00]/40 rounded-xl p-4 transition-all duration-300 border border-white/10 hover:border-[#047705]/30">
-                                <div class="flex items-start">
-                                    <!-- Order Image -->
-                                    <div class="w-20 h-20 bg-gray-100 rounded-lg flex-shrink-0 mr-4 overflow-hidden">
-                                        <img src="/images/clothes/lab-gown.png" alt="Lab Gown" class="w-full h-full object-contain">
-                                    </div>
-                                    
-                                    <!-- Order Details -->
-                                    <div class="flex-1">
-                                        <div class="flex justify-between items-start">
-                                            <div>
-                                                <h3 class="text-white font-medium">Lab Gown (Size XL)</h3>
-                                                <p class="text-sm text-gray-400">Order #COOP-2023-003</p>
-                                            </div>
-                                            <span class="text-xs px-2 py-1 rounded-full status-completed">Completed</span>
-                                        </div>
-                                        
-                                        <div class="mt-2 flex justify-between items-end">
-                                            <div>
-                                                <p class="text-sm text-white">₱400.00 × 1</p>
-                                                <p class="text-xs text-gray-400">Ordered: May 5, 2023 - 9:45 AM</p>
-                                                <p class="text-xs text-gray-400">Completed: May 8, 2023 - 3:20 PM</p>
-                                            </div>
-                                            <button 
-                                                class="text-sm   text-[#ffffff] hover:underline view-details-btn" 
-                                                data-order-number="COOP-2023-003"
-                                                onclick="selectOrder('COOP-2023-003')"> <!-- Change this for each order -->
-                                                View Details
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
                     </div>
                 </div>
             </div>
