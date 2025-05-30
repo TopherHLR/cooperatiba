@@ -208,7 +208,23 @@
                     <div class="step" data-step="4">4</div>
                 </div>
                 
-                <form id="registrationForm">
+                <form id="registrationForm" action="{{ route('web.register.submit') }}" method="POST">
+                    @csrf
+                    @if($errors->any())
+                        <div class="mb-6 p-4 rounded-lg bg-red-900/20 border border-red-700 text-red-300">
+                            <h4 class="font-bold mb-2 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                </svg>
+                                Please fix these errors
+                            </h4>
+                            <ul class="list-disc list-inside space-y-1">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <!-- Step 1: Account Information -->
                     <div class="form-step active" id="step1">
                         <div class="text-center mb-6">
@@ -230,11 +246,24 @@
                                     name="student_number"
                                     class="w-full px-4 py-3 rounded-lg liquid-input text-white focus:outline-none" 
                                     placeholder="e.g. 23-12345"
-                                    pattern="[0-9]{4}-[0-9]{5}"
+                                    pattern="[0-9]{2}-[0-9]{5}"
                                     title="Please enter a valid student number (format: yy-XXXXX)"
                                     required
                                 >
                                 <p class="mt-1 text-xs text-gray-400">Format: yy-XXXXX (e.g. 23-12345)</p>
+                            </div>
+                            
+                            <!-- Email -->
+                            <div>
+                                <label for="email" class="block text-white mb-2">Email</label>
+                                <input 
+                                    type="email" 
+                                    id="email" 
+                                    name="email"
+                                    class="w-full px-4 py-3 rounded-lg liquid-input text-white focus:outline-none" 
+                                    placeholder="your.email@example.com"
+                                    required
+                                >
                             </div>
                             
                             <!-- Password -->
@@ -244,6 +273,7 @@
                                     <input 
                                         type="password" 
                                         id="password" 
+                                        name="password"
                                         class="w-full px-4 py-3 pr-10 rounded-lg liquid-input text-white focus:outline-none" 
                                         placeholder="••••••••"
                                         required
@@ -268,11 +298,12 @@
                             
                             <!-- Confirm Password -->
                             <div>
-                                <label for="confirm_password" class="block text-white mb-2">Confirm Password</label>
+                                <label for="password_confirmation" class="block text-white mb-2">Confirm Password</label>
                                 <div class="relative">
                                     <input 
                                         type="password" 
-                                        id="confirm_password" 
+                                        id="password_confirmation" 
+                                        name="password_confirmation"
                                         class="w-full px-4 py-3 pr-10 rounded-lg liquid-input text-white focus:outline-none" 
                                         placeholder="••••••••"
                                         required
@@ -280,7 +311,7 @@
                                     <button 
                                         type="button" 
                                         class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-[#047705] transition"
-                                        onclick="togglePasswordVisibility('confirm_password')"
+                                        onclick="togglePasswordVisibility('password_confirmation')"
                                         aria-label="Toggle password visibility"
                                     >
                                         <svg id="showConfirmPasswordIcon" class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -303,70 +334,102 @@
                         </div>
                     </div>
                     
-                    <!-- Step 2: Student Information -->
+                    <!-- Step 2: Personal Information -->
                     <div class="form-step" id="step2">
                         <div class="text-center mb-6">
                             <h3 class="text-xl font-semibold text-white flex items-center justify-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                 </svg>
-                                Student Information
+                                Personal Information
                             </h3>
                         </div>
                         
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <!-- Last Name -->
-                            <div>
-                                <label for="last_name" class="block text-white mb-2">Last Name</label>
-                                <input type="text" id="last_name" name="last_name" 
-                                    class="w-full px-4 py-3 rounded-lg liquid-input text-white focus:outline-none" 
-                                    required>
-                            </div>
-                            
                             <!-- First Name -->
                             <div>
                                 <label for="first_name" class="block text-white mb-2">First Name</label>
-                                <input type="text" id="first_name" name="first_name" 
+                                <input 
+                                    type="text" 
+                                    id="first_name" 
+                                    name="first_name" 
                                     class="w-full px-4 py-3 rounded-lg liquid-input text-white focus:outline-none" 
-                                    required>
+                                    required
+                                >
+                            </div>
+                            
+                            <!-- Last Name -->
+                            <div>
+                                <label for="last_name" class="block text-white mb-2">Last Name</label>
+                                <input 
+                                    type="text" 
+                                    id="last_name" 
+                                    name="last_name" 
+                                    class="w-full px-4 py-3 rounded-lg liquid-input text-white focus:outline-none" 
+                                    required
+                                >
                             </div>
                             
                             <!-- Middle Initial -->
                             <div>
                                 <label for="middle_initial" class="block text-white mb-2">Middle Initial</label>
-                                <input type="text" id="middle_initial" name="middle_initial" 
+                                <input 
+                                    type="text" 
+                                    id="middle_initial" 
+                                    name="middle_initial" 
                                     class="w-full px-4 py-3 rounded-lg liquid-input text-white focus:outline-none text-center" 
-                                    maxlength="1">
+                                    maxlength="1"
+                                >
                             </div>
                             
+                            <!-- Age -->
+                            <div>
+                                <label for="age" class="block text-white mb-2">Age</label>
+                                <input 
+                                    type="number" 
+                                    id="age" 
+                                    name="age" 
+                                    class="w-full px-4 py-3 rounded-lg liquid-input text-white focus:outline-none" 
+                                    min="16" 
+                                    max="99"
+                                >
+                            </div>
+                            
+                            <!-- Phone Number -->
+                            <div>
+                                <label for="phone_number" class="block text-white mb-2">Phone Number</label>
+                                <input 
+                                    type="tel" 
+                                    id="phone_number" 
+                                    name="phone_number" 
+                                    class="w-full px-4 py-3 rounded-lg liquid-input text-white focus:outline-none"
+                                    placeholder="09123456789"
+                                >
+                            </div>
                             <!-- Gender -->
-                            <div class="md:col-span-2">
-                                <label class="block text-white mb-2">Gender</label>
-                                <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-                                    <label class="flex items-center space-x-2">
-                                        <input type="radio" name="gender" value="male" class="h-4 w-4 text-green-500">
-                                        <span class="text-white">Male</span>
-                                    </label>
-                                    <label class="flex items-center space-x-2">
-                                        <input type="radio" name="gender" value="female" class="h-4 w-4 text-green-500">
-                                        <span class="text-white">Female</span>
-                                    </label>
-                                    <label class="flex items-center space-x-2">
-                                        <input type="radio" name="gender" value="other" class="h-4 w-4 text-green-500">
-                                        <span class="text-white">Other</span>
-                                    </label>
-                                    <label class="flex items-center space-x-2">
-                                        <input type="radio" name="gender" value="prefer_not" class="h-4 w-4 text-green-500">
-                                        <span class="text-white">Prefer not to say</span>
-                                    </label>
-                                </div>
+                            <div >
+                                <label for="gender" class="block text-white mb-2">Gender</label>
+                                <select 
+                                    id="gender" 
+                                    name="gender" 
+                                    class="w-full px-4 py-3 rounded-lg liquid-input text-white focus:outline-none"
+                                    required
+                                >
+                                    <option class="text-black" value="" disabled selected>Select gender</option>
+                                    <option class="text-black" value="Male">Male</option>
+                                    <option class="text-black" value="Female">Female</option>
+                                    <option class="text-black" value="Other">Other</option>
+                                </select>
                             </div>
-                            
-                            <!-- Contact Number -->
+                            <!-- Address -->
                             <div class="md:col-span-2">
-                                <label for="contact_number" class="block text-white mb-2">Contact Number</label>
-                                <input type="tel" id="contact_number" name="contact_number" 
-                                    class="w-full px-4 py-3 rounded-lg liquid-input text-white focus:outline-none">
+                                <label for="address" class="block text-white mb-2">Address</label>
+                                <textarea 
+                                    id="address" 
+                                    name="address" 
+                                    rows="3" 
+                                    class="w-full px-4 py-3 rounded-lg liquid-input text-white focus:outline-none"
+                                ></textarea>
                             </div>
                         </div>
                         
@@ -395,33 +458,53 @@
                             <!-- Height -->
                             <div>
                                 <label for="height" class="block text-white mb-2">Height (cm)</label>
-                                <input type="number" id="height" name="height" 
+                                <input 
+                                    type="number" 
+                                    id="height" 
+                                    name="height" 
                                     class="w-full px-4 py-3 rounded-lg liquid-input text-white focus:outline-none" 
-                                    step="0.1" min="0">
+                                    step="0.1" 
+                                    min="0"
+                                >
                             </div>
                             
                             <!-- Weight -->
                             <div>
                                 <label for="weight" class="block text-white mb-2">Weight (kg)</label>
-                                <input type="number" id="weight" name="weight" 
+                                <input 
+                                    type="number" 
+                                    id="weight" 
+                                    name="weight" 
                                     class="w-full px-4 py-3 rounded-lg liquid-input text-white focus:outline-none" 
-                                    step="0.1" min="0">
+                                    step="0.1" 
+                                    min="0"
+                                >
                             </div>
                             
-                            <!-- BMI -->
+                            <!-- BMI (calculated field) -->
                             <div>
                                 <label class="block text-white mb-2">BMI</label>
-                                <div class="w-full px-4 py-3 rounded-lg bg-gray-700/50 border border-gray-600 text-white">
-                                    N/A
-                                </div>
+                                <input 
+                                    type="text" 
+                                    id="bmi" 
+                                    name="bmi" 
+                                    class="w-full px-4 py-3 rounded-lg bg-gray-700/50 border border-gray-600 text-white" 
+                                    readonly
+                                    value="N/A"
+                                >
                             </div>
                             
-                            <!-- Recommended Size -->
+                            <!-- Suggested Size -->
                             <div>
-                                <label class="block text-white mb-2">Recommended Size</label>
-                                <div class="w-full px-4 py-3 rounded-lg bg-gray-700/50 border border-gray-600 text-white">
-                                    N/A
-                                </div>
+                                <label class="block text-white mb-2">Suggested Size</label>
+                                <input 
+                                    type="text" 
+                                    id="suggested_size" 
+                                    name="suggested_size" 
+                                    class="w-full px-4 py-3 rounded-lg bg-gray-700/50 border border-gray-600 text-white" 
+                                    readonly
+                                    value="N/A"
+                                >
                             </div>
                         </div>
                         
@@ -447,42 +530,47 @@
                         </div>
                         
                         <div class="space-y-4">
-                            <!-- Department -->
-                            <div>
-                                <label for="department" class="block text-white mb-2">Department</label>
-                                <select id="department" name="department" class="w-full px-4 py-3 rounded-lg liquid-input text-white focus:outline-none">
-                                    <option value="">Select Department</option>
-                                    <option value="CCS">College of Computer Studies</option>
-                                    <option value="COE">College of Engineering</option>
-                                    <option value="CBA">College of Business and Accountancy</option>
-                                </select>
-                            </div>
-                            
                             <!-- Program -->
                             <div>
                                 <label for="program" class="block text-white mb-2">Program</label>
-                                <input type="text" id="program" name="program" 
-                                    class="w-full px-4 py-3 rounded-lg liquid-input text-white focus:outline-none">
+                                <input 
+                                    type="text" 
+                                    id="program" 
+                                    name="program" 
+                                    class="w-full px-4 py-3 rounded-lg liquid-input text-white focus:outline-none"
+                                    required
+                                >
                             </div>
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <!-- Year Level -->
                                 <div>
-                                    <label for="year" class="block text-white mb-2">Year Level</label>
-                                    <select id="year" name="year" class="w-full px-4 py-3 rounded-lg liquid-input text-white focus:outline-none">
-                                        <option value="">Select Year</option>
-                                        <option value="1">1st Year</option>
-                                        <option value="2">2nd Year</option>
-                                        <option value="3">3rd Year</option>
-                                        <option value="4">4th Year</option>
+                                    <label for="year_level" class="block text-white mb-2">Year Level</label>
+                                    <select 
+                                        id="year_level" 
+                                        name="year_level" 
+                                        class="w-full px-4 py-3 rounded-lg liquid-input text-white focus:outline-none"
+                                        required
+                                    >
+                                        <option class="text-black" value="">Select Year Level</option>
+                                        <option class="text-black" value="1">1st Year</option>
+                                        <option class="text-black" value="2">2nd Year</option>
+                                        <option class="text-black" value="3">3rd Year</option>
+                                        <option class="text-black" value="4">4th Year</option>
+                                        <option class="text-black" value="5">5th Year</option>
                                     </select>
                                 </div>
                                 
                                 <!-- Section -->
                                 <div>
                                     <label for="section" class="block text-white mb-2">Section</label>
-                                    <input type="text" id="section" name="section" 
-                                        class="w-full px-4 py-3 rounded-lg liquid-input text-white focus:outline-none">
+                                    <input 
+                                        type="text" 
+                                        id="section" 
+                                        name="section" 
+                                        class="w-full px-4 py-3 rounded-lg liquid-input text-white focus:outline-none"
+                                        required
+                                    >
                                 </div>
                             </div>
                         </div>
@@ -505,123 +593,143 @@
     <footer class="py-6 text-center text-gray-400 text-sm">
         <p>© 2023 Cooperatiba. All rights reserved.</p>
     </footer>
-</body>
-</html>
 
-<script>
-    // Toggle password visibility
-    function togglePasswordVisibility(fieldId) {
-        const passwordInput = document.getElementById(fieldId);
-        const showIcon = document.getElementById(`show${fieldId.charAt(0).toUpperCase() + fieldId.slice(1)}Icon`);
-        const hideIcon = document.getElementById(`hide${fieldId.charAt(0).toUpperCase() + fieldId.slice(1)}Icon`);
-        
-        if (passwordInput.type === 'password') {
-            passwordInput.type = 'text';
-            showIcon.classList.add('hidden');
-            hideIcon.classList.remove('hidden');
-        } else {
-            passwordInput.type = 'password';
-            hideIcon.classList.add('hidden');
-            showIcon.classList.remove('hidden');
+    <script>
+        // Toggle password visibility
+        function togglePasswordVisibility(fieldId) {
+            const passwordInput = document.getElementById(fieldId);
+            const showIcon = document.getElementById(`show${fieldId.charAt(0).toUpperCase() + fieldId.slice(1)}Icon`);
+            const hideIcon = document.getElementById(`hide${fieldId.charAt(0).toUpperCase() + fieldId.slice(1)}Icon`);
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                showIcon.classList.add('hidden');
+                hideIcon.classList.remove('hidden');
+            } else {
+                passwordInput.type = 'password';
+                hideIcon.classList.add('hidden');
+                showIcon.classList.remove('hidden');
+            }
         }
-    }
-    
-    // Form navigation
-    function nextStep(current, next) {
-        // Validate current step before proceeding
-        if (validateStep(current)) {
+        
+        // Form navigation
+        function nextStep(current, next) {
+            // Validate current step before proceeding
+            if (validateStep(current)) {
+                document.getElementById(`step${current}`).classList.remove('active');
+                document.getElementById(`step${next}`).classList.add('active');
+                
+                // Update step indicator
+                document.querySelector(`.step[data-step="${current}"]`).classList.remove('active');
+                document.querySelector(`.step[data-step="${current}"]`).classList.add('completed');
+                document.querySelector(`.step[data-step="${next}"]`).classList.add('active');
+            }
+        }
+        
+        function prevStep(current, prev) {
             document.getElementById(`step${current}`).classList.remove('active');
-            document.getElementById(`step${next}`).classList.add('active');
+            document.getElementById(`step${prev}`).classList.add('active');
             
             // Update step indicator
             document.querySelector(`.step[data-step="${current}"]`).classList.remove('active');
-            document.querySelector(`.step[data-step="${current}"]`).classList.add('completed');
-            document.querySelector(`.step[data-step="${next}"]`).classList.add('active');
-        }
-    }
-    
-    function prevStep(current, prev) {
-        document.getElementById(`step${current}`).classList.remove('active');
-        document.getElementById(`step${prev}`).classList.add('active');
-        
-        // Update step indicator
-        document.querySelector(`.step[data-step="${current}"]`).classList.remove('active');
-        document.querySelector(`.step[data-step="${prev}"]`).classList.add('active');
-    }
-    
-    // Basic step validation
-    function validateStep(step) {
-        let isValid = true;
-        
-        if (step === 1) {
-            const studentNumber = document.getElementById('student_number').value;
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirm_password').value;
-            
-            if (!studentNumber.match(/^\d{2}-\d{5}$/)) {
-                alert('Please enter a valid student number (format: YY-XXXXX)');
-                isValid = false;
-            }
-            
-            if (password.length < 8) {
-                alert('Password must be at least 8 characters long');
-                isValid = false;
-            }
-            
-            if (password !== confirmPassword) {
-                alert('Passwords do not match');
-                isValid = false;
-            }
-        } else if (step === 2) {
-            const lastName = document.getElementById('last_name').value;
-            const firstName = document.getElementById('first_name').value;
-            
-            if (!lastName || !firstName) {
-                alert('Please fill in all required fields');
-                isValid = false;
-            }
+            document.querySelector(`.step[data-step="${prev}"]`).classList.add('active');
         }
         
-        return isValid;
-    }
-    
-    // Form submission
-    document.getElementById('registrationForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Validate all steps
-        if (validateStep(1)){
-            // Here you would typically send the form data to the server
-            alert('Registration successful!');
-            // window.location.href = '/dashboard'; // Redirect after successful registration
-        }
-    });
-    
-    // Calculate BMI when height or weight changes
-    document.getElementById('height').addEventListener('input', calculateBMI);
-    document.getElementById('weight').addEventListener('input', calculateBMI);
-    
-    function calculateBMI() {
-        const height = parseFloat(document.getElementById('height').value) / 100; // convert cm to m
-        const weight = parseFloat(document.getElementById('weight').value);
-        
-        if (height && weight) {
-            const bmi = (weight / (height * height)).toFixed(1);
-            document.querySelector('#step3 div:nth-child(4) div').textContent = bmi;
+        function validateStep(step) {
+            let isValid = true;
             
-            // Simple size recommendation based on BMI
-            let size = 'N/A';
-            if (bmi < 18.5) {
-                size = 'XS or S';
-            } else if (bmi >= 18.5 && bmi < 25) {
-                size = 'M';
-            } else if (bmi >= 25 && bmi < 30) {
-                size = 'L';
-            } else if (bmi >= 30) {
-                size = 'XL or XXL';
+            if (step === 1) {
+                const studentNumber = document.getElementById('student_number').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('password_confirmation').value;
+                
+                if (!studentNumber.match(/^\d{2}-\d{5}$/)) {
+                    alert('Please enter a valid student number (format: YY-XXXXX)');
+                    isValid = false;
+                }
+                
+                if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                    alert('Please enter a valid email address');
+                    isValid = false;
+                }
+                
+                if (password.length < 8) {
+                    alert('Password must be at least 8 characters long');
+                    isValid = false;
+                }
+                
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match');
+                    isValid = false;
+                }
+            } else if (step === 2) {
+                const firstName = document.getElementById('first_name').value;
+                const lastName = document.getElementById('last_name').value;
+                
+                if (!firstName || !lastName) {
+                    alert('Please fill in all required fields');
+                    isValid = false;
+                }
+                
+                const age = document.getElementById('age').value;
+                if (age && (age < 16 || age > 99)) {
+                    alert('Age must be between 16 and 99');
+                    isValid = false;
+                }
+            } else if (step === 4) {
+                const program = document.getElementById('program').value;
+                const yearLevel = document.getElementById('year_level').value;
+                const section = document.getElementById('section').value;
+                
+                if (!program || !yearLevel || !section) {
+                    alert('Please fill in all required fields');
+                    isValid = false;
+                }
             }
             
-            document.querySelector('#step3 div:nth-child(5) div').textContent = size;
+            return isValid;
         }
-    }
-</script>
+        // Calculate BMI when height or weight changes
+        document.getElementById('height').addEventListener('input', calculateBMI);
+        document.getElementById('weight').addEventListener('input', calculateBMI);
+        
+        function calculateBMI() {
+            const heightCm = parseFloat(document.getElementById('height').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+
+            if (heightCm && weight) {
+                const heightM = heightCm / 100;
+                const bmi = (weight / (heightM * heightM)).toFixed(1);
+                document.getElementById('bmi').value = bmi;
+
+                let size = 'N/A';
+
+                // BMI-based general category
+                if (bmi < 18.5) {
+                    // Underweight - smaller sizes
+                    if (heightCm < 160) size = 'XS';
+                    else size = 'S';
+                } else if (bmi >= 18.5 && bmi < 25) {
+                    // Normal weight
+                    if (heightCm < 165) size = 'S';
+                    else if (heightCm < 175) size = 'M';
+                    else size = 'L';
+                } else if (bmi >= 25 && bmi < 30) {
+                    // Overweight
+                    if (heightCm < 165) size = 'M';
+                    else if (heightCm < 175) size = 'L';
+                    else size = 'XL';
+                } else if (bmi >= 30) {
+                    // Obese
+                    if (heightCm < 170) size = 'XL';
+                    else size = 'XXL';
+                }
+
+                document.getElementById('suggested_size').value = size;
+            }
+        }
+
+    </script>
+</body>
+</html>

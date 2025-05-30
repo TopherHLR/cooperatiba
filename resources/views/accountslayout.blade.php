@@ -113,6 +113,19 @@
                     </svg>
                     My Orders
                 </a>
+
+                <!-- Logout button -->
+                <form method="POST" action="{{ route('web.logout') }}" class="w-full">
+                    @csrf
+                    <button type="submit" 
+                            class="account-nav-btn text-white w-full text-left flex items-center"
+                            onclick="return confirm('Are you sure you want to logout?');">
+                        <svg class="account-btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1" />
+                        </svg>
+                        <span >Logout</span>
+                    </button>
+                </form>
             </nav>
         </div>
     </div>

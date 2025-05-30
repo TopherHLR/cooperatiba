@@ -169,7 +169,8 @@
                         </button>
                     </div>
                 </div>
-                                <!-- Right: Navigation Links -->
+
+                <!-- Right: Navigation Links -->
                 <div class="flex items-center space-x-1 mr-5">
                     <a href="{{ route('web.home') }}" class="nav-link text-white" style="font-family: 'Inria Sans', sans-serif; font-weight: 300; text-shadow: -2px 2px 4px #000000;">
                         Home
@@ -177,18 +178,20 @@
                     <a href="{{ route('web.about') }}" class="nav-link text-white" style="font-family: 'Inria Sans', sans-serif; font-weight: 300; text-shadow: -2px 2px 4px #000000;">
                         About
                     </a>
-                    <a href="{{ route('web.accountsettings') }}" class="nav-link text-white" style="font-family: 'Inria Sans', sans-serif; font-weight: 300; text-shadow: -2px 2px 4px #000000;">
-                        My account
-                    </a>
-                    <a href="{{ route('web.login') }}" class="nav-link text-white" style="font-family: 'Inria Sans', sans-serif; font-weight: 300; text-shadow: -2px 2px 4px #000000;">
-                        Login
-                    </a>
-                    <a href="{{ route('admin.adminslayout') }}" class="nav-link text-white" style="font-family: 'Inria Sans', sans-serif; font-weight: 300; text-shadow: -2px 2px 4px #000000;">
-                        Admin
-                    </a>
+                    @auth
+                        <a href="{{ route('web.accountsettings') }}" class="nav-link text-white" style="font-family: 'Inria Sans', sans-serif; font-weight: 300; text-shadow: -2px 2px 4px #000000;"">My account</a>
+                        @if(auth()->user()->role === 'admin')
+                            <a href="{{ route('admin.adminslayout') }}" class="nav-link text-white" style="font-family: 'Inria Sans', sans-serif; font-weight: 300; text-shadow: -2px 2px 4px #000000;">Admin</a>
+                        @endif
+                    @else
+                        {{-- User is NOT logged in --}}
+                        <a href="{{ route('web.login') }}" class="nav-link text-white" style="font-family: 'Inria Sans', sans-serif; font-weight: 300; text-shadow: -2px 2px 4px #000000;">Login</a>
+                    @endauth
+
                 </div>
             </div>   
         </nav>
+
     </header>
 
     <!-- Main Content -->

@@ -143,8 +143,10 @@
                     <h2 class="text-3xl font-bold text-white mb-2">Welcome Back</h2>
                     <p class="text-gray-300">Sign in to your Cooperatiba account</p>
                 </div>
-                
-                <form>
+                                
+                <form method="POST" action="{{ route('web.login.submit') }}">
+                    @csrf
+
                     <!-- Student Number Input -->
                     <div class="mb-6">
                         <label for="student_number" class="block text-white mb-2">Student Number</label>
@@ -154,29 +156,30 @@
                                 id="student_number" 
                                 name="student_number"
                                 class="w-full px-4 py-3 rounded-lg liquid-input text-white focus:outline-none" 
-                                placeholder="e.g. 2023-12345"
-                                pattern="[0-9]{4}-[0-9]{5}"
-                                title="Please enter a valid student number (format: YYYY-XXXXX)"
+                                placeholder="e.g. YY-XXXXX"
+                                pattern="\d{2}-\d{5}"
+                                title="Please enter a valid student number (format: YY-NNNNN, e.g. 23-00000)"
                                 required
+                                value="{{ old('student_number') }}"
                             >
-                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
                         </div>
-                        <p class="mt-1 text-xs text-gray-400">Format: YYYY-XXXXX (e.g. 2023-12345)</p>
+                        <p class="mt-1 text-xs text-gray-400">Format: YY-XXXXX (e.g. 23-00000)</p>
+                        @error('student_number')
+                            <p class="text-sm text-red-400 mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
-                    
-                    <!-- Password Input with Toggle -->
+
+                    <!-- Password Input -->
                     <div class="mb-8">
                         <label for="password" class="block text-white mb-2">Password</label>
                         <div class="relative">
                             <input 
                                 type="password" 
                                 id="password" 
+                                name="password"
                                 class="w-full px-4 py-3 pr-10 rounded-lg liquid-input text-white focus:outline-none" 
                                 placeholder="••••••••"
+                                required
                             >
                             <button 
                                 type="button" 
@@ -184,23 +187,24 @@
                                 onclick="togglePasswordVisibility()"
                                 aria-label="Toggle password visibility"
                             >
-                                <!-- Eye icon (hidden by default) -->
-                                <svg id="showPasswordIcon" class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <svg id="showPasswordIcon" class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                     <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                                    <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+                                    <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10z" clip-rule="evenodd" />
                                 </svg>
-                                <!-- Eye-slash icon (hidden initially) -->
-                                <svg id="hidePasswordIcon" class="h-5 w-5 hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <svg id="hidePasswordIcon" class="h-5 w-5 hidden" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z" clip-rule="evenodd" />
                                     <path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z" />
                                 </svg>
                             </button>
                         </div>
+                        @error('password')
+                            <p class="text-sm text-red-400 mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
-                    <!-- Remember Me & Forgot Password -->
+                    <!-- Remember Me Checkbox -->
                     <div class="flex items-center justify-between mb-8">
                         <div class="flex items-center">
-                            <input type="checkbox" id="remember" class="w-4 h-4 text-[#047705] rounded focus:ring-[#047705]">
+                            <input type="checkbox" name="remember" id="remember" class="w-4 h-4 text-[#047705] rounded focus:ring-[#047705]" {{ old('remember') ? 'checked' : '' }}>
                             <label for="remember" class="ml-2 text-sm text-gray-300">Remember me</label>
                         </div>
                         <a href="#" class="text-sm text-[#047705] hover:underline">Forgot password?</a>
@@ -216,6 +220,7 @@
                         <p class="text-gray-400">Don't have an account? <a href="{{ route('web.register') }}" class="text-[#047705] hover:underline">Sign up</a></p>
                     </div>
                 </form>
+
             </div>
         </div>
     </main>

@@ -143,6 +143,17 @@
 @section('content')
 <div class="content-section min-h-screen">
     <div class="content-overlay min-h-screen">
+        @if(session('success'))
+            <div 
+                x-data="{ show: true }" 
+                x-init="setTimeout(() => show = false, 1000)" 
+                x-show="show"
+                x-transition
+                class="fixed top-20 left-1/2 transform -translate-x-1/2 w-[85%] z-50 bg-green-100 border border-green-400 text-green-700 rounded p-4 shadow-lg"
+            >
+                {{ session('success') }}
+            </div>
+        @endif
         <div class="flex mx-10 justify-center gap-10">
             <!-- Left Container - Notifications (20%) -->
             <div class="w-[20%] mt-40 mr-6">
@@ -296,6 +307,8 @@
 
 <!-- Include all your modal HTML here (same as before) -->
 @include('uniforms.modals')
+
+<script src="//unpkg.com/alpinejs" defer></script>
 
 <!-- JavaScript -->
 <script>

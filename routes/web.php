@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UniformController;
-
+use App\Http\Controllers\StudentController;
 // Main website routes
 Route::name('web.')->group(function () {
     // Public routes (direct views from root)
@@ -15,7 +15,13 @@ Route::name('web.')->group(function () {
     // Authentication routes
     Route::view('/login', 'login')->name('login');
     Route::view('/register', 'register')->name('register');
-    
+       // Add logic routes for login/register (POST)
+    Route::post('/login', [StudentController::class, 'login'])->name('login.submit');
+    Route::post('/register', [StudentController::class, 'register'])->name('register.submit');
+
+    // Optional logout
+    Route::post('/logout', [StudentController::class, 'logout'])->name('logout');
+
     // Payment and order routes
     Route::view('/payment', 'payment')->name('payment');
     Route::view('/orders', 'orders')->name('orders');
