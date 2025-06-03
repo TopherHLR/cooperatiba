@@ -18,7 +18,6 @@
         font-family: 'Inria Sans', sans-serif;
         overflow-x: hidden;
     }
-    
     /* Enhanced Moving Background */
     body::before {
         content: '';

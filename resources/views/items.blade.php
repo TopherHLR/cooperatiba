@@ -272,10 +272,10 @@
                         <div class="bg-white w-58 h-108 rounded-[15px] overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group relative transform hover:-translate-y-1">
                             <!-- Product Image -->
                             <div class="h-[70%] bg-gray-100/80 flex items-center justify-center p-2 group-hover:bg-gray-100 transition-colors duration-300 cursor-pointer" 
-                                onclick="openImageGalleryModal('{{ $uniform->name }}', ['{{ $uniform->image_url }}'])">
-                                <img src="{{ $uniform->image_url }}" alt="{{ $uniform->name }}" class="h-full w-full object-contain group-hover:scale-105 transition-transform duration-300">
+                                onclick="openImageGalleryModal('{{ $uniform->name }}')">
+                                <img id="galleryImages" src="{{ $uniform->image_url }}" alt="{{ $uniform->name }}" class="h-full w-full object-contain group-hover:scale-105 transition-transform duration-300">
                             </div>
-                            <!-- Product Info -->
+                            <!-- Product Info -->   
                             <div class="absolute bottom-0 left-0 right-0 p-2 bg-[#008E01] text-white group-hover:bg-[#007a01] transition-colors duration-300">
                                 <h3 class="font-bold text-sm truncate">{{ $uniform->name }}</h3>
                                 <div class="flex justify-between items-center mt-1.5">
@@ -312,6 +312,92 @@
 
 <!-- JavaScript -->
 <script>
+    let currentImageIndex = 0;
+    let galleryImages = [];
+
+    const productGalleryImages = {
+        "Womens School Uniform": [
+            "/images/clothes/franz.png",
+            "/images/clothes/womensunif.png",
+            "/images/clothes/realwomensunif1.png",
+            "/images/clothes/realwomensunif2.png"
+        ],
+        "Mens School Uniform": [
+            "/images/clothes/topher.png",
+            "/images/clothes/mensunif.png",
+            "/images/clothes/realmenunif1.png",
+            "/images/clothes/realmenunif2.png"
+        ],
+        "PE Uniform": [
+            "/images/clothes/kurt.png",
+            "/images/clothes/pe.png",
+            "/images/clothes/realpe1.png",
+            "/images/clothes/realpe2.png"
+        ]
+        // You can add more mappings here
+    };
+
+    function openImageGalleryModal(productName, fallbackImages = []) {
+        const modal = document.getElementById('imageGalleryModal');
+
+        // Set product name
+        document.getElementById('galleryProductName').textContent = productName;
+
+        // Determine images
+        const images = productGalleryImages[productName] || fallbackImages;
+
+        // Set main image
+        const mainImage = document.getElementById('galleryMainImage');
+        mainImage.src = images[0];
+        mainImage.alt = `${productName} - Image 1`;
+
+        // Set thumbnails
+        const thumbnailTrack = document.getElementById('thumbnailTrack');
+        thumbnailTrack.innerHTML = '';
+
+        images.forEach((imgUrl, index) => {
+            const thumb = document.createElement('img');
+            thumb.src = imgUrl;
+            thumb.alt = `${productName} - Thumbnail ${index + 1}`;
+            thumb.className = 'h-20 w-20 object-contain border rounded-lg cursor-pointer hover:scale-105 transition-transform';
+            thumb.onclick = () => {
+                mainImage.src = imgUrl;
+                mainImage.alt = `${productName} - Image ${index + 1}`;
+            };
+            thumbnailTrack.appendChild(thumb);
+        });
+
+        modal.classList.remove('hidden');
+    }
+
+
+    function updateMainImage() {
+        const mainImage = document.getElementById('galleryMainImage');
+        mainImage.src = galleryImages[currentImageIndex];
+        mainImage.alt = `Image ${currentImageIndex + 1}`;
+
+        // Update selected thumbnail border
+        const thumbnails = document.querySelectorAll('#thumbnailTrack img');
+        thumbnails.forEach((thumb, i) => {
+            thumb.classList.toggle('border-white', i === currentImageIndex);
+            thumb.classList.toggle('border-white/30', i !== currentImageIndex);
+        });
+    }
+
+    function showPreviousImage() {
+        if (currentImageIndex > 0) {
+            currentImageIndex--;
+            updateMainImage();
+        }
+    }
+
+    function showNextImage() {
+        if (currentImageIndex < galleryImages.length - 1) {
+            currentImageIndex++;
+            updateMainImage();
+        }
+    }
+
     // Modal control functions
     function closeAddToCartModal() {
         document.getElementById('addToCartModal').classList.add('hidden');
@@ -345,39 +431,25 @@
         console.log("Remove selected items");
     }
 
-    function openImageGalleryModal(productName, images) {
-        const modal = document.getElementById('imageGalleryModal');
-        
-        // Set product name
-        document.getElementById('galleryProductName').textContent = productName;
-        
-        // Clear previous images
-        const galleryContainer = document.getElementById('galleryImages');
-        galleryContainer.innerHTML = '';
-        
-        // Add new images
-        images.forEach((imageUrl, index) => {
-            const imgElement = document.createElement('img');
-            imgElement.src = imageUrl;
-            imgElement.alt = `${productName} - Image ${index + 1}`;
-            imgElement.className = 'w-full h-full object-contain';
-            galleryContainer.appendChild(imgElement);
-        });
-        
-        // Show the modal
-        modal.classList.remove('hidden');
-    }
-    // Update these functions to use dynamic data
+
+
     function openAddToCartModal(productName, productPrice, productImage, productId) {
         console.log('openAddToCartModal called');
+        
         const modal = document.getElementById('addToCartModal');
+        
+        // Populate modal content
         document.getElementById('modalProductName').textContent = productName;
         document.getElementById('modalProductPrice').textContent = productPrice;
         document.getElementById('modalProductImage').src = productImage;
         
-        // Store product ID in a data attribute
+        // Store product ID
         modal.dataset.productId = productId;
+
+        // 🔥 Show the modal
+        modal.classList.remove('hidden');
     }
+
 
     function openNotificationModal(type, title, content, time) {
         const modal = document.getElementById('notificationModal');
@@ -424,12 +496,14 @@
 
     function openBuyerModal(productName, productPrice, productImage, productId) {
         const modal = document.getElementById('openBuyModal');
-        document.getElementById('modalProductName').textContent = productName;
-        document.getElementById('modalProductPrice').textContent = productPrice;
-        document.getElementById('modalProductImage').src = productImage;
+        document.getElementById('modalProductNameBuy').textContent = productName;
+        document.getElementById('modalProductPriceBuy').textContent = productPrice;
+        document.getElementById('modalProductImageBuy').src = productImage;
         
         // Store product ID in a data attribute
         modal.dataset.productId = productId;
+        // 🔥 Show the modal
+        modal.classList.remove('hidden');
     }
     
     // Fix the syntax error in your existing script
