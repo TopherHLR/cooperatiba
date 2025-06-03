@@ -89,6 +89,19 @@
         width: 20px;
         height: 20px;
     }
+        /* Cancel state (red version) */
+    .account-nav-btn.cancel-state {
+        background: linear-gradient(90deg, rgba(220, 38, 38, 0.3) 0%, rgba(220, 38, 38, 0.5) 100%) !important;
+    }
+
+    .account-nav-btn.cancel-state.active {
+        background: linear-gradient(90deg, rgba(220, 38, 38, 0.6) 0%, rgba(248, 113, 113, 0.6) 100%) !important;
+        box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4) !important;
+    }
+
+    .account-nav-btn.cancel-state:hover::before {
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent) !important;
+    }
 </style>
 @endsection
 
@@ -118,7 +131,7 @@
                 <form method="POST" action="{{ route('web.logout') }}" class="w-full">
                     @csrf
                     <button type="submit" 
-                            class="account-nav-btn text-white w-full text-left flex items-center"
+                            class="account-nav-btn cancel-state text-white w-full text-left flex items-center"
                             onclick="return confirm('Are you sure you want to logout?');">
                         <svg class="account-btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1" />

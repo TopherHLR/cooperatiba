@@ -28,9 +28,12 @@ Route::name('web.')->group(function () {
     
     // Other public routes
     Route::view('/about', 'about')->name('about');
-    Route::view('/accountsettings', 'accountsettings')->name('accountsettings');
+    //Route::view('/accountsettings', 'accountsettings')->name('accountsettings');
     Route::view('accountslayout', 'accountslayout')->name('accountslayout');
     
+    Route::get('/accountsettings', [StudentController::class, 'accountsettings'])->name('accountsettings')->middleware('auth');
+    Route::post('/account/update', [StudentController::class, 'update'])->name('account.update');
+
 });
 
 // Admin routes

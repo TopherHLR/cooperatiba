@@ -17,7 +17,7 @@
         font-family: 'Jost', sans-serif;
     }
     
-        /* Liquid UI Background Effects */
+    /* Liquid UI Background Effects */
     body {
         background: linear-gradient(135deg, #1F1E1E 0%, #001C00 100%);
         min-height: 100vh;
@@ -52,6 +52,20 @@
         50% { transform: rotate(30deg) translate(10%, 10%); }
         100% { transform: rotate(30deg) translate(-10%, -10%); }
     }      
+    
+    /* Edit mode styling */
+    .readonly-input {
+        background-color: rgba(75, 85, 99, 0.3) !important;
+        cursor: not-allowed;
+    }
+    
+    .edit-button {
+        transition: all 0.3s ease;
+    }
+    
+    .edit-button.editing {
+        background-color: #f59e0b !important;
+    }
 </style>
 @endsection
 
@@ -63,20 +77,38 @@
             <div class="w-[100%] h-[750px]">
                 <div class="bg-gradient-to-r from-[#1F1E1E]/100 to-[#100E00]/80 border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[30px] p-6 h-full backdrop-blur-sm flex flex-col">
                     <!-- Title Section -->
-                    <div class="flex items-center mb-4">
+                    <div class="flex items-center justify-between mb-4">
                         <h2 class="text-2xl font-bold text-white flex items-center" style="font-family: 'Kalam', cursive; text-shadow: -2px 1px 0px #047705;">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
                             Account Settings
                         </h2>
+                        <button id="editToggle" class="account-nav-btn text-white font-medium py-2 px-4 transition duration-300 text-sm">
+                            <span class="account-btn-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                            </span>
+                            Edit Information
+                        </button>
                     </div>
                     <hr class="border-[.5px] border-white mb-6 -mx-6">
-                    
+                 
                     <!-- Scrollable Content -->
-                    <div class="overflow-y-auto flex-1 pr-2">
+                    <div class="overflow-y-auto     flex-1 pr-2">
                         <!-- User Information Form -->
-                        <form class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <form class="grid grid-cols-1 md:grid-cols-2 gap-6" method="POST" action="{{ route('web.account.update') }}">
+                            @csrf
+                            @if($errors->any())
+                            <div class="md:col-span-2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            @endif     
                             <!-- Student Information Section -->
                             <div class="md:col-span-2 space-y-4">
                                 <h3 class="text-lg font-semibold text-white flex items-center">
@@ -86,36 +118,36 @@
                                     Student Information
                                 </h3>
                                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4 bg-gray-800/30 p-4 rounded-xl">
-                                    <!-- Student Number -->
+                                    <!-- Student Number (Always readonly) -->
                                     <div class="md:col-span-2">
                                         <label for="student_no" class="block text-white mb-1 text-xs font-medium uppercase tracking-wider">Student Number</label>
-                                        <input type="text" id="student_no" name="student_no" 
-                                            class="w-full bg-gray-700/50 border border-gray-600 text-white rounded-lg px-3 py-2 text-sm" 
-                                            required readonly>
+                                        <input type="text" id="student_no" name="student_number" 
+                                            class="w-full bg-gray-700/50 border border-gray-600 text-white rounded-lg px-3 py-2 text-sm readonly-input" 
+                                            required readonly value="{{ $student->student_number ?? '' }}">
                                     </div>
                                     
                                     <!-- Last Name -->
                                     <div>
                                         <label for="last_name" class="block text-white mb-1 text-xs font-medium uppercase tracking-wider">Last Name</label>
                                         <input type="text" id="last_name" name="last_name" 
-                                            class="w-full bg-gray-700/50 border border-gray-600 text-white rounded-lg px-3 py-2 text-sm" 
-                                            required>
+                                            class="w-full bg-gray-700/50 border border-gray-600 text-white rounded-lg px-3 py-2 text-sm readonly-input" 
+                                            required readonly value="{{ $student->last_name ?? '' }}">
                                     </div>
                                     
                                     <!-- First Name -->
                                     <div>
                                         <label for="first_name" class="block text-white mb-1 text-xs font-medium uppercase tracking-wider">First Name</label>
                                         <input type="text" id="first_name" name="first_name" 
-                                            class="w-full bg-gray-700/50 border border-gray-600 text-white rounded-lg px-3 py-2 text-sm" 
-                                            required>
+                                            class="w-full bg-gray-700/50 border border-gray-600 text-white rounded-lg px-3 py-2 text-sm readonly-input" 
+                                            required readonly autocomplete="given-name" autocapitalize="words" value="{{ $student->first_name ?? '' }}">
                                     </div>
                                     
                                     <!-- Middle Initial -->
                                     <div>
                                         <label for="middle_initial" class="block text-white mb-1 text-xs font-medium uppercase tracking-wider">M.I.</label>
                                         <input type="text" id="middle_initial" name="middle_initial" 
-                                            class="w-full bg-gray-700/50 border border-gray-600 text-white rounded-lg px-3 py-2 text-center text-sm" 
-                                            maxlength="1">
+                                            class="w-full bg-gray-700/50 border border-gray-600 text-white rounded-lg px-3 py-2 text-center text-sm readonly-input" 
+                                            maxlength="1" readonly value="{{ $student->middle_initial ?? '' }}">
                                     </div>
                                 </div>
                             </div>
@@ -128,35 +160,47 @@
                                     </svg>
                                     Personal Details
                                 </h3>
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-800/30 p-4 rounded-xl">
+                                <div class="grid grid-cols-1 md:grid-cols-5 gap-4 bg-gray-800/30 p-4 rounded-xl">
                                     <!-- Gender -->
                                     <div class="md:col-span-2">
-                                        <label class="block text-white mb-1 text-xs font-medium uppercase tracking-wider">Gender</label>
-                                        <div class="grid grid-cols-2 gap-2">
-                                            <label class="flex items-center space-x-2">
-                                                <input type="radio" name="gender" value="male" class="h-4 w-4 text-green-500">
-                                                <span class="text-white text-sm">Male</span>
-                                            </label>
-                                            <label class="flex items-center space-x-2">
-                                                <input type="radio" name="gender" value="female" class="h-4 w-4 text-green-500">
-                                                <span class="text-white text-sm">Female</span>
-                                            </label>
-                                            <label class="flex items-center space-x-2">
-                                                <input type="radio" name="gender" value="other" class="h-4 w-4 text-green-500">
-                                                <span class="text-white text-sm">Other</span>
-                                            </label>
-                                            <label class="flex items-center space-x-2">
-                                                <input type="radio" name="gender" value="prefer_not" class="h-4 w-4 text-green-500">
-                                                <span class="text-white text-sm">Prefer not to say</span>
-                                            </label>
-                                        </div>
+                                        <fieldset id="genderFieldset" disabled>
+                                            <legend class="block text-white mb-2 text-xs font-medium uppercase tracking-wider">Gender</legend>
+                                            <div class="grid grid-cols-2 gap-2">
+                                                <label class="inline-flex items-center space-x-2">
+                                                    <input type="radio" name="gender" value="male" class="h-4 w-4 text-green-500 focus:ring-green-500" 
+                                                        {{ ($student->gender ?? '') == 'Male' ? 'checked' : '' }}>
+                                                    <span class="text-white text-sm">Male</span>
+                                                </label>
+                                                <label class="inline-flex items-center space-x-2">
+                                                    <input type="radio" name="gender" value="female" class="h-4 w-4 text-green-500 focus:ring-green-500"
+                                                        {{ ($student->gender ?? '') == 'Female' ? 'checked' : '' }}>
+                                                    <span class="text-white text-sm">Female</span>
+                                                </label>
+                                                <label class="inline-flex items-center space-x-2">
+                                                    <input type="radio" name="gender" value="other" class="h-4 w-4 text-green-500 focus:ring-green-500"
+                                                        {{ ($student->gender ?? '') == 'Other' ? 'checked' : '' }}>
+                                                    <span class="text-white text-sm">Other</span>
+                                                </label>
+                                            </div>
+                                        </fieldset>
                                     </div>
                                     
                                     <!-- Contact Number -->
                                     <div>
                                         <label for="contact_number" class="block text-white mb-1 text-xs font-medium uppercase tracking-wider">Contact No.</label>
-                                        <input type="tel" id="contact_number" name="contact_number" 
-                                            class="w-full bg-gray-700/50 border border-gray-600 text-white rounded-lg px-3 py-2 text-sm">
+                                        <input type="tel" id="contact_number" name="phone_number" class="w-full bg-gray-700/50 border border-gray-600 text-white rounded-lg px-3 py-2 text-sm readonly-input"
+                                            readonly value="{{ $student->phone_number ?? '' }}">
+                                    </div>
+                                    <!-- Email-->
+                                    <div>
+                                        <label for="email" class="block text-white mb-1 text-xs font-medium uppercase tracking-wider">Email</label>
+                                        <input type="email" id="email" name="email" class="w-full bg-gray-700/50 border border-gray-600 text-white rounded-lg px-3 py-2 text-sm readonly-input"
+                                            readonly value="{{ $student->email ?? '' }}">
+                                    </div>
+                                    <div>
+                                        <label for="age" class="block text-white mb-1 text-xs font-medium uppercase tracking-wider">Age</label>
+                                        <input type="age" id="age" name="age" class="w-full bg-gray-700/50 border border-gray-600 text-white rounded-lg px-3 py-2 text-sm readonly-input"
+                                            readonly value="{{ $student->age ?? '' }}">
                                     </div>
                                 </div>
                             </div>
@@ -174,31 +218,32 @@
                                     <div>
                                         <label for="height" class="block text-white mb-1 text-xs font-medium uppercase tracking-wider">Height (cm)</label>
                                         <input type="number" id="height" name="height" 
-                                            class="w-full bg-gray-700/50 border border-gray-600 text-white rounded-lg px-3 py-2 text-sm" 
-                                            step="0.1" min="0">
+                                            class="w-full bg-gray-700/50 border border-gray-600 text-white rounded-lg px-3 py-2 text-sm readonly-input" 
+                                            step="0.1" min="0" readonly value="{{ $student->height ?? '' }}">
                                     </div>
                                     
                                     <!-- Weight -->
                                     <div>
                                         <label for="weight" class="block text-white mb-1 text-xs font-medium uppercase tracking-wider">Weight (kg)</label>
                                         <input type="number" id="weight" name="weight" 
-                                            class="w-full bg-gray-700/50 border border-gray-600 text-white rounded-lg px-3 py-2 text-sm" 
-                                            step="0.1" min="0">
+                                            class="w-full bg-gray-700/50 border border-gray-600 text-white rounded-lg px-3 py-2 text-sm readonly-input" 
+                                            step="0.1" min="0" readonly value="{{ $student->weight ?? '' }}">
                                     </div>
                                     
-                                    <!-- BMI -->
+                                    <!-- BMI (Always readonly) -->
                                     <div>
                                         <label class="block text-white mb-1 text-xs font-medium uppercase tracking-wider">BMI</label>
-                                        <div class="w-full bg-gray-700/50 border border-gray-600 text-white rounded-lg px-3 py-2 text-sm">
-                                            N/A
-                                        </div>
+                                        <input type="text" id="bmi" name="bmi"
+                                            class="w-full bg-gray-700/50 border border-gray-600 text-white rounded-lg px-3 py-2 text-sm readonly-input"
+                                            readonly value="{{ $student->bmi ?? 'N/A' }}">
                                     </div>
                                     
-                                    <!-- Recommended Size -->
+                                    <!-- Recommended Size (Always readonly) -->
                                     <div>
                                         <label class="block text-white mb-1 text-xs font-medium uppercase tracking-wider">Size</label>
+                                        <input type="hidden" name="suggested_size" value="{{ $student->suggested_size }}">
                                         <div class="w-full bg-gray-700/50 border border-gray-600 text-white rounded-lg px-3 py-2 text-sm">
-                                            N/A
+                                            {{ $student->suggested_size ?? 'N/A' }}
                                         </div>
                                     </div>
                                 </div>
@@ -213,50 +258,42 @@
                                     Academic Information
                                 </h3>
                                 <div class="grid grid-cols-1 gap-4 bg-gray-800/30 p-4 rounded-xl">
-                                    <!-- Department -->
-                                    <div>
-                                        <label for="department" class="block text-white mb-1 text-xs font-medium uppercase tracking-wider">Department</label>
-                                        <select id="department" name="department" class="w-full bg-gray-700/50 border border-gray-600 text-white rounded-lg px-3 py-2 text-sm">
-                                            <option value="">Select Department</option>
-                                            <option value="CCS">College of Computer Studies</option>
-                                            <option value="COE">College of Engineering</option>
-                                            <option value="CBA">College of Business and Accountancy</option>
-                                        </select>
-                                    </div>
-                                    
+                                 
                                     <!-- Program -->
                                     <div>
                                         <label for="program" class="block text-white mb-1 text-xs font-medium uppercase tracking-wider">Program</label>
                                         <input type="text" id="program" name="program" 
-                                            class="w-full bg-gray-700/50 border border-gray-600 text-white rounded-lg px-3 py-2 text-sm">
+                                            class="w-full bg-gray-700/50 border border-gray-600 text-white rounded-lg px-3 py-2 text-sm readonly-input" 
+                                            readonly value="{{ $student->program ?? '' }}">
                                     </div>
                                     
                                     <!-- Year and Section -->
                                     <div class="grid grid-cols-2 gap-4">
                                         <div>
                                             <label for="year" class="block text-white mb-1 text-xs font-medium uppercase tracking-wider">Year Level</label>
-                                            <select id="year" name="year" class="w-full bg-gray-700/50 border border-gray-600 text-white rounded-lg px-3 py-2 text-sm">
+                                            <select id="year" name="year_level" class="w-full bg-gray-700/50 border border-gray-600 text-white rounded-lg px-3 py-2 text-sm readonly-input" disabled>
                                                 <option value="">Select Year</option>
-                                                <option value="1">1st Year</option>
-                                                <option value="2">2nd Year</option>
-                                                <option value="3">3rd Year</option>
-                                                <option value="4">4th Year</option>
+                                                <option value="1" {{ ($student->year_level ?? '') == '1' ? 'selected' : '' }}>1st Year</option>
+                                                <option value="2" {{ ($student->year_level ?? '') == '2' ? 'selected' : '' }}>2nd Year</option>
+                                                <option value="3" {{ ($student->year_level ?? '') == '3' ? 'selected' : '' }}>3rd Year</option>
+                                                <option value="4" {{ ($student->year_level ?? '') == '4' ? 'selected' : '' }}>4th Year</option>
                                             </select>
                                         </div>
                                         
                                         <div>
                                             <label for="section" class="block text-white mb-1 text-xs font-medium uppercase tracking-wider">Section</label>
                                             <input type="text" id="section" name="section" 
-                                                class="w-full bg-gray-700/50 border border-gray-600 text-white rounded-lg px-3 py-2 text-sm">
+                                                class="w-full bg-gray-700/50 border border-gray-600 text-white rounded-lg px-3 py-2 text-sm readonly-input"
+                                                readonly value="{{ $student->section ?? '' }}">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             
-                            <!-- Submit Button -->
-                            <div class="md:col-span-2 flex justify-end mt-2">
-                                <button type="button" class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-6 rounded-lg transition duration-300 text-sm shadow-md">
-                                    Update Profile
+                            <!-- Submit Button (Initially hidden) -->
+                            <div id="submitButton" class="md:col-span-2 flex justify-end mt-2 hidden">
+                                <button type="submit" class="account-nav-btn hover:bg-green-700 text-white font-medium py-2 px-6 rounded-lg transition duration-300 text-sm shadow-md">
+                                    Save Changes
                                 </button>
                             </div>
                         </form>
@@ -266,4 +303,94 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const editToggle = document.getElementById('editToggle');
+        const formInputs = document.querySelectorAll('input:not([readonly]), select, textarea');
+        const readonlyInputs = document.querySelectorAll('.readonly-input');
+        const submitButton = document.getElementById('submitButton');
+        const genderFieldset = document.getElementById('genderFieldset');
+        const yearSelect = document.getElementById('year');
+
+        
+        let isEditing = false;
+        
+    editToggle.addEventListener('click', function(e) {
+        // Only prevent default if the button is not in submit mode
+        if (!isEditing) {
+            e.preventDefault();
+        }
+        isEditing = !isEditing;
+        
+        if (isEditing) {
+            // Enable editing
+            readonlyInputs.forEach(input => {
+                if (input.id !== 'student_no' && input.id !== 'bmi') {
+                    input.readOnly = false;
+                    input.classList.remove('readonly-input');
+                }
+            });
+            
+            // Enable fieldsets and selects
+            genderFieldset.disabled = false;
+            yearSelect.disabled = false;
+            
+            // Show the submit button
+            submitButton.classList.remove('hidden');
+            
+            // Update the edit button to cancel state (red)
+            editToggle.innerHTML = `
+                <span class="account-btn-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </span>
+                Cancel Editing`;
+            editToggle.classList.add('cancel-state');
+            editToggle.classList.remove('active');
+        } else {
+            // Disable editing
+            readonlyInputs.forEach(input => {
+                input.readOnly = true;
+                input.classList.add('readonly-input');
+            });
+            
+            // Disable fieldsets and selects
+            genderFieldset.disabled = true;
+            yearSelect.disabled = true;
+            
+            // Hide the submit button
+            submitButton.classList.add('hidden');
+            
+            // Update the edit button to edit state (green)
+            editToggle.innerHTML = `
+                <span class="account-btn-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                </span>
+                Edit Information`;
+            editToggle.classList.remove('cancel-state');
+            editToggle.classList.add('active');
+        }
+    });
+        // BMI Calculation
+        function calculateBMI() {
+            const height = parseFloat(document.getElementById('height').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const bmiField = document.getElementById('bmi');
+            
+            if (height > 0 && weight > 0) {
+                const bmi = (weight / ((height / 100) ** 2)).toFixed(2);
+                bmiField.value = bmi;
+            } else {
+                bmiField.value = "N/A";
+            }
+        }
+        
+        document.getElementById('height').addEventListener('input', calculateBMI);
+        document.getElementById('weight').addEventListener('input', calculateBMI);
+    });
+</script>
 @endsection

@@ -1,14 +1,17 @@
 <?php
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;  // Change here
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class StudentModel extends  Authenticatable  // Change here
+class StudentModel extends Model
 {
     use HasFactory;
-    protected $table = 'student'; // your table name, if different
+
+    protected $table = 'student';
+    protected $primaryKey = 'user_id';
+    public $incrementing = false;
+    protected $keyType = 'int'; // or 'string' if not integer
 
     protected $fillable = [
         'user_id',
@@ -31,12 +34,27 @@ class StudentModel extends  Authenticatable  // Change here
         'role',
         'suggested_size',
     ];
-    
+
     protected $hidden = [
         'password',
     ];
+        protected $casts = [
+        'height' => 'decimal:2',
+        'weight' => 'decimal:2',
+        'year_level' => 'integer',
+        'age' => 'integer',
+    ];
+        // Relationships
+    public function orders()
+    {
+        return $this->hasMany(OrderModel::class, 'student_id');
+    }
 
-    // 🔗 Relationship: Student belongs to User
+    public function chats()
+    {
+        return $this->hasMany(ChatModel::class, 'student_id');
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

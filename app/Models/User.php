@@ -38,6 +38,6 @@ class User extends Authenticatable
     // 🔗 Relationship: User has one Student profile
     public function student()
     {
-        return $this->hasOne(StudentModel::class);
+        return $this->hasOne(StudentModel::class, 'user_id');
     }
 }

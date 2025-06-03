@@ -6,11 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class UniformModel extends Model
 {
-    protected $table = 'uniform'; // Make sure this matches the actual table name in your DB
-
+    protected $table = 'uniform';
     protected $primaryKey = 'uniform_id';
-
-    public $timestamps = false; // Set to true if your table has created_at and updated_at columns
+    public $timestamps = false;
 
     protected $fillable = [
         'name',
@@ -20,4 +18,15 @@ class UniformModel extends Model
         'description',
         'image_url',
     ];
+
+    protected $casts = [
+        'price' => 'decimal:2',
+        'stock_quantity' => 'integer',
+    ];
+
+    // Relationships
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItemModel::class, 'uniform_id');
+    }
 }

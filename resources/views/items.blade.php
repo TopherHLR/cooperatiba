@@ -146,10 +146,10 @@
         @if(session('success'))
             <div 
                 x-data="{ show: true }" 
-                x-init="setTimeout(() => show = false, 1000)" 
+                x-init="setTimeout(() => show = false, 2500)" 
                 x-show="show"
                 x-transition
-                class="fixed top-20 left-1/2 transform -translate-x-1/2 w-[85%] z-50 bg-green-100 border border-green-400 text-green-700 rounded p-4 shadow-lg"
+                class="fixed top-20 left-1/2 transform -translate-x-1/2 w-[90%] z-50 bg-green-100 border border-green-400 text-green-700 rounded p-4 shadow-lg"
             >
                 {{ session('success') }}
             </div>

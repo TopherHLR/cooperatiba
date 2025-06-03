@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class StudentController extends Controller
 {
@@ -41,7 +42,7 @@ class StudentController extends Controller
                 // bmi and suggested_size are calculated fields, no validation needed
             ]);
         // Log user creation attempt
-            \Log::info('Attempting to create user with email: ' . $request->email);
+            Log::info('Attempting to create user with email: ' . $request->email);
             
             $user = User::create([
                 'name' => $request->first_name.' '.$request->last_name,
@@ -50,10 +51,10 @@ class StudentController extends Controller
                 'password' => Hash::make($request->password),
             ]);
             
-            \Log::info('User created with ID: ' . $user->id);
+            Log::info('User created with ID: ' . $user->id);
 
             // Log student creation attempt
-            \Log::info('Attempting to create student for user ID: ' . $user->id);
+            Log::info('Attempting to create student for user ID: ' . $user->id);
 
             $student = StudentModel::create([
                 'user_id' => $user->id,
@@ -72,13 +73,14 @@ class StudentController extends Controller
                 'gender' => $request->gender,
                 'height' => $request->height,
                 'weight' => $request->weight,
-
+                'bmi' => $request->bmi,
+                'suggested_size' => $request->suggested_size // only if not generated
             ]);
 
-            \Log::info('Student created with ID: ' . $student->id);
+            Log::info('Student created with ID: ' . $student->id);
 
             DB::commit();
-            \Log::info('Transaction committed successfully for user ID: ' . $user->id);
+            Log::info('Transaction committed successfully for user ID: ' . $user->id);
 
             Auth::login($user);
             return redirect()->route('web.items')->with('success', 'Registration successful!');
@@ -86,7 +88,7 @@ class StudentController extends Controller
         catch (\Exception $e) 
         {
             DB::rollBack();
-            \Log::error('Registration error: ' . $e->getMessage());
+            Log::error('Registration error: ' . $e->getMessage());
             return back()->withErrors(['error' => 'Registration failed. Please try again.'])->withInput();
         }
     }
@@ -121,13 +123,14 @@ class StudentController extends Controller
         ])->withInput($request->only('student_number'));
     }
 
-    // Show dashboard (sample)
-    public function dashboard()
+    // Show account settings
+    public function accountSettings()
     {
-        $student = Auth::user()->student;
-        return view('web.items', compact('student'));
-    }
+        $user = Auth::user();
+        $student = $user->student;
 
+        return view('accountsettings', compact('student', 'user'));
+    }
     // Handle logout
     public function logout(Request $request)
     {
@@ -137,4 +140,93 @@ class StudentController extends Controller
 
         return redirect()->route('web.login'); // or wherever you want to redirect after logout
     }
+    public function update(Request $request)
+    {
+        // Initial log with all request data
+        Log::info('Update method called', ['request_data' => $request->all(), 'user_id' => Auth::id()]);
+
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        Log::debug('Authenticated user', ['user' => $user->toArray()]);
+
+        /** @var \App\Models\StudentModel $student */
+        $student = $user->student;
+        
+        if (!$student) {
+            Log::error('Student record not found for user', ['user_id' => $user->id]);
+            return back()->withErrors(['error' => 'Student record not found.']);
+        }
+        
+        Log::debug('Student record found', ['student' => $student->toArray()]);
+
+        $validatedData = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'middle_initial' => 'nullable|string|max:1',
+            'program' => 'required|string|max:255',
+            'year_level' => 'required|integer|between:1,5',
+            'section' => 'required|string|max:10',
+            'phone_number' => 'nullable|string|max:20',
+            'gender' => 'required|string|in:male,female,other',
+            'height' => 'nullable|numeric|min:0',
+            'weight' => 'nullable|numeric|min:0',
+        ]);
+        
+        Log::info('Validation passed', ['validated_data' => $validatedData]);
+
+        DB::beginTransaction();
+        Log::info('Database transaction started');
+
+        try {
+            // Update user info
+            $userUpdateData = [
+                'name' => $request->first_name . ' ' . $request->last_name,
+                'email' => $request->email,
+            ];
+            
+            Log::debug('Updating user with data', $userUpdateData);
+            $user->update($userUpdateData);
+            Log::info('User updated successfully');
+
+            // Update student info
+            $studentUpdateData = [
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'middle_initial' => $request->middle_initial,
+                'program' => $request->program,
+                'year_level' => $request->year_level,
+                'section' => $request->section,
+                'phone_number' => $request->phone_number,
+                'address' => $request->address,
+                'age' => $request->age,
+                'email' => $request->email,
+                'gender' => $request->gender,
+                'height' => $request->height,
+                'weight' => $request->weight,
+                'bmi' => $request->bmi,
+                'suggested_size' => $request->suggested_size,
+            ];
+            
+            Log::debug('Updating student with data', $studentUpdateData);
+            $student->update($studentUpdateData);
+            Log::info('Student updated successfully');
+
+            DB::commit();
+            Log::info('Transaction committed successfully');
+            
+            return back()->with('success', 'Account updated successfully!');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Update error', [
+                'message' => $e->getMessage(),
+                'exception' => $e,
+                'request_data' => $request->all(),
+                'user_id' => $user->id
+            ]);
+            
+            return back()->withErrors(['error' => 'Update failed. Please try again.'])->withInput();
+        }
+    }
+
 }
