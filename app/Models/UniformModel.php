@@ -8,6 +8,11 @@ class UniformModel extends Model
 {
     protected $table = 'uniform';
     protected $primaryKey = 'uniform_id';
+
+    // Add these two:
+    public $incrementing = false;    // tells Laravel the PK is NOT auto-incrementing
+    protected $keyType = 'string';   // tells Laravel the PK is a string
+
     public $timestamps = false;
 
     protected $fillable = [

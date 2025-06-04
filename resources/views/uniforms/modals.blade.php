@@ -263,9 +263,9 @@
                         <div class="mb-6">
                             <label class="block text-sm font-medium mb-2">Quantity</label>
                             <div class="flex items-center">
-                                <button id="decrementQty" class="bg-[#047705] text-white w-8 h-8 rounded-l-lg flex items-center justify-center">-</button>
-                                <input type="number" id="quantity" value="1" min="1" class="bg-[#1F1E1E] text-white text-center w-12 h-8 border-t border-b border-white/30">
-                                <button id="incrementQty" class="bg-[#047705] text-white w-8 h-8 rounded-r-lg flex items-center justify-center">+</button>
+                                <button id="decrementQtyBuy" class="bg-[#047705] text-white w-8 h-8 rounded-l-lg flex items-center justify-center">-</button>
+                                <input type="number" id="quantityBuy" value="1" min="1" class="bg-[#1F1E1E] text-white text-center w-12 h-8 border-t border-b border-white/30">
+                                <button id="incrementQtyBuy" class="bg-[#047705] text-white w-8 h-8 rounded-r-lg flex items-center justify-center">+</button>
                             </div>
                         </div>
                     </div>
@@ -274,13 +274,19 @@
                         <button onclick="closeBuyModal()" class="px-4 py-2 rounded-lg border text-white border-white/30 hover:bg-white/10 transition-colors">
                             Cancel
                         </button>
-                        <a href="{{ route('web.payment') }}" 
-                        class="px-4 py-2 rounded-lg bg-[#047705] hover:bg-[#036603] text-white font-medium transition-colors flex items-center">
-                            Buy now
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                            </svg>
-                        </a>
+                            <form action="{{ route('web.items.buyNow', ['uniform_id' => $uniform->uniform_id]) }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="size" id="selectedSizeInput" value="M">
+                                <input type="hidden" name="quantity" id="selectedQtyInput" value="1">
+
+                                <button type="submit"
+                                    class="px-4 py-2 rounded-lg bg-[#047705] hover:bg-[#036603] text-white font-medium transition-colors flex items-center">
+                                    Buy now
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                    </svg>
+                                </button>
+                            </form>
                     </div>
                 </div>
             </div>
@@ -350,3 +356,43 @@
                     </div>
                 </div>
             </div>
+
+<script>
+     // Size selection
+     document.querySelectorAll('.size-option').forEach(button => {
+        button.addEventListener('click', () => {
+            // Remove active style from others
+            document.querySelectorAll('.size-option').forEach(btn => {
+                btn.classList.remove('border-[#047705]', 'bg-[#047705]/20');
+            });
+            // Add active style
+            button.classList.add('border-[#047705]', 'bg-[#047705]/20');
+
+            // Set selected size
+            const selectedSize = button.getAttribute('data-size');
+            document.getElementById('selectedSizeInput').value = selectedSize;
+        });
+    });
+
+    // Quantity controls
+    const qtyInput = document.getElementById('quantityBuy');
+    const qtyHiddenInput = document.getElementById('selectedQtyInput');
+
+    document.getElementById('incrementQtyBuy').addEventListener('click', () => {
+        qtyInput.value = parseInt(qtyInput.value) + 1;
+        qtyHiddenInput.value = qtyInput.value;
+    });
+
+    document.getElementById('decrementQtyBuy').addEventListener('click', () => {
+        if (parseInt(qtyInput.value) > 1) {
+            qtyInput.value = parseInt(qtyInput.value) - 1;
+            qtyHiddenInput.value = qtyInput.value;
+        }
+    });
+
+    // Also update hidden input manually if quantity input is changed directly
+    qtyInput.addEventListener('input', () => {
+        qtyHiddenInput.value = qtyInput.value;
+    });
+</script>
+

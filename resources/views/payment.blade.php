@@ -40,6 +40,7 @@
 @endsection
 
 @section('content')
+
 <div class="content-section min-h-screen">
     <div class="content-overlay min-h-screen">
         <div class="flex mx-10 justify-center gap-10 pt-40">
@@ -56,46 +57,46 @@
                         </h2>
                     </div>
                     <hr class="border-[.5px] border-white mb-6 -mx-6">
-
                     <!-- Item Being Purchased -->
                     <div class="bg-[#1F1E1E]/60 rounded-xl p-4 mb-6 border border-white/10">
                         <div class="flex items-start">
-                            <!-- Product Image -->
+                            
+                        @foreach ($uniforms as $uniform)
+
                             <div class=" h-32 w-32 bg-gray-100 rounded-lg flex-shrink-0 mr-4 overflow-hidden">
-                                <img src="/images/clothes/pe.png" alt="PE Uniform" class="w-full h-full object-contain">
+                                <img src="{{ $uniform->image_url }}" alt="{{ $uniform->name }}" class="w-full h-full object-contain">
                             </div>
                             
                             <!-- Product Details -->
                             <div class="flex-1">
                                 <div class="flex justify-between items-start">
                                     <div>
-                                        <h3 class="text-white font-medium text-lg">PE Uniform</h3>
-                                        <p class="text-sm text-gray-400">Size: Medium</p>
+                                    <h3 class="text-white font-medium text-lg">{{ $uniform->name }}</h3>
+                                    <p class="text-sm text-gray-400">Size: {{ $size }}</p>
+
                                     </div>
-                                    <span class="text-white font-medium">₱250.00</span>
-                                </div>
-                                
+                                        <span class="text-white font-medium">₱{{ number_format($uniform->price, 2) }}</span>
+                                    </div>                                
                                 <div class="mt-4 flex justify-between items-end">
                                     <div class="flex items-center">
                                         <span class="text-white mr-2">Quantity:</span>
-                                        <select class="bg-[#1F1E1E] text-white border border-[#047705] rounded px-2 py-1 text-sm">
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
+                                        <select name="quantity" class="..." disabled>
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                <option value="{{ $i }}" {{ $i == $quantity ? 'selected' : '' }}>{{ $i }}</option>
+                                            @endfor
                                         </select>
+
                                     </div>
                                     <div class="text-right">
-                                        <p class="text-sm text-gray-400">Subtotal: ₱250.00</p>
-                                        <p class="text-sm text-gray-400">Shipping: ₱0.00</p>
-                                        <p class="text-white font-medium mt-1">Total: ₱250.00</p>
+                                    <p class="text-sm text-gray-400">Subtotal: ₱{{ number_format($uniform->price * $quantity, 2) }}</p>
+                                    <p class="text-white font-medium mt-1">Total: ₱{{ number_format($uniform->price * $quantity, 2) }}</p>
                                     </div>
                                 </div>
                             </div>
+                        @endforeach
                         </div>
                     </div>
-
+                    
                     <!-- Payment Methods -->
                     <div class="mb-6">
                         <h3 class="text-white font-medium text-lg mb-3">Payment Method</h3>

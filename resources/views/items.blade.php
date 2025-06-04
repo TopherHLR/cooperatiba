@@ -277,7 +277,7 @@
                             </div>
                             <!-- Product Info -->   
                             <div class="absolute bottom-0 left-0 right-0 p-2 bg-[#008E01] text-white group-hover:bg-[#007a01] transition-colors duration-300">
-                                <h3 class="font-bold text-sm truncate">{{ $uniform->name }}</h3>
+                                    <h3 class="font-bold text-sm truncate">{{ $uniform->name }} {{ $uniform->uniform_id }}</h3>
                                 <div class="flex justify-between items-center mt-1.5">
                                     <span class="text-xs font-medium">₱{{ number_format($uniform->price, 2) }}</span>
                                     <button onclick="openAddToCartModal('{{ $uniform->name }}', '₱{{ number_format($uniform->price, 2) }}', '{{ $uniform->image_url }}', '{{ $uniform->id }}')" 
@@ -537,33 +537,6 @@
         });
     });
 
-    // Add this for the buy modal
-    document.getElementById('proceedToBuy')?.addEventListener('click', function() {
-        const modal = document.getElementById('openBuyModal');
-        const productId = modal.dataset.productId;
-        const size = document.querySelector('.size-option.bg-\\[\\#047705\\]')?.dataset.size || 'M';
-        const quantity = document.getElementById('quantity').value;
-        
-        fetch(`/uniforms/${productId}/buy-now`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-            },
-            body: JSON.stringify({
-                size: size,
-                quantity: quantity
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if(data.success) {
-                window.location.href = data.redirect_url;
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    });
+
 </script>
 @endsection

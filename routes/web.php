@@ -11,7 +11,9 @@ Route::name('web.')->group(function () {
     
     // Uniform items route - now using controller but pointing to existing items.blade.php
     Route::get('/items', [UniformController::class, 'index'])->name('items');
-    
+    Route::get('/items/{id}', [UniformController::class, 'show'])->name('items.show');
+    Route::post('/items/{uniform_id}/buy-now', [UniformController::class, 'buyNow'])->name('items.buyNow');
+    Route::get('/payment', [UniformController::class, 'payment'])->name('payment');
     // Authentication routes
     Route::view('/login', 'login')->name('login');
     Route::view('/register', 'register')->name('register');

@@ -7,7 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class OrderModel extends Model
 {
     protected $table = 'order';
+    // In OrderModel.php
     protected $primaryKey = 'order_id';
+    public $incrementing = true; // if it's auto-incrementing
+    protected $keyType = 'int';  // or 'string' if your IDs are like "ORD-0001"
     public $timestamps = false;
 
     protected $fillable = [
