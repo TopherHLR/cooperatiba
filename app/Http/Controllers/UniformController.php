@@ -8,7 +8,8 @@ use App\Models\UniformModel;
 use Illuminate\Http\Request;
 use App\Models\OrderModel;
 use Carbon\Carbon;
-
+// Using the Session facade (must import it)
+use Illuminate\Support\Facades\Session;
 use App\Models\OrderItemModel;
 
 class UniformController extends Controller
@@ -52,6 +53,10 @@ class UniformController extends Controller
      */
     public function buyNow(Request $request, $uniform_id)
     {
+        Log::info('Form uniform_id', ['uniform_id' => $request->uniform_id]);
+        Log::info('Route uniform_id', ['uniform_id' => $uniform_id]); // from route param
+
+
         Log::info('buyNow method called', [
             'uniform_id' => $uniform_id,
             'request_data' => $request->all(),

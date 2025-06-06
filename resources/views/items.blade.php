@@ -280,14 +280,14 @@
                                     <h3 class="font-bold text-sm truncate">{{ $uniform->name }} {{ $uniform->uniform_id }}</h3>
                                 <div class="flex justify-between items-center mt-1.5">
                                     <span class="text-xs font-medium">₱{{ number_format($uniform->price, 2) }}</span>
-                                    <button onclick="openAddToCartModal('{{ $uniform->name }}', '₱{{ number_format($uniform->price, 2) }}', '{{ $uniform->image_url }}', '{{ $uniform->id }}')" 
+                                    <button onclick="openAddToCartModal('{{ $uniform->name }}', '₱{{ number_format($uniform->price, 2) }}', '{{ $uniform->image_url }}', '{{ $uniform->uniform_id }}')" 
                                             class="flex items-center ms-1 justify-center bg-[#047705] hover:bg-[#036603] text-white text-xs font-medium py-1 px-2.5 rounded-full transition-all duration-200 shadow-sm hover:shadow-md active:scale-95">
                                         <svg class="h-3 w-3 mr-1" viewBox="0 0 20 20" fill="currentColor">
                                             <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
                                         </svg>
                                         <span>Add</span>
                                     </button>
-                                    <button onclick="openBuyerModal('{{ $uniform->name }}', '₱{{ number_format($uniform->price, 2) }}', '{{ $uniform->image_url }}', '{{ $uniform->id }}')" 
+                                    <button onclick="openBuyerModal('{{ $uniform->uniform_id }}', '{{ $uniform->name }}', '₱{{ number_format($uniform->price, 2) }}', '{{ $uniform->image_url }}')" 
                                             class="flex items-center justify-center bg-[#047705] hover:bg-[#036603] text-white text-xs font-medium py-1 px-2.5 rounded-full transition-all duration-200 shadow-sm hover:shadow-md active:scale-95">
                                         <svg class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -443,6 +443,9 @@
         document.getElementById('modalProductPrice').textContent = productPrice;
         document.getElementById('modalProductImage').src = productImage;
         
+        // Set the uniform ID properly here
+        document.getElementById('uniformIdInput').value = uniformId;
+        
         // Store product ID
         modal.dataset.productId = productId;
 
@@ -494,48 +497,30 @@
         };
     }
 
-    function openBuyerModal(productName, productPrice, productImage, productId) {
-        const modal = document.getElementById('openBuyModal');
-        document.getElementById('modalProductNameBuy').textContent = productName;
-        document.getElementById('modalProductPriceBuy').textContent = productPrice;
-        document.getElementById('modalProductImageBuy').src = productImage;
-        
-        // Store product ID in a data attribute
-        modal.dataset.productId = productId;
-        // 🔥 Show the modal
-        modal.classList.remove('hidden');
+    function openBuyerModal(uniformId, uniformName, price, imageUrl) {
+        // Set hidden inputs
+        document.getElementById('uniformIdInput').value = uniformId;
+        document.getElementById('selectedSizeInput').value = 'M';
+        document.getElementById('selectedQtyInput').value = 1;
+
+        // Update modal display
+        document.getElementById('modalProductNameBuy').textContent = uniformName;
+        document.getElementById('modalProductPriceBuy').textContent = `${price}`;
+        document.getElementById('modalProductImageBuy').src = imageUrl;
+
+        // Set form action dynamically
+        const form = document.getElementById('buyNowForm');
+        form.action = `/items/${uniformId}/buy-now`;
+
+        // Show the modal
+        document.getElementById('openBuyModal').classList.remove('hidden');
+    }
+
+
+    function closeBuyModal() {
+        document.getElementById('openBuyModal').classList.add('hidden');
     }
     
-    // Fix the syntax error in your existing script
-    document.getElementById('proceedToPayment')?.addEventListener('click', function() {
-        const modal = document.getElementById('addToCartModal');
-        const productId = modal.dataset.productId;
-        const size = document.querySelector('.size-option.bg-\\[\\#047705\\]')?.dataset.size || 'M';
-        const quantity = document.getElementById('quantity').value;
-        
-        fetch(`/uniforms/${productId}/add-to-cart`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-            },
-            body: JSON.stringify({
-                size: size,
-                quantity: quantity
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if(data.success) {
-                // Update cart counter
-                document.getElementById('cartCounter').textContent = data.cart_count;
-                closeAddToCartModal();
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    });
 
 
 </script>

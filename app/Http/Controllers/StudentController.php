@@ -41,7 +41,7 @@ class StudentController extends Controller
                 'weight' => 'nullable|numeric|min:0',
                 // bmi and suggested_size are calculated fields, no validation needed
             ]);
-        // Log user creation attempt
+            // Log user creation attempt
             Log::info('Attempting to create user with email: ' . $request->email);
             
             $user = User::create([
@@ -103,26 +103,58 @@ class StudentController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'student_number' => 'required|string',
+            'login' => 'required|string',
             'password' => 'required|string',
         ]);
-        $user = User::where('student_number', $request->student_number)->first();
 
-        if ($user && Hash::check($request->password, $user->password)) {
-            // 'remember' will be "on" when checked, null when not
-            $remember = $request->has('remember');
-            Auth::login($user, $remember);
-            
-            $request->session()->regenerate();
-            return redirect()->route('web.items');
+        $loginInput = $request->input('login');
+        $passwordInput = $request->input('password');
+
+        Log::info('Login attempt', [
+            'login_input' => $loginInput,
+            'is_email' => filter_var($loginInput, FILTER_VALIDATE_EMAIL),
+        ]);
+
+        // Determine user by email or student_number
+        if (filter_var($loginInput, FILTER_VALIDATE_EMAIL)) {
+            $user = User::where('email', $loginInput)->where('role', 'admin')->first();
+        } else {
+            $user = User::where('student_number', $loginInput)->where('role', 'student')->first();
         }
-        
-        // If login fails, redirect back with error
-        return back()->withErrors([
-            'student_number' => 'The provided credentials do not match our records.',
-        ])->withInput($request->only('student_number'));
-    }
+        Log::debug('Password length', ['length' => strlen($request->password)]);
+        if ($user) {
+            Log::info('User found', [
+                'user_id' => $user->id,
+                'email' => $user->email,
+                'student_number' => $user->student_number,
+            ]);
 
+            if (Hash::check($passwordInput, $user->password)) {
+                Log::info('Password match successful', ['user_id' => $user->id]);
+
+
+                $remember = $request->has('remember');
+                Auth::login($user, $remember);
+                $request->session()->regenerate();
+
+                return $user->isAdmin()
+                    ? redirect()->route('admin.adminslayout')
+                    : redirect()->route('web.items');
+            } else {
+                Log::warning('Password mismatch', [
+                    'user_id' => $user->id,
+                    'input_password' => $passwordInput,
+                    'stored_hash' => $user->password,
+                ]);
+            }
+        } else {
+            Log::warning('User not found for login input', ['login_input' => $loginInput]);
+        }
+
+        return back()->withErrors([
+            'login' => 'The provided credentials do not match our records.',
+        ])->withInput($request->only('login'));
+    }
     // Show account settings
     public function accountSettings()
     {

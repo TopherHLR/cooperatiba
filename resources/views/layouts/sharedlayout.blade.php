@@ -178,9 +178,26 @@
                         About
                     </a>
                     @auth
+                        @if(auth()->user()->role === 'student')
                         <a href="{{ route('web.accountsettings') }}" class="nav-link text-white" style="font-family: 'Inria Sans', sans-serif; font-weight: 300; text-shadow: -2px 2px 4px #000000;"">My account</a>
+                        @endif
                         @if(auth()->user()->role === 'admin')
                             <a href="{{ route('admin.adminslayout') }}" class="nav-link text-white" style="font-family: 'Inria Sans', sans-serif; font-weight: 300; text-shadow: -2px 2px 4px #000000;">Admin</a>
+                            <!-- Logout button inline with nav links -->
+                            <form method="POST" action="{{ route('web.logout') }}" class="m-0 p-0">
+                                @csrf
+                                <button type="submit" 
+                                        class="flex items-center text-red-600 hover:text-red-800 font-semibold nav-link"
+                                        style="font-family: 'Inria Sans', sans-serif; font-weight: 500;"
+                                        onclick="return confirm('Are you sure you want to logout?');">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" 
+                                        viewBox="0 0 24 24" stroke="currentColor" width="20" height="20" stroke-width="2" class="mr-1">
+                                        <path stroke-linecap="round" stroke-linejoin="round" 
+                                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1" />
+                                    </svg>
+                                    Logout
+                                </button>
+                            </form>
                         @endif
                     @else
                         {{-- User is NOT logged in --}}

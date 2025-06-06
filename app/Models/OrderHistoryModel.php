@@ -26,9 +26,9 @@ class OrderHistoryModel extends Model
     {
         return $this->belongsTo(OrderModel::class, 'order_id');
     }
-    // Relationship with Admin who updated the status
+    // With this:
     public function updatedBy()
     {
-        return $this->belongsTo(AdminModel::class, 'updated_by', 'admin_id');
+        return $this->belongsTo(User::class, 'updated_by');
     }
 }

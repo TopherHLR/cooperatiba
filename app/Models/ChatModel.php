@@ -27,9 +27,9 @@ class ChatModel extends Model
         return $this->belongsTo(StudentModel::class, 'student_id');
     }
 
-    // If you have an Admin model:
-    // public function admin()
-    // {
-    //     return $this->belongsTo(Admin::class, 'admin_id');
-    // }
+    // With this:
+    public function admin()
+    {
+        return $this->belongsTo(User::class, 'admin_id');
+    }
 }

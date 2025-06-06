@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UniformController;
 use App\Http\Controllers\StudentController;
+use Illuminate\Support\Facades\Auth;
+
 // Main website routes
 Route::name('web.')->group(function () {
     // Public routes (direct views from root)

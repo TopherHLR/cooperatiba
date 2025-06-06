@@ -19,6 +19,10 @@ class ProcessedOrderModel extends Model
     protected $casts = [
         'processed_date' => 'datetime',
     ];
+    public function staffAssigned()
+    {
+        return $this->belongsTo(User::class, 'staff_assigned');
+    }
 
     // Relationships
     public function order()

@@ -149,22 +149,20 @@
 
                     <!-- Student Number Input -->
                     <div class="mb-6">
-                        <label for="student_number" class="block text-white mb-2">Student Number</label>
+                        <label for="login" class="block text-white mb-2">Student Number</label>
                         <div class="relative">
                             <input 
                                 type="text" 
-                                id="student_number" 
-                                name="student_number"
+                                id="login" 
+                                name="login"
                                 class="w-full px-4 py-3 rounded-lg liquid-input text-white focus:outline-none" 
                                 placeholder="e.g. YY-XXXXX"
-                                pattern="\d{2}-\d{5}"
-                                title="Please enter a valid student number (format: YY-NNNNN, e.g. 23-00000)"
                                 required
-                                value="{{ old('student_number') }}"
+                                value="{{ old('login') }}"
                             >
                         </div>
                         <p class="mt-1 text-xs text-gray-400">Format: YY-XXXXX (e.g. 23-00000)</p>
-                        @error('student_number')
+                        @error('login')
                             <p class="text-sm text-red-400 mt-1">{{ $message }}</p>
                         @enderror
                     </div>
