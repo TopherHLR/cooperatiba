@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UniformController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\AdminUniformController;
 use Illuminate\Support\Facades\Auth;
 
 // Main website routes
@@ -44,9 +45,8 @@ Route::name('web.')->group(function () {
 Route::name('admin.')->group(function () {
     Route::view('/adminslayout', 'adminslayout')->name('adminslayout');
     Route::view('/orderManage', 'orderManage')->name('orderManage');
-    Route::view('/productcatalog', 'productcatalog')->name('productcatalog');
-
-    
+    Route::view('/productcatalog', 'productcatalog')->name('productcatalog');   
+    Route::resource('uniforms', AdminUniformController::class);
     // You might want to add admin uniform management routes here later
     // Route::resource('admin/uniforms', AdminUniformController::class);
 });
