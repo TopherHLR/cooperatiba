@@ -283,45 +283,45 @@
 
 
     <script>
-    // Add active class to current page link
-    document.addEventListener('DOMContentLoaded', function() {
-        // Get current path without query parameters and normalize slashes
-        const currentPath = window.location.pathname.replace(/\/$/, ""); // Remove trailing slash
-        const navLinks = document.querySelectorAll('.nav-link');
-        
-        navLinks.forEach(link => {
-            // Skip links with just '#' as href
-            if (link.href === '#' || link.href.endsWith('#')) {
-                return;
-            }
+        // Add active class to current page link
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get current path without query parameters and normalize slashes
+            const currentPath = window.location.pathname.replace(/\/$/, ""); // Remove trailing slash
+            const navLinks = document.querySelectorAll('.nav-link');
             
-            try {
-                // Get link path and normalize
-                const linkPath = new URL(link.href).pathname.replace(/\/$/, "");
-                
-                // Compare normalized paths
-                if (linkPath === currentPath) {
-                    link.classList.add('active');
+            navLinks.forEach(link => {
+                // Skip links with just '#' as href
+                if (link.href === '#' || link.href.endsWith('#')) {
+                    return;
                 }
-            } catch (e) {
-                console.error("Error processing link:", link.href, e);
-            }
-        });
-        
-        // Footer links hover effect
-        const footerLinks = document.querySelectorAll('.nav-link-footer');
-        footerLinks.forEach(link => {
-            link.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-2px)';
-                this.style.textShadow = '0 2px 4px rgba(237, 209, 0, 0.4)';
+                
+                try {
+                    // Get link path and normalize
+                    const linkPath = new URL(link.href).pathname.replace(/\/$/, "");
+                    
+                    // Compare normalized paths
+                    if (linkPath === currentPath) {
+                        link.classList.add('active');
+                    }
+                } catch (e) {
+                    console.error("Error processing link:", link.href, e);
+                }
             });
             
-            link.addEventListener('mouseleave', function() {
-                this.style.transform = '';
-                this.style.textShadow = '';
+            // Footer links hover effect
+            const footerLinks = document.querySelectorAll('.nav-link-footer');
+            footerLinks.forEach(link => {
+                link.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px)';
+                    this.style.textShadow = '0 2px 4px rgba(237, 209, 0, 0.4)';
+                });
+                
+                link.addEventListener('mouseleave', function() {
+                    this.style.transform = '';
+                    this.style.textShadow = '';
+                });
             });
-        });
-        });
+            });
     </script>
 </body>
 </html>

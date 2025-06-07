@@ -36,12 +36,20 @@ class UniformModel extends Model
     {
         return $this->hasMany(OrderItemModel::class, 'uniform_id');
     }
-        protected static function boot()
+    protected static function boot()
     {
         parent::boot();
 
         static::creating(function ($model) {
-            $model->uniform_id = 'UNI' . str_pad(mt_rand(1, 99999), 5, '0', STR_PAD_LEFT);
+            // Get the initials of the name (e.g., "Winter Sweater" → "WS")
+            $words = preg_split('/\s+/', trim($model->name));
+            $initials = strtoupper(collect($words)->map(fn($w) => $w[0])->implode(''));
+    
+            // Pad a random number from 1–999 to 3 digits
+            $number = str_pad(mt_rand(1, 999), 3, '0', STR_PAD_LEFT);
+    
+            // Format the uniform_id
+            $model->uniform_id = 'UNIF-' . $initials . '-' . $number;
         });
     }
 }

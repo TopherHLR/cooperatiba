@@ -45,8 +45,10 @@ Route::name('web.')->group(function () {
 Route::name('admin.')->group(function () {
     Route::view('/adminslayout', 'adminslayout')->name('adminslayout');
     Route::view('/orderManage', 'orderManage')->name('orderManage');
-    Route::view('/productcatalog', 'productcatalog')->name('productcatalog');   
+    Route::get('/productcatalog', [AdminUniformController::class, 'index'])->name('productcatalog');
     Route::resource('uniforms', AdminUniformController::class);
+        // Use POST instead of PUT to avoid method spoofing issues
+    Route::post('/uniforms/update/{uniform_id}', [AdminUniformController::class, 'update'])->name('uniforms.update');
     // You might want to add admin uniform management routes here later
     // Route::resource('admin/uniforms', AdminUniformController::class);
 });
