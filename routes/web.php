@@ -44,6 +44,8 @@ Route::name('web.')->group(function () {
 Route::name('admin.')->group(function () {
     Route::view('/adminslayout', 'adminslayout')->name('adminslayout');
     Route::view('/orderManage', 'orderManage')->name('orderManage');
+    Route::view('/productcatalog', 'productcatalog')->name('productcatalog');
+
     
     // You might want to add admin uniform management routes here later
     // Route::resource('admin/uniforms', AdminUniformController::class);

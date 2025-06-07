@@ -147,6 +147,6 @@ class UniformController extends Controller
         // Pass data to payment view
         return view('payment', $data);
     }
-    
+   
 
 }
