@@ -38,7 +38,6 @@ Route::name('web.')->group(function () {
     
     Route::get('/accountsettings', [StudentController::class, 'accountsettings'])->name('accountsettings')->middleware('auth');
     Route::post('/account/update', [StudentController::class, 'update'])->name('account.update');
-
 });
 
 // Admin routes

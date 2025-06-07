@@ -143,6 +143,7 @@
 @section('content')
 <div class="content-section min-h-screen">
     <div class="content-overlay min-h-screen">
+
         @if(session('success'))
             <div 
                 x-data="{ show: true }" 
