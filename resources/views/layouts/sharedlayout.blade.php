@@ -239,8 +239,8 @@
     </header>
 
     <!-- Main Content -->
-    <main class="flex mx-10 justify-center  min-h-full"> <!-- Added padding to account for fixed nav -->
-        <div class="bg-gradient-to-r from-[#1F1E1E]/100 to-[#100E00]/80 border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[30px]  w-[100%] mt-32 mb-10 h-full backdrop-blur-sm flex flex-col">
+    <main> <!-- Added padding to account for fixed nav -->
+        <div>
             @yield('content')
             @yield('styles')
             @yield('scripts')

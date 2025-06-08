@@ -75,7 +75,7 @@
         <div class="flex mx-2 justify-center gap-10">
             <!-- Container - Account Settings -->
             <div class="w-[100%] h-[750px]">
-                <div class="bg-gradient-to-r from-[#1F1E1E]/100 to-[#100E00]/80 border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[30px] p-6 h-full backdrop-blur-sm flex flex-col">
+                <div class="bg-gradient-to-r from-[#1F1E1E]/100 to-[#100E00]/80 border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[15px] p-6 h-full backdrop-blur-sm flex flex-col">
                     <!-- Title Section -->
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="text-2xl font-bold text-white flex items-center" style="font-family: 'Kalam', cursive; text-shadow: -2px 1px 0px #047705;">

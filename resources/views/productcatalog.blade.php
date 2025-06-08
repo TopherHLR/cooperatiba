@@ -379,7 +379,7 @@
 <!-- Updated Table in your HTML -->
 <div class="overflow-x-auto">
     <div class="h-[750px]">
-        <div class="bg-gradient-to-r from-[#1F1E1E]/100 to-[#100E00]/80 border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[30px] p-6 h-full backdrop-blur-sm overflow-hidden flex flex-col">
+        <div class="bg-gradient-to-r from-[#1F1E1E]/100 to-[#100E00]/80 border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[15px] p-6 h-full backdrop-blur-sm overflow-hidden flex flex-col">
             <div class="flex items-center justify-between mb-4">
                 <h2 class="text-2xl font-bold text-white" style="font-family: 'Kalam', cursive; text-shadow: -2px 1px 0px #047705;">PRODUCT CATALOG</h2>
                 <button onclick="openAddProductModal()" class="liquid-btn flex items-center space-x-2 px-4 py-2 rounded-[20px] text-white hover:bg-[#036603] transition-all duration-300">

@@ -14,6 +14,7 @@ class OrderItemModel extends Model
         'order_id',
         'uniform_id',
         'quantity',
+        'size',
         'subtotal_price',
     ];
 

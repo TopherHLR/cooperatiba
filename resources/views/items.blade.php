@@ -141,9 +141,8 @@
 @endsection
 
 @section('content')
-<div>
-    <div >
-
+<div  class="flex mx-10 justify-center  min-h-full">
+    <div  class="bg-gradient-to-r from-[#1F1E1E]/100 to-[#100E00]/80 border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[15px]  w-[100%] mt-32 mb-10 h-full backdrop-blur-sm flex flex-col">
         @if(session('success'))
             <div 
                 x-data="{ show: true }" 
@@ -278,7 +277,7 @@
                             </div>
                             <!-- Product Info -->   
                             <div class="absolute bottom-0 left-0 right-0 p-2 bg-[#008E01] text-white group-hover:bg-[#007a01] transition-colors duration-300">
-                                    <h3 class="font-bold text-sm truncate">{{ $uniform->name }} {{ $uniform->uniform_id }}</h3>
+                                    <h3 class="font-bold text-sm truncate">{{ $uniform->name }}</h3>
                                 <div class="flex justify-between items-center mt-1.5">
                                     <span class="text-xs font-medium">₱{{ number_format($uniform->price, 2) }}</span>
                                     <button onclick="openAddToCartModal('{{ $uniform->name }}', '₱{{ number_format($uniform->price, 2) }}', '{{ $uniform->image_url }}', '{{ $uniform->uniform_id }}')" 
@@ -306,8 +305,8 @@
     </div>
 </div>
 
-<!-- Include all your modal HTML here (same as before) -->
-@include('uniforms.modals')
+@include('uniforms.modals', ['student' => $student])
+
 
 <script src="//unpkg.com/alpinejs" defer></script>
 
@@ -317,13 +316,13 @@
     let galleryImages = [];
 
     const productGalleryImages = {
-        "Womens School Uniform": [
+        "Womens University Uniform": [
             "/images/clothes/franz.png",
             "/images/clothes/womensunif.png",
             "/images/clothes/realwomensunif1.png",
             "/images/clothes/realwomensunif2.png"
         ],
-        "Mens School Uniform": [
+        "Mens University Uniform": [
             "/images/clothes/topher.png",
             "/images/clothes/mensunif.png",
             "/images/clothes/realmenunif1.png",

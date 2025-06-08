@@ -300,8 +300,9 @@
 
 @section('content')
 <section class="content-section p-11">
+    <div  class="bg-gradient-to-r from-[#1F1E1E]/100 to-[#100E00]/80 border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[15px] p-6 w-[100%] mt-8 mb-10 h-full backdrop-blur-sm flex flex-col">
         <!-- About Section -->
-        <div class="liquid-card gradient-container mt-10 ">
+        <div class="liquid-card gradient-container ">
             <div class="section-header">
                 <svg xmlns="http://www.w3.org/2000/svg" class="section-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -484,6 +485,8 @@
                 </button>
             </div>
         </div>
+    </div>
+
 </section>
 
 <!-- Font Awesome for social icons -->

@@ -247,14 +247,15 @@
                                 <button class="size-option py-2 px-3 rounded-lg border border-white/30 hover:border-[#047705] transition-all" data-size="XL">XL</button>
                                 <button class="size-option py-2 px-3 rounded-lg border border-white/30 hover:border-[#047705] transition-all" data-size="XXL">XXL</button>
                             </div>
-                            
                             <!-- BMI Recommendation -->
-                            <div id="bmiRecommendation" class="mt-3 p-2 bg-[#047705]/10 rounded-lg hidden">
+                            <div id="bmiRecommendation" class="mt-3 p-2 bg-[#047705]/10 rounded-lg">
                                 <p class="text-xs text-[#EDD100] flex items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
-                                    <span id="recommendedSizeText">Based on your BMI, we recommend size <strong>M</strong></span>
+                                    <span id="recommendedSizeText">
+                                        Based on your BMI, we recommend size <strong>{{ $student->suggested_size ?? 'N/A' }}</strong>
+                                    </span>
                                 </p>
                             </div>
                         </div>
