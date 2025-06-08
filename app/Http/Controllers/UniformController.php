@@ -62,6 +62,12 @@ class UniformController extends Controller
             'request_data' => $request->all(),
             'user_id' => Auth::id()
         ]);
+
+        // Redirect to login if not authenticated
+        if (!Auth::check()) {
+            Log::warning("Unauthenticated user attempted to access buyNow");
+            return redirect()->route('web.login')->withErrors(['error' => 'Please log in to proceed with your order.']);
+        }
     
         // Try to find the uniform
         $uniform = UniformModel::where('uniform_id', $uniform_id)->first();

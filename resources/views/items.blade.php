@@ -141,8 +141,8 @@
 @endsection
 
 @section('content')
-<div class="content-section min-h-screen">
-    <div class="content-overlay min-h-screen">
+<div>
+    <div >
 
         @if(session('success'))
             <div 
@@ -150,14 +150,14 @@
                 x-init="setTimeout(() => show = false, 2500)" 
                 x-show="show"
                 x-transition
-                class="fixed top-20 left-1/2 transform -translate-x-1/2 w-[90%] z-50 bg-green-100 border border-green-400 text-green-700 rounded p-4 shadow-lg"
+                class="fixed top-20 left-1/2 transform -translate-x-1/2 w-[90%] z-[1000] bg-green-100 border border-green-400 text-green-700 rounded p-4 shadow-lg"
             >
                 {{ session('success') }}
             </div>
         @endif
-        <div class="flex mx-10 justify-center gap-10">
+        <div class="flex mx-10 justify-center mb-10 gap-10">
             <!-- Left Container - Notifications (20%) -->
-            <div class="w-[20%] mt-40 mr-6">
+            <div class="w-[20%] mt-10 mr-6">
                 <div class="liquid-card border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[15px] p-6 h-full backdrop-blur-sm">
                     <!-- Title Section -->
                     <div class="flex items-center mb-4">
@@ -245,7 +245,7 @@
             </div>
 
             <!-- Right Container - Items (80%) -->
-            <div class="w-[80%] mt-40">
+            <div class="w-[80%] mt-10">
                 <div class="liquid-card border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[15px] p-6 h-full backdrop-blur-sm">
                     <!-- Title Section with Enhanced Cart Button -->
                     <div class="flex items-center justify-between mb-4">

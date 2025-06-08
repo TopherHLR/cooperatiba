@@ -186,6 +186,18 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                         </svg>         
                     </a>
+                    @auth
+                        @if(auth()->user()->role === 'student')
+                            <!-- Notification Link -->
+                            <a href="#" class="nav-link text-white relative" style="font-family: 'Inria Sans', sans-serif; font-weight: 300; text-shadow: -2px 2px 4px #000000;">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                </svg>
+                                <!-- Notification badge -->
+                                <span class="absolute -top-0 -right-0 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">3</span>
+                            </a>
+                        @endif
+                    @endauth
                     <a href="{{ route('web.about') }}" class="nav-link text-white" style="font-family: 'Inria Sans', sans-serif; font-weight: 300; text-shadow: -2px 2px 4px #000000;">
                         About
                     </a>
@@ -194,14 +206,6 @@
                     @auth
                         @if(auth()->user()->role === 'student')
                         <a href="{{ route('web.accountsettings') }}" class="nav-link text-white" style="font-family: 'Inria Sans', sans-serif; font-weight: 300; text-shadow: -2px 2px 4px #000000;"">My account</a>
-                        <!-- Notification Link -->
-                        <a href="#" class="nav-link text-white relative" style="font-family: 'Inria Sans', sans-serif; font-weight: 300; text-shadow: -2px 2px 4px #000000;">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                            </svg>
-                            <!-- Notification badge -->
-                            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">3</span>
-                        </a>
                         
 
                         @endif
@@ -235,10 +239,12 @@
     </header>
 
     <!-- Main Content -->
-    <main> <!-- Added padding to account for fixed nav -->
-        @yield('content')
-        @yield('styles')
-        @yield('scripts')
+    <main class="flex mx-10 justify-center  min-h-full"> <!-- Added padding to account for fixed nav -->
+        <div class="bg-gradient-to-r from-[#1F1E1E]/100 to-[#100E00]/80 border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[30px]  w-[100%] mt-32 mb-10 h-full backdrop-blur-sm flex flex-col">
+            @yield('content')
+            @yield('styles')
+            @yield('scripts')
+        </div>
     </main>
 
     <!-- ---------------------- FOOTER ---------------------- -->
