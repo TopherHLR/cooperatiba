@@ -19,7 +19,12 @@ class UniformController extends Controller
      */
     public function index()
     {
-        $student = auth()->user()->student; // Adjust if needed
+        $student = null;
+
+        if (auth()->check()) {
+            $student = auth()->user()->student; // Only access if logged in
+        }
+
         $uniforms = UniformModel::all();
 
         return view('items', compact('student', 'uniforms'));
