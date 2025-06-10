@@ -27,8 +27,9 @@ class OrderHistoryModel extends Model
         return $this->belongsTo(OrderModel::class, 'order_id');
     }
     // With this:
-    public function updatedBy()
+    public function user()
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
+
 }

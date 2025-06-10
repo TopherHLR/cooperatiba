@@ -321,8 +321,8 @@
             const navLinks = document.querySelectorAll('.nav-link');
             
             navLinks.forEach(link => {
-                // Skip links with just '#' as href
-                if (link.href === '#' || link.href.endsWith('#')) {
+                // Ensure href exists and is not just '#'
+                if (!link.href || link.href === '#' || link.href.endsWith('#')) {
                     return;
                 }
                 

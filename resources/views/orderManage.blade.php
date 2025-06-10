@@ -218,7 +218,8 @@
 
                                 </div>
                                 <button class="text-sm text-[#ffffff] hover:underline view-details-btn" 
-                                        data-order-id="{{ $order->order_id }}">
+                                        data-order-id="{{ $order->order_id }}"
+                                        onclick="loadOrderDetails(event, {{ $order->order_id }})">
                                     Manage Order
                                 </button>
                             </div>
@@ -558,35 +559,289 @@
 </div>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Current order ID
-    let currentOrderId = null;
     
     // Status filter - redirects with status parameter
     const statusFilter = document.getElementById('statusFilter');
     if (statusFilter) {
         statusFilter.addEventListener('change', function() {
             const status = this.value;
-            window.location.href = `/admin/orders?status=${status}`;
+            window.location.href = `/admin/orders?status=${latest_status}`;
         });
     }
 
     // Handle order item clicks (for showing details)
     document.querySelectorAll('.order-item, .view-details-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function(e) {
             const orderId = this.getAttribute('data-order-id');
             if (orderId) {
-                window.location.href = `/admin/orders/${orderId}`;
+                loadOrderDetails(e, orderId); // Load in-panel, don't redirect
             }
         });
     });
 
-    // Status update handler
-    function updateOrderStatus(orderId, newStatus) {
-        if (!confirm(`Are you sure you want to mark this order as ${newStatus.replace(/_/g, ' ')}?`)) {
-            return;
-        }
+    // Event delegation for all action buttons
+    document.addEventListener('click', async function(e) {
+        const orderId = e.target.closest('[data-order-id]')?.getAttribute('data-order-id') || 
+                        document.querySelector('#orderDetails')?.getAttribute('data-order-id');
 
-        fetch(`/admin/orders/${orderId}/status`, {
+        if (!orderId) return;
+
+        if (e.target.classList.contains('mark-paid-btn')) {
+            await updateOrderStatus(orderId, 'paid');
+        } 
+        else if (e.target.classList.contains('mark-processing-btn')) {
+            await updateOrderStatus(orderId, 'processing');
+        } 
+        else if (e.target.classList.contains('mark-ready-btn')) {
+            await updateOrderStatus(orderId, 'ready_for_pickup');
+        } 
+        else if (e.target.classList.contains('mark-completed-btn')) {
+            await updateOrderStatus(orderId, 'completed');
+        } 
+        else if (e.target.id === 'cancelOrderBtn') {
+            await cancelOrder(orderId);
+        }
+    });
+
+    // If on order details page, load the details
+    if (window.location.pathname.match(/\/admin\/orders\/\d+$/)) {
+        const orderId = window.location.pathname.split('/').pop();
+        loadOrderDetails({ preventDefault: () => {} }, orderId);
+    }
+});
+
+async function loadOrderDetails(event, orderId) {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    try {
+        // Show loading state (you might want to add a spinner)
+        document.getElementById('orderDetails').classList.add('hidden');
+        document.getElementById('emptyState').classList.add('hidden');
+        
+        // Fetch order details from your Laravel endpoint
+        const response = await fetch(`/admin/orders/${orderId}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch order details');
+        }
+        
+        const order = await response.json();
+        
+        // Populate the order details in the right container
+        populateOrderDetails(order);
+        
+        // Show the details container
+        document.getElementById('orderDetails').classList.remove('hidden');
+        document.getElementById('emptyState').classList.add('hidden');
+        
+    } catch (error) {
+        console.error('Error loading order details:', error);
+        alert('Failed to load order details');
+        // Show empty state if there's an error
+        document.getElementById('orderDetails').classList.add('hidden');
+        document.getElementById('emptyState').classList.remove('hidden');
+    }
+}
+
+function populateOrderDetails(order) {
+    // Set the current order ID
+    currentOrderId = order.id;
+    document.getElementById('orderDetails').setAttribute('data-order-id', order.id);
+    
+    // Populate basic order info
+    const firstItem = order.order_items[0]?.uniform;
+    const orderImage = document.getElementById('trackingOrderImage');
+    if (firstItem?.image_url) {
+        orderImage.src = firstItem.image_url;
+        orderImage.alt = firstItem.name;
+    } else {
+        orderImage.src = '';
+        orderImage.alt = 'No image available';
+    }
+    
+    document.getElementById('trackingOrderTitle').textContent = firstItem?.name || 'No Items';
+    if (order.order_items.length > 1) {
+        document.getElementById('trackingOrderTitle').textContent += ` + ${order.order_items.length - 1} more`;
+    }
+    
+    document.getElementById('trackingOrderNumber').textContent = `Order #${order.order_id || order.id}`;
+    document.getElementById('trackingOrderPrice').textContent = `₱${parseFloat(order.total_price).toFixed(2)}`;
+    document.getElementById('trackingOrderDate').textContent = `Ordered: ${new Date(order.order_date).toLocaleString()}`;
+    
+    // Set status badge
+    const statusBadge = document.getElementById('trackingOrderStatus');
+    statusBadge.textContent = order.latest_status 
+        ? order.latest_status.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+        : 'Unknown';
+    
+    statusBadge.className = 'text-xs px-3 py-1 rounded-full ' + 
+        (order.latest_status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' :
+         order.latest_status === 'paid' ? 'bg-blue-500/20 text-blue-400' :
+         order.latest_status === 'processing' ? 'bg-purple-500/20 text-purple-400' :
+         order.latest_status === 'ready_for_pickup' ? 'bg-green-500/20 text-green-400' :
+         order.latest_status === 'completed' ? 'bg-gray-500/20 text-gray-300' :
+         'bg-red-500/20 text-red-300');
+    
+    // Populate customer info
+    document.getElementById('customerName').textContent = order.student?.name || 'N/A';
+    document.getElementById('customerEmail').textContent = order.student?.email || 'N/A';
+    document.getElementById('customerPhone').textContent = order.student?.phone || 'N/A';
+    document.getElementById('studentId').textContent = order.student_id || 'N/A';
+    
+    // Populate order details
+    document.getElementById('paymentMethod').textContent = order.payment_method || 'Cash on Delivery';
+    document.getElementById('shippingMethod').textContent = order.shipping_method || 'Pickup';
+    document.getElementById('orderNotes').textContent = order.notes || 'No notes';
+    
+    // Populate order items table
+    const itemsTable = document.getElementById('orderItemsTable');
+    itemsTable.innerHTML = ''; // Clear existing items
+    
+    order.order_items.forEach(item => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td class="px-4 py-3 whitespace-nowrap">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 h-10 w-10 bg-gray-100 rounded-lg overflow-hidden">
+                        ${item.uniform?.image_url ? 
+                          `<img src="${item.uniform.image_url}" alt="${item.uniform.name}" class="h-full w-full object-contain">` :
+                          `<div class="h-full w-full bg-gray-300 flex items-center justify-center">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                              </svg>
+                          </div>`}
+                    </div>
+                    <div class="ml-4">
+                        <div class="text-sm font-medium text-white">${item.uniform?.name || 'Unknown Item'}</div>
+                        <div class="text-sm text-gray-400">${item.uniform?.uniform_id || ''}</div>
+                    </div>
+                </div>
+            </td>
+            <td class="px-4 py-3 whitespace-nowrap text-sm text-white">${item.size || 'N/A'}</td>
+            <td class="px-4 py-3 whitespace-nowrap text-sm text-white">₱${parseFloat(item.uniform?.price || 0).toFixed(2)}</td>
+            <td class="px-4 py-3 whitespace-nowrap text-sm text-white">${item.quantity || 0}</td>
+            <td class="px-4 py-3 whitespace-nowrap text-sm text-white">₱${parseFloat(item.subtotal_price || 0).toFixed(2)}</td>
+        `;
+        itemsTable.appendChild(row);
+    });
+    
+    // Update total
+    document.getElementById('orderTotal').textContent = `₱${parseFloat(order.total_price).toFixed(2)}`;
+    
+    // Update order tracking timeline
+    updateOrderTimeline(order);
+}
+
+function updateOrderTimeline(order) {
+    // Reset all steps
+    document.querySelectorAll('.admin-step-container').forEach(container => {
+        const icon = container.querySelector('.admin-step-icon');
+        icon.querySelector('.admin-step-check')?.classList.add('hidden');
+        icon.querySelector('.admin-step-current')?.classList.add('hidden');
+        icon.querySelector('.admin-step-icon-default')?.classList.remove('hidden');
+        
+        // Reset date display
+        const status = container.getAttribute('data-status');
+        const dateElement = document.getElementById(`${status}Date`);
+        if (dateElement) dateElement.textContent = '';
+    });
+    
+    // Update based on current status
+    const statusOrder = ['paid', 'processing', 'ready_for_pickup', 'completed'];
+    let currentStepFound = false;
+    
+    statusOrder.forEach(status => {
+        const container = document.querySelector(`.admin-step-container[data-status="${status}"]`);
+        if (!container) return;
+        
+        const icon = container.querySelector('.admin-step-icon');
+        const checkIcon = icon.querySelector('.admin-step-check');
+        const currentIcon = icon.querySelector('.admin-step-current');
+        const defaultIcon = icon.querySelector('.admin-step-icon-default');
+        
+        if (order.status === status) {
+            // This is the current step
+            currentIcon?.classList.remove('hidden');
+            defaultIcon?.classList.add('hidden');
+            checkIcon?.classList.add('hidden');
+            currentStepFound = true;
+            
+            // Update date if available
+            const dateElement = document.getElementById(`${status}Date`);
+            if (dateElement && order.processed_order?.updated_at) {
+                dateElement.textContent = `Updated: ${new Date(order.processed_order.updated_at).toLocaleString()}`;
+            }
+        } else if (statusOrder.indexOf(order.status) > statusOrder.indexOf(status)) {
+            // This step is completed
+            checkIcon?.classList.remove('hidden');
+            currentIcon?.classList.add('hidden');
+            defaultIcon?.classList.add('hidden');
+            
+            // Update date if available
+            const dateElement = document.getElementById(`${status}Date`);
+            if (dateElement && order.processed_order?.updated_at) {
+                dateElement.textContent = `Completed: ${new Date(order.processed_order.updated_at).toLocaleString()}`;
+            }
+        }
+    });
+    
+    // Update action buttons based on current status
+    updateActionButtons(order.status);
+}
+
+function updateActionButtons(currentStatus) {
+    // Hide all action buttons first
+    document.querySelectorAll('[id$="Actions"]').forEach(actionsDiv => {
+        actionsDiv.innerHTML = '';
+    });
+    
+    // Show appropriate buttons based on current status
+    switch(currentStatus) {
+        case 'pending':
+            document.getElementById('paidActions').innerHTML = `
+                <button onclick="updateOrderStatus(${currentOrderId}, 'paid')" 
+                        class="mark-paid-btn px-3 py-1 rounded-lg bg-green-600 hover:bg-green-700 text-white text-sm">
+                    Mark as Paid
+                </button>
+            `;
+            break;
+            
+        case 'paid':
+            document.getElementById('processingActions').innerHTML = `
+                <button onclick="updateOrderStatus(${currentOrderId}, 'processing')" 
+                        class="mark-processing-btn px-3 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm">
+                    Start Processing
+                </button>
+            `;
+            break;
+            
+        case 'processing':
+            document.getElementById('shippedActions').innerHTML = `
+                <button onclick="updateOrderStatus(${currentOrderId}, 'ready_for_pickup')" 
+                        class="mark-ready-btn px-3 py-1 rounded-lg bg-purple-600 hover:bg-purple-700 text-white text-sm">
+                    Ready for Pickup
+                </button>
+            `;
+            break;
+            
+        case 'ready_for_pickup':
+            document.getElementById('completedActions').innerHTML = `
+                <button onclick="updateOrderStatus(${currentOrderId}, 'completed')" 
+                        class="mark-completed-btn px-3 py-1 rounded-lg bg-green-600 hover:bg-green-700 text-white text-sm">
+                    Mark as Completed
+                </button>
+            `;
+            break;
+    }
+}
+
+async function updateOrderStatus(orderId, newStatus) {
+    if (!confirm(`Are you sure you want to mark this order as ${newStatus.replace(/_/g, ' ')}?`)) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`/admin/orders/${orderId}/status`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -594,76 +849,49 @@ document.addEventListener('DOMContentLoaded', function() {
                 'Accept': 'application/json'
             },
             body: JSON.stringify({ status: newStatus })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                window.location.reload(); // Refresh to show changes
-            } else {
-                alert('Failed to update status: ' + (data.message || 'Unknown error'));
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Failed to update order status');
         });
+
+        const data = await response.json();
+        
+        if (data.success) {
+            // Reload the order details to reflect the changes
+            await loadOrderDetails({ preventDefault: () => {} }, orderId);
+        } else {
+            alert('Failed to update status: ' + (data.message || 'Unknown error'));
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to update order status');
+    }
+}
+
+async function cancelOrder(orderId) {
+    if (!confirm('Are you sure you want to cancel this order? This cannot be undone.')) {
+        return;
     }
 
-    // Cancel order handler
-    function cancelOrder(orderId) {
-        if (!confirm('Are you sure you want to cancel this order? This cannot be undone.')) {
-            return;
-        }
-
-        fetch(`/admin/orders/${orderId}/cancel`, {
+    try {
+        const response = await fetch(`/admin/orders/${orderId}/cancel`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                 'Accept': 'application/json'
             }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                window.location.href = '/admin/orders'; // Redirect to orders list
-            } else {
-                alert('Failed to cancel order: ' + (data.message || 'Unknown error'));
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Failed to cancel order');
         });
-    }
 
-    // Event delegation for all action buttons
-    document.addEventListener('click', function(e) {
-        const orderId = e.target.closest('[data-order-id]')?.getAttribute('data-order-id') || 
-                        document.querySelector('#orderDetails')?.getAttribute('data-order-id');
-
-        if (e.target.classList.contains('mark-paid-btn')) {
-            updateOrderStatus(orderId, 'paid');
-        } 
-        else if (e.target.classList.contains('mark-processing-btn')) {
-            updateOrderStatus(orderId, 'processing');
-        } 
-        else if (e.target.classList.contains('mark-ready-btn')) {
-            updateOrderStatus(orderId, 'ready_for_pickup');
-        } 
-        else if (e.target.classList.contains('mark-completed-btn')) {
-            updateOrderStatus(orderId, 'completed');
-        } 
-        else if (e.target.id === 'cancelOrderBtn') {
-            cancelOrder(orderId);
+        const data = await response.json();
+        
+        if (data.success) {
+            // Redirect to orders list or refresh the current view
+            window.location.reload();
+        } else {
+            alert('Failed to cancel order: ' + (data.message || 'Unknown error'));
         }
-    });
-
-    // Initialize current order ID if on details page
-    const orderDetailsSection = document.getElementById('orderDetails');
-    if (orderDetailsSection && !orderDetailsSection.classList.contains('hidden')) {
-        currentOrderId = orderDetailsSection.getAttribute('data-order-id');
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to cancel order');
     }
-});
+}
 </script>
 @endsection

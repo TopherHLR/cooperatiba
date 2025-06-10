@@ -24,11 +24,11 @@ class OrderModel extends Model
         'order_date' => 'datetime',
         'total_price' => 'decimal:2',
     ];
-
-    // Relationships
+    
+    //relationships
     public function student()
     {
-        return $this->belongsTo(StudentModel::class, 'student_id');
+        return $this->belongsTo(StudentModel::class, 'student_id', 'student_id');
     }
 
     public function orderItems()
@@ -40,4 +40,9 @@ class OrderModel extends Model
     {
         return $this->hasOne(ProcessedOrderModel::class, 'order_id');
     }
+    public function statusHistories()
+    {
+        return $this->hasMany(OrderHistoryModel::class, 'order_id', 'order_id');
+    }
+
 }
