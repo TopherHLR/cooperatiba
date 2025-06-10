@@ -30,7 +30,14 @@ class OrderController extends Controller
             ->orderByDesc('order_date');
 
         if ($status !== 'all') {
-            $query->where('status', $status);
+            $query->whereHas('statusHistories', function ($q) use ($status) {
+                $q->where('status', $status)
+                  ->whereIn('history_id', function ($subQuery) {
+                      $subQuery->selectRaw('MAX(history_id)')
+                               ->from('order_history')
+                               ->groupBy('order_id');
+                  });
+            });
         }
 
         $orders = $query->paginate(15);
@@ -188,33 +195,65 @@ class OrderController extends Controller
             'order' => $order->load('statusHistories')
         ]);
     }
-
     public function cancel(OrderModel $order)
     {
-        if (auth()->user()->role !== 'admin') {
-            abort(403);
-        }
+        Log::info('Cancel order attempt started', [
+            'order_id' => $order->order_id,
+            'user_id' => auth()->id(),
+            'user_role' => auth()->user()->role,
+            'current_status' => $order->current_status,
+            'ip_address' => request()->ip()
+        ]);
 
-        if ($order->status === 'completed') {
+        if (auth()->user()->role !== 'admin') {
+            Log::warning('Unauthorized attempt to cancel order', [
+                'order_id' => $order->order_id,
+                'user_id' => auth()->id()
+            ]);
             return response()->json([
                 'success' => false,
-                'message' => 'Cannot cancel a completed order'
+                'message' => 'Unauthorized action'
+            ], 403);
+        }
+
+        if (!$order->isValidStatusTransition('cancelled')) {
+            Log::warning('Invalid status transition to cancelled', [
+                'order_id' => $order->order_id,
+                'current_status' => $order->current_status,
+                'allowed_transitions' => $order->getAllowedTransitions()
+            ]);
+            return response()->json([
+                'success' => false,
+                'message' => sprintf('Cannot cancel order from %s status', $order->current_status)
             ], 422);
         }
 
-        $order->update(['status' => 'cancelled']);
+        try {
+            $historyRecord = $order->recordStatusChange('cancelled', auth()->id());
+            Log::info('Order status history recorded', [
+                'order_id' => $order->order_id,
+                'history_id' => $historyRecord->history_id,
+                'new_status' => $historyRecord->status,
+                'updated_by' => $historyRecord->updated_by,
+                'updated_at' => $historyRecord->updated_at
+            ]);
 
-        activity()
-            ->causedBy(auth()->user())
-            ->performedOn($order)
-            ->log('order_cancelled');
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Order cancelled successfully.'
-        ]);
+            return response()->json([
+                'success' => true,
+                'message' => 'Order cancelled successfully.'
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Failed to cancel order', [
+                'order_id' => $order->order_id,
+                'error' => $e->getMessage(),
+                'stack_trace' => $e->getTraceAsString()
+            ]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to cancel order: ' . $e->getMessage()
+            ], 500);
+        }
     }
-
     public function statistics()
     {
         if (auth()->user()->role !== 'admin') {

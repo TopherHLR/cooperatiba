@@ -145,13 +145,14 @@
                     ORDERS
                 </h2>
                 <div class="relative">
-                    <select id="statusFilter" class="bg-[#1F1E1E]/80 border border-white/20 text-white text-sm rounded-lg px-3 py-1 focus:ring-[#047705] focus:border-[#047705]">
-                        <option value="all" selected>All Orders</option>
-                        <option value="Pending">Pending</option>
-                        <option value="Paid">Paid</option>
-                        <option value="processing">Processing</option>
-                        <option value="readyforpickup">Ready for Pickup</option>
-                        <option value="completed">Completed</option>
+                    <select id="statusFilter" name="status" class="bg-[#1F1E1E]/80 border border-white/20 text-white text-sm rounded-lg px-3 py-1 focus:ring-[#047705] focus:border-[#047705]">
+                        <option value="all" {{ request()->query('status', 'all') === 'all' ? 'selected' : '' }}>All Orders</option>
+                        <option value="pending" {{ request()->query('status') === 'pending' ? 'selected' : '' }}>Pending</option>
+                        <option value="paid" {{ request()->query('status') === 'paid' ? 'selected' : '' }}>Paid</option>
+                        <option value="processing" {{ request()->query('status') === 'processing' ? 'selected' : '' }}>Processing</option>
+                        <option value="readyforpickup" {{ request()->query('status') === 'readyforpickup' ? 'selected' : '' }}>Ready for Pickup</option>
+                        <option value="completed" {{ request()->query('status') === 'completed' ? 'selected' : '' }}>Completed</option>
+                        <option value="cancelled" {{ request()->query('status') === 'cancelled' ? 'selected' : '' }}>Cancelled</option>
                     </select>
                 </div>
             </div>
@@ -250,12 +251,7 @@
                     ORDER MANAGEMENT
                 </h2>
                 <div class="flex space-x-2">
-                    <button id="addNoteBtn" class="px-4 py-2 rounded-lg bg-[#1F1E1E]/80 border border-white/20 text-white hover:bg-[#047705]/50 transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                        </svg>
-                        Add Note
-                    </button>
+a
                     <button id="cancelOrderBtn" class="px-4 py-2 rounded-lg bg-[#1F1E1E]/80 border border-white/20 text-white hover:bg-[#EF4444]/50 transition">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -654,7 +650,7 @@ async function loadOrderDetails(event, orderId) {
         
         // Populate the order details in the right container
         populateOrderDetails(order);
-                updateStepStatus(order.latest_status.toLowerCase()); // Make sure status is lowercase to match your config
+        updateStepStatus(order.latest_status.toLowerCase()); // Make sure status is lowercase to match your config
         updateActionButtons(order.latest_status.toLowerCase());
         
         // Show the details container
@@ -900,13 +896,9 @@ function isStepBefore(stepStatus, currentStatus) {
 document.getElementById('paidDate').textContent = `Verified on ${new Date().toLocaleDateString()}`;
 
 async function cancelOrder(orderId) {
-    if (!confirm('Are you sure you want to cancel this order? This cannot be undone.')) {
-        return;
-    }
-
     try {
-        const response = await fetch(`/admin/orders/${orderId}/cancel`, {
-            method: 'POST',
+        const response = await fetch(`/admin/orders/${orderId}`, {
+            method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
@@ -914,18 +906,20 @@ async function cancelOrder(orderId) {
             }
         });
 
-        const data = await response.json();
-        
-        if (data.success) {
-            // Redirect to orders list or refresh the current view
-            window.location.reload();
-        } else {
-            alert('Failed to cancel order: ' + (data.message || 'Unknown error'));
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Failed to cancel order');
         }
+
+        const data = await response.json();
+        console.log('Order canceled successfully:', data);
+        // Optionally, refresh the page or update the UI
+        window.location.reload();
     } catch (error) {
-        console.error('Error:', error);
-        alert('Failed to cancel order');
+        console.error('Error canceling order:', error.message);
+        alert('Failed to cancel order: ' + error.message);
     }
 }
+
 </script>
 @endsection
