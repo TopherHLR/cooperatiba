@@ -147,10 +147,10 @@
                 <div class="relative">
                     <select id="statusFilter" class="bg-[#1F1E1E]/80 border border-white/20 text-white text-sm rounded-lg px-3 py-1 focus:ring-[#047705] focus:border-[#047705]">
                         <option value="all" selected>All Orders</option>
-                        <option value="pending">Pending</option>
-                        <option value="paid">Paid</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Paid">Paid</option>
                         <option value="processing">Processing</option>
-                        <option value="ready_for_pickup">Ready for Pickup</option>
+                        <option value="readyforpickup">Ready for Pickup</option>
                         <option value="completed">Completed</option>
                     </select>
                 </div>
@@ -201,7 +201,7 @@
                                     @if($order->status == 'pending') bg-yellow-500/20 text-yellow-400
                                     @elseif($order->status == 'paid') bg-blue-500/20 text-blue-400
                                     @elseif($order->status == 'processing') bg-purple-500/20 text-purple-400
-                                    @elseif($order->status == 'ready_for_pickup') bg-green-500/20 text-green-400
+                                    @elseif($order->status == 'readyforpickup') bg-green-500/20 text-green-400
                                     @elseif($order->status == 'completed') bg-gray-500/20 text-gray-300
                                     @endif">
                                     {{ ucfirst(str_replace('_', ' ', $order->status)) }}
@@ -377,8 +377,8 @@
                             <div class="admin-step-content">
                                 <div class="flex justify-between items-center">
                                     <div>
-                                        <h4 class="text-white font-medium">Shipping</h4>
-                                        <p class="text-gray-400 text-sm">Ship the order to customer</p>
+                                        <h4 class="text-white font-medium">Ready for Pickup</h4>
+                                        <p class="text-gray-400 text-sm">Pick up your order at the Coop Office</p>
                                         <p id="shippedDate" class="text-gray-500 text-xs mt-1"></p>
                                     </div>
                                     <div id="shippedActions" class="flex space-x-2">
@@ -422,7 +422,7 @@
                             <div class="admin-step-content">
                                 <div class="flex justify-between items-center">
                                     <div>
-                                        <h4 class="text-white font-medium">Delivery/Completion</h4>
+                                        <h4 class="text-white font-medium">Completetion</h4>
                                         <p class="text-gray-400 text-sm">Confirm order completion</p>
                                         <p id="completedDate" class="text-gray-500 text-xs mt-1"></p>
                                     </div>
@@ -558,6 +558,31 @@
     </div>
 </div>
 <script>
+let currentOrderId = null;
+
+const statusProgression = {
+    pending: {
+        next: 'paid',
+        action: 'Mark as Paid',
+        target: 'paidActions'
+    },
+    paid: {
+        next: 'processing',
+        action: 'Start Processing',
+        target: 'processingActions'
+    },
+    processing: {
+        next: 'readyforpickup',
+        action: 'Ready for Pickup',
+        target: 'shippedActions'
+    },
+    readyforpickup: {
+        next: 'completed',
+        action: 'Mark as Completed',
+        target: 'completedActions'
+    }
+};
+
 document.addEventListener('DOMContentLoaded', function() {
     
     // Status filter - redirects with status parameter
@@ -565,7 +590,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (statusFilter) {
         statusFilter.addEventListener('change', function() {
             const status = this.value;
-            window.location.href = `/admin/orders?status=${latest_status}`;
+            window.location.href = `/admin/orders?status=${this.value}`;
         });
     }
 
@@ -593,7 +618,7 @@ document.addEventListener('DOMContentLoaded', function() {
             await updateOrderStatus(orderId, 'processing');
         } 
         else if (e.target.classList.contains('mark-ready-btn')) {
-            await updateOrderStatus(orderId, 'ready_for_pickup');
+            await updateOrderStatus(orderId, 'readyforpickup');
         } 
         else if (e.target.classList.contains('mark-completed-btn')) {
             await updateOrderStatus(orderId, 'completed');
@@ -629,6 +654,8 @@ async function loadOrderDetails(event, orderId) {
         
         // Populate the order details in the right container
         populateOrderDetails(order);
+                updateStepStatus(order.latest_status.toLowerCase()); // Make sure status is lowercase to match your config
+        updateActionButtons(order.latest_status.toLowerCase());
         
         // Show the details container
         document.getElementById('orderDetails').classList.remove('hidden');
@@ -645,8 +672,8 @@ async function loadOrderDetails(event, orderId) {
 
 function populateOrderDetails(order) {
     // Set the current order ID
-    currentOrderId = order.id;
-    document.getElementById('orderDetails').setAttribute('data-order-id', order.id);
+    currentOrderId = order.order_id;
+    document.getElementById('orderDetails').setAttribute('data-order-id', order.order_id);
     
     // Populate basic order info
     const firstItem = order.order_items[0]?.uniform;
@@ -671,14 +698,16 @@ function populateOrderDetails(order) {
     // Set status badge
     const statusBadge = document.getElementById('trackingOrderStatus');
     statusBadge.textContent = order.latest_status 
-        ? order.latest_status.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+        ? order.latest_status === 'ReadyForPickup' 
+            ? 'Ready for Pickup' 
+            : order.latest_status.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
         : 'Unknown';
     
     statusBadge.className = 'text-xs px-3 py-1 rounded-full ' + 
         (order.latest_status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' :
          order.latest_status === 'paid' ? 'bg-blue-500/20 text-blue-400' :
          order.latest_status === 'processing' ? 'bg-purple-500/20 text-purple-400' :
-         order.latest_status === 'ready_for_pickup' ? 'bg-green-500/20 text-green-400' :
+         order.latest_status === 'readyforickup' ? 'bg-green-500/20 text-green-400' :
          order.latest_status === 'completed' ? 'bg-gray-500/20 text-gray-300' :
          'bg-red-500/20 text-red-300');
     
@@ -733,60 +762,38 @@ function populateOrderDetails(order) {
 }
 
 function updateOrderTimeline(order) {
-    // Reset all steps
+    const statusOrder = ['paid', 'processing', 'readyforpickup', 'completed'];
+    const currentStatusIndex = statusOrder.indexOf(order.status);
+    
     document.querySelectorAll('.admin-step-container').forEach(container => {
+        const status = container.getAttribute('data-status');
+        const statusIndex = statusOrder.indexOf(status);
         const icon = container.querySelector('.admin-step-icon');
+        
+        // Reset all icons
         icon.querySelector('.admin-step-check')?.classList.add('hidden');
         icon.querySelector('.admin-step-current')?.classList.add('hidden');
         icon.querySelector('.admin-step-icon-default')?.classList.remove('hidden');
         
-        // Reset date display
-        const status = container.getAttribute('data-status');
+        // Update based on status
+        if (statusIndex < currentStatusIndex) {
+            // Completed step
+            icon.querySelector('.admin-step-check')?.classList.remove('hidden');
+        } else if (statusIndex === currentStatusIndex) {
+            // Current step
+            icon.querySelector('.admin-step-current')?.classList.remove('hidden');
+        }
+        
+        // Update date display if available
         const dateElement = document.getElementById(`${status}Date`);
-        if (dateElement) dateElement.textContent = '';
-    });
-    
-    // Update based on current status
-    const statusOrder = ['paid', 'processing', 'ready_for_pickup', 'completed'];
-    let currentStepFound = false;
-    
-    statusOrder.forEach(status => {
-        const container = document.querySelector(`.admin-step-container[data-status="${status}"]`);
-        if (!container) return;
-        
-        const icon = container.querySelector('.admin-step-icon');
-        const checkIcon = icon.querySelector('.admin-step-check');
-        const currentIcon = icon.querySelector('.admin-step-current');
-        const defaultIcon = icon.querySelector('.admin-step-icon-default');
-        
-        if (order.status === status) {
-            // This is the current step
-            currentIcon?.classList.remove('hidden');
-            defaultIcon?.classList.add('hidden');
-            checkIcon?.classList.add('hidden');
-            currentStepFound = true;
-            
-            // Update date if available
-            const dateElement = document.getElementById(`${status}Date`);
-            if (dateElement && order.processed_order?.updated_at) {
-                dateElement.textContent = `Updated: ${new Date(order.processed_order.updated_at).toLocaleString()}`;
-            }
-        } else if (statusOrder.indexOf(order.status) > statusOrder.indexOf(status)) {
-            // This step is completed
-            checkIcon?.classList.remove('hidden');
-            currentIcon?.classList.add('hidden');
-            defaultIcon?.classList.add('hidden');
-            
-            // Update date if available
-            const dateElement = document.getElementById(`${status}Date`);
-            if (dateElement && order.processed_order?.updated_at) {
-                dateElement.textContent = `Completed: ${new Date(order.processed_order.updated_at).toLocaleString()}`;
-            }
+        if (dateElement) {
+            dateElement.textContent = order.processed_order?.updated_at ? 
+                `${statusIndex < currentStatusIndex ? 'Completed' : 'Updated'}: ${new Date(order.processed_order.updated_at).toLocaleString()}` : 
+                '';
         }
     });
     
-    // Update action buttons based on current status
-    updateActionButtons(order.status);
+    updateActionButtons(order.latest_status);
 }
 
 function updateActionButtons(currentStatus) {
@@ -794,44 +801,23 @@ function updateActionButtons(currentStatus) {
     document.querySelectorAll('[id$="Actions"]').forEach(actionsDiv => {
         actionsDiv.innerHTML = '';
     });
-    
-    // Show appropriate buttons based on current status
-    switch(currentStatus) {
-        case 'pending':
-            document.getElementById('paidActions').innerHTML = `
-                <button onclick="updateOrderStatus(${currentOrderId}, 'paid')" 
-                        class="mark-paid-btn px-3 py-1 rounded-lg bg-green-600 hover:bg-green-700 text-white text-sm">
-                    Mark as Paid
+
+    if (!currentStatus || typeof currentStatus !== 'string') {
+        console.error("Invalid or missing currentStatus:", currentStatus);
+        return; // Exit early to prevent further errors
+    }
+
+    const statusConfig = statusProgression[currentStatus.toLowerCase()];
+    if (statusConfig) {
+        const actionsDiv = document.getElementById(statusConfig.target);
+        if (actionsDiv) {
+            actionsDiv.innerHTML = `
+                <button onclick="updateOrderStatus(${currentOrderId}, '${statusConfig.next}')" 
+                        class="status-action-btn px-3 py-1 rounded-lg bg-[#047705] hover:bg-[#036004] text-white text-sm transition-colors duration-300">
+                    ${statusConfig.action}
                 </button>
             `;
-            break;
-            
-        case 'paid':
-            document.getElementById('processingActions').innerHTML = `
-                <button onclick="updateOrderStatus(${currentOrderId}, 'processing')" 
-                        class="mark-processing-btn px-3 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm">
-                    Start Processing
-                </button>
-            `;
-            break;
-            
-        case 'processing':
-            document.getElementById('shippedActions').innerHTML = `
-                <button onclick="updateOrderStatus(${currentOrderId}, 'ready_for_pickup')" 
-                        class="mark-ready-btn px-3 py-1 rounded-lg bg-purple-600 hover:bg-purple-700 text-white text-sm">
-                    Ready for Pickup
-                </button>
-            `;
-            break;
-            
-        case 'ready_for_pickup':
-            document.getElementById('completedActions').innerHTML = `
-                <button onclick="updateOrderStatus(${currentOrderId}, 'completed')" 
-                        class="mark-completed-btn px-3 py-1 rounded-lg bg-green-600 hover:bg-green-700 text-white text-sm">
-                    Mark as Completed
-                </button>
-            `;
-            break;
+        }
     }
 }
 
@@ -853,17 +839,65 @@ async function updateOrderStatus(orderId, newStatus) {
 
         const data = await response.json();
         
+        if (!response.ok) {
+            throw new Error(data.message || `HTTP error! status: ${response.status}`);
+        }
+        
         if (data.success) {
-            // Reload the order details to reflect the changes
-            await loadOrderDetails({ preventDefault: () => {} }, orderId);
+            await loadOrderDetails({ preventDefault: () => {}, stopPropagation: () => {} }, orderId);
         } else {
             alert('Failed to update status: ' + (data.message || 'Unknown error'));
         }
     } catch (error) {
         console.error('Error:', error);
-        alert('Failed to update order status');
+        alert('Failed to update order status: ' + error.message);
     }
 }
+
+function updateStepStatus(currentStatus) {
+    document.querySelectorAll('.admin-step-container').forEach(step => {
+        const status = step.getAttribute('data-status');
+        const check = step.querySelector('.admin-step-check');
+        const current = step.querySelector('.admin-step-current');
+        const def = step.querySelector('.admin-step-icon-default');
+        const iconContainer = step.querySelector('.admin-step-icon');
+
+        // Reset all icons
+        check.classList.add('hidden');
+        current.classList.add('hidden');
+        def.classList.remove('hidden');
+        iconContainer.classList.remove('border-[#047705]', 'bg-[#047705]/10');
+
+        if (status === currentStatus) {
+            // Current step - show current indicator
+            current.classList.remove('hidden');
+            
+            def.classList.add('hidden');
+            // Highlight current step container
+            iconContainer.classList.add('border-[#047705]', 'bg-[#047705]/10');
+        } else if (isStepBefore(status, currentStatus)) {
+            // Completed step - show green checkmark
+            check.classList.remove('hidden');
+            def.classList.add('hidden');
+            // Change checkmark color to green
+            check.classList.add('text-[#047705]');
+            // Highlight completed step container
+            iconContainer.classList.add('border-[#047705]', 'bg-[#047705]/10');
+        } else {
+            // Future step - show default
+            def.classList.remove('hidden');
+            // Reset colors
+            check.classList.remove('text-[#047705]');
+        }
+    });
+}
+
+function isStepBefore(stepStatus, currentStatus) {
+    const order = ["paid", "processing", "shipped", "completed"];
+    return order.indexOf(stepStatus) < order.indexOf(currentStatus);
+}
+
+document.getElementById('paidDate').textContent = `Verified on ${new Date().toLocaleDateString()}`;
 
 async function cancelOrder(orderId) {
     if (!confirm('Are you sure you want to cancel this order? This cannot be undone.')) {

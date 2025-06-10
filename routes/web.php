@@ -57,7 +57,7 @@ Route::name('admin.')->group(function () {
 Route::prefix('admin/orders')->group(function () {
     Route::get('/', [OrderController::class, 'index']);
     Route::get('/{order}', [OrderController::class, 'show']);
-    Route::put('/{order}/status', [OrderController::class, 'updateStatus']);
+    Route::post('/{order}/status', [OrderController::class, 'updateStatus']);
     Route::post('/{order}/notes', [OrderController::class, 'addNote']);
     Route::delete('/{order}', [OrderController::class, 'cancel']);
 });
