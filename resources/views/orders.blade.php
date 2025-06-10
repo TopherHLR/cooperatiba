@@ -129,60 +129,42 @@
 @endsection
 
 @section('account-content')
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="content-section min-h-full">
     <div class="content-overlay min-h-full">
         <div class="flex mx-2 justify-center gap-10"> <!-- Centered containers -->
-            <!-- Left Container - Order History (60%) -->
-            <div class="w-[30%] ">
-                <div class="bg-gradient-to-r from-[#1F1E1E]/100 to-[#100E00]/80 border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[15x] p-6 h-full backdrop-blur-sm">
+            <!-- Left Container - Order History (30%) -->
+            <div class="w-[30%]">
+                <div class="bg-gradient-to-r from-[#1F1E1E]/80 to-[#100E0E]/80 border border-gray-600 shadow-lg shadow-black/40 rounded-xl p-6 h-full backdrop-blur-sm">
                     <!-- Title Section -->
                     <div class="flex items-center mb-4">
-                        <h2 class="text-2xl font-bold text-white flex items-center" style="font-family: 'Kalam', cursive; text-shadow: -2px 1px 0px #047705;">
+                        <h2 class="text-2xl font-bold text-white flex items-center" style="font-family: 'Kalam', cursive; text-shadow: -2px 1px 0 #047705;">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                             </svg>
                             ORDER HISTORY
                         </h2>
                     </div>
-                    <hr class="border-[.5px] border-white mb-6 -mx-6">
-                    
-                    <!-- Order History List -->
-                    <div class="space-y-4 h-[580px] overflow-y-auto pr-2">
-                        <!-- Order Item 1 -->
-                        <div class="bg-[#1F1E1E]/60 hover:bg-[#001C00]/40 rounded-xl p-4 transition-all duration-300 border border-white/10 hover:border-[#047705]/30">
-                            <div class="flex items-start">
-                                <!-- Order Image -->
-                                <div class="w-20 h-20 bg-gray-100 rounded-lg flex-shrink-0 mr-4 overflow-hidden">
-                                    <img src="/images/clothes/pe.png" alt="PE Uniform" class="w-full h-full object-contain">
-                                </div>
-                                
-                                <!-- Order Details -->
-                                <div class="flex-1">
-                                    <div class="flex justify-between items-start">
-                                        <div>
-                                            <h3 class="text-white font-medium">PE Uniform (Size M)</h3>
-                                            <p class="text-sm text-gray-400">Order #COOP-2023-001</p>
-                                        </div>
-                                        <span class="text-xs px-2 py-1 rounded-full status-pending">Pending</span>
-                                    </div>
-                                    
-                                    <div class="mt-2 flex justify-between items-end">
-                                        <div>
-                                            <p class="text-sm text-white">₱250.00 × 1</p>
-                                            <p class="text-xs text-gray-400">Ordered: May 15, 2023 - 10:30 AM</p>
-                                        </div>
-                                        <!-- In each order item, modify the "View Details" button like this: -->
-                                        <button 
-                                            class="text-sm text-[#ffffff] hover:underline view-details-btn" 
-                                            data-order-number="COOP-2023-001"
-                                            onclick="selectOrder('COOP-2023-001')"> <!-- Change this for each order -->
-                                            View Details
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <hr class="border border-gray-600 mb-6 -mx-6">
 
+                    <!-- Order History List -->
+                    <div class="space-y-4 h-[580px] overflow-y-auto pr-2" id="ordersContainer">
+                        <!-- Loading State -->
+                        <div id="loadingState" class="flex flex-col items-center justify-center h-full text-center">
+                            <svg class="animate-spin h-8 w-8 text-white mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            <p class="text-gray-400">Loading orders...</p>
+                        </div>
+                        <!-- Empty State -->
+                        <div id="emptyOrdersState" class="hidden flex flex-col items-center justify-center h-full text-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            <h3 class="text-xl font-medium text-white mb-2">No Orders Found</h3>
+                            <p class="text-gray-400">You haven't placed any orders yet.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -202,7 +184,7 @@
                     <hr class="border-[.5px] border-white mb-6 -mx-6">
                     
                     <!-- Order Details Section (shown when order is selected) -->
-                    <div id="orderDetails" class="hidden">
+                    <div id="userOrdersContainer" class="hidden">
                         <!-- Order Summary -->
                         <div class="bg-[#1F1E1E]/60 rounded-xl p-4 mb-6 border border-white/10">
                             <div class="flex items-start">
@@ -230,7 +212,7 @@
                             </div>
                         </div>
                         
-                    <!-- Horizontal Tracking Progress -->
+                        <!-- Horizontal Tracking Progress -->
                         <div class="bg-[#1F1E1E]/60 rounded-xl p-6 mb-6 border border-white/10">
                             <h3 class="text-white font-medium mb-6 flex items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -258,7 +240,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                             </svg>
                                         </div>
-                                        <div class="step-content text-center ">
+                                        <div class="step-content text-center">
                                             <h4 class="text-white font-medium text-sm">Payment Received</h4>
                                             <p class="text-gray-400 text-xs">Your payment has been confirmed</p>
                                             <p id="paidDate" class="text-gray-500 text-xs mt-1"></p>
@@ -282,25 +264,8 @@
                                         </div>
                                     </div>
                                     
-                                    <!-- Step 3: In Transit -->
-                                    <div class="step-container flex flex-col items-center w-1/4" data-status="transit">
-                                        <div class="step-icon bg-white border-4 border-gray-600 relative z-10 mb-2">
-                                            <svg class="step-check hidden text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                                            </svg>
-                                            <svg class="step-current hidden text-[#047705]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                            </svg>
-                                        </div>
-                                        <div class="step-content text-center">
-                                            <h4 class="text-white font-medium text-sm">In Transit</h4>
-                                            <p class="text-gray-400 text-xs">Your order is on its way</p>
-                                            <p id="transitDate" class="text-gray-500 text-xs mt-1"></p>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- Step 4: Ready for Pickup -->
-                                    <div class="step-container flex flex-col items-center w-1/4" data-status="ready">
+                                    <!-- Step 3: Ready for Pickup -->
+                                    <div class="step-container flex flex-col items-center w-1/4" data-status="readyforpickup">
                                         <div class="step-icon bg-white border-4 border-gray-600 relative z-10 mb-2">
                                             <svg class="step-check hidden text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
@@ -312,7 +277,24 @@
                                         <div class="step-content text-center">
                                             <h4 class="text-white font-medium text-sm">Ready for Pickup</h4>
                                             <p class="text-gray-400 text-xs">Ready at the coop store</p>
-                                            <p id="readyDate" class="text-gray-500 text-xs mt-1"></p>
+                                            <p id="readyforpickupDate" class="text-gray-500 text-xs mt-1"></p>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Step 4: Completed -->
+                                    <div class="step-container flex flex-col items-center w-1/4" data-status="completed">
+                                        <div class="step-icon bg-white border-4 border-gray-600 relative z-10 mb-2">
+                                            <svg class="step-check hidden text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                            </svg>
+                                            <svg class="step-current hidden text-[#047705]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </div>
+                                        <div class="step-content text-center">
+                                            <h4 class="text-white font-medium text-sm">Completed</h4>
+                                            <p class="text-gray-400 text-xs">Order successfully picked up</p>
+                                            <p id="completedDate" class="text-gray-500 text-xs mt-1"></p>
                                         </div>
                                     </div>
                                 </div>
@@ -332,7 +314,7 @@
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
                                     <p class="text-gray-400 text-sm">Pickup Location:</p>
-                                    <p class="text-white">Cooperative Store, Main Campus</p>
+                                    <p id="pickupLocation" class="text-white">Cooperative Store, Main Campus</p>
                                 </div>
                                 <div>
                                     <p class="text-gray-400 text-sm">Estimated Pickup Date:</p>
@@ -364,170 +346,308 @@
     </div>
 </div>
 <script>
-        // Sample data for orders
-        const orders = {
-        'COOP-2023-001': {
-            title: 'PE Uniform (Size M)',
-            image: '/images/clothes/pe.png',
-            price: '₱250.00 × 1',
-            date: 'Ordered: May 15, 2023 - 10:30 AM',
-            status: 'processing',
-            statusText: 'Processing',
-            statusClass: 'status-processing',
-            steps: {
-                paid: 'May 15, 2023 - 10:35 AM',
-                processing: 'May 15, 2023 - 11:45 AM',
-                transit: '',
-                ready: ''
-            },
-            estimatedPickup: 'May 18, 2023'
-        },
-        'COOP-2023-002': {
-            title: 'School Uniform (Size L)',
-            image: '/images/clothes/school-uniform.png',
-            price: '₱350.00 × 2',
-            date: 'Ordered: May 10, 2023 - 2:15 PM',
-            status: 'transit',
-            statusText: 'In Transit',
-            statusClass: 'status-processing',
-            steps: {
-                paid: 'May 10, 2023 - 2:20 PM',
-                processing: 'May 11, 2023 - 9:15 AM',
-                transit: 'May 12, 2023 - 2:30 PM',
-                ready: ''
-            },
-            estimatedPickup: 'May 15, 2023'
-        },
-        'COOP-2023-003': {
-            title: 'Lab Gown (Size XL)',
-            image: '/images/clothes/lab-gown.png',
-            price: '₱400.00 × 1',
-            date: 'Ordered: May 5, 2023 - 9:45 AM',
-            completedDate: 'Completed: May 8, 2023 - 3:20 PM',
-            status: 'ready',
-            statusText: 'Completed',
-            statusClass: 'status-completed',
-            steps: {
-                paid: 'May 5, 2023 - 9:50 AM',
-                processing: 'May 5, 2023 - 3:15 PM',
-                transit: 'May 6, 2023 - 10:30 AM',
-                ready: 'May 8, 2023 - 1:45 PM'
-            },
-            estimatedPickup: 'May 8, 2023'
-        },
-    };
+document.addEventListener('DOMContentLoaded', () => {
+    const ordersContainer = document.getElementById('ordersContainer');
+    const loadingState = document.getElementById('loadingState');
+    const emptyOrdersState = document.getElementById('emptyOrdersState');
+    const userOrdersContainer = document.getElementById('userOrdersContainer');
+    const emptyState = document.getElementById('emptyState');
 
-    // Function to handle order selection
-    function selectOrder(orderNumber) {
-        const order = orders[orderNumber];
-        if (!order) return;
+    async function fetchUserOrders() {
+        const container = document.getElementById('ordersContainer');
+        const loadingState = document.getElementById('loadingState');
+        const emptyState = document.getElementById('emptyOrdersState');
+
+        try {
+            loadingState.classList.remove('hidden');
+            container.innerHTML = ''; // Clear existing
+
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+            const response = await fetch('/orders', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                credentials: 'include'
+            });
+
+            if (response.redirected && response.url.includes('/login')) {
+                window.location.href = '/login';
+                return;
+            }
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            loadingState.classList.add('hidden');
+
+            if (!data.success || data.orders.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            data.orders.forEach(order => {
+                const orderDiv = document.createElement('div');
+                orderDiv.classList.add('bg-gray-800', 'p-4', 'rounded', 'shadow');
+
+                let orderItemsHTML = '';
+                order.order_items.forEach(item => {
+                    orderItemsHTML += `
+                        <li class="flex items-center space-x-4 mb-2">
+                            <img src="${item.uniform.image_url}" alt="${item.uniform.name}" class="w-12 h-12 object-cover rounded">
+                            <div>
+                                <p class="text-white font-medium">${item.uniform.name} (Size: ${item.size})</p>
+                                <p class="text-gray-400 text-sm">Qty: ${item.quantity} × ₱${parseFloat(item.uniform.price).toFixed(2)} = ₱${parseFloat(item.subtotal_price).toFixed(2)}</p>
+                            </div>
+                        </li>
+                    `;
+                });
+
+                const latestStatus = order.status_histories
+                    .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))[0]?.status || order.payment_status;
+
+                orderDiv.innerHTML = `
+                    <h2 class="text-lg text-white font-semibold mb-2">Order #${order.order_id}</h2>
+                    <p class="text-gray-400 mb-1">Date: ${new Date(order.order_date).toLocaleString()}</p>
+                    <p class="text-gray-400 mb-1">Total: ₱${parseFloat(order.total_price).toFixed(2)}</p>
+                    <p class="text-gray-300 mb-2">Status: <span class="font-semibold">${latestStatus}</span></p>
+
+                    <ul class="mb-2">${orderItemsHTML}</ul>
+
+                    <details class="text-gray-500 text-sm">
+                        <summary class="cursor-pointer mb-1">View Status History</summary>
+                        <ul class="pl-4">
+                            ${order.status_histories.map(history => `
+                                <li>${history.status} - ${new Date(history.updated_at).toLocaleString()}</li>
+                            `).join('')}
+                        </ul>
+                    </details>
+                `;
+
+                container.appendChild(orderDiv);
+            });
+
+        } catch (error) {
+            console.error('Error fetching user orders:', error);
+            loadingState.classList.add('hidden');
+            emptyState.classList.remove('hidden');
+        }
+    }
+
+
+    function renderOrders(orders) {
+        const container = document.getElementById('ordersContainer');
+        container.innerHTML = ''; // clear previous content
+
+        if (orders.length === 0) {
+            container.innerText = 'No orders found.';
+            return;
+        }
+
+        orders.forEach(order => {
+            const orderDiv = document.createElement('div');
+            orderDiv.className = 'order';
+
+            const orderHtml = `
+                <h3>Order #${order.order_id}</h3>
+                <p><strong>Order Date:</strong> ${new Date(order.order_date).toLocaleString()}</p>
+                <p><strong>Total:</strong> ₱${order.total_price}</p>
+                <p><strong>Payment Status:</strong> ${order.payment_status}</p>
+
+                <h4>Items:</h4>
+                <ul>
+                    ${order.order_items.map(item => `
+                        <li>
+                            <img src="${item.uniform.image_url}" alt="${item.uniform.name}" width="50">
+                            ${item.uniform.name} (Size: ${item.size}) x ${item.quantity} = ₱${item.subtotal_price}
+                        </li>
+                    `).join('')}
+                </ul>
+
+                <h4>Status History:</h4>
+                <ul>
+                    ${order.status_histories.map(status => `
+                        <li>${status.status} @ ${new Date(status.updated_at).toLocaleString()}</li>
+                    `).join('')}
+                </ul>
+
+                <hr/>
+            `;
+
+            orderDiv.innerHTML = orderHtml;
+            container.appendChild(orderDiv);
+        });
+    }
+
+    function formatDate(dateStr) {
+        if (!dateStr) return '';
+        const date = new Date(dateStr);
+        return date.toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'short', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    }
+
+    function getStatusColor(status) {
+        const colors = {
+            pending: 'bg-yellow-500 text-yellow-900',
+            paid: 'bg-green-500 text-green-900',
+            processing: 'bg-blue-500 text-blue-900',
+            readyforpickup: 'bg-purple-500 text-purple-900',
+            completed: 'bg-green-700 text-green-100',
+            cancelled: 'bg-red-500 text-red-900'
+        };
+        return colors[status.toLowerCase()] || 'bg-gray-500 text-gray-900';
+    }
+
+    function getCurrentStatus(statusHistories) {
+        if (!statusHistories || statusHistories.length === 0) {
+            return { status: 'pending', updated_at: new Date().toISOString() };
+        }
         
-        // Hide empty state and show order details
-        document.getElementById('emptyState').classList.add('hidden');
-        document.getElementById('orderDetails').classList.remove('hidden');
+        // Find the status with the most recent updated_at
+        return statusHistories.reduce((latest, history) => {
+            return new Date(history.updated_at) > new Date(latest.updated_at) ? history : latest;
+        });
+    }
+
+    function updateTrackingProgress(order) {
+        const currentStatus = getCurrentStatus(order.status_histories);
+        const status = currentStatus.status.toLowerCase();
         
-        // Update order information
-        document.getElementById('trackingOrderImage').src = order.image;
-        document.getElementById('trackingOrderTitle').textContent = order.title;
-        document.getElementById('trackingOrderNumber').textContent = `Order #${orderNumber}`;
-        document.getElementById('trackingOrderPrice').textContent = order.price;
-        document.getElementById('trackingOrderDate').textContent = order.date;
-        document.getElementById('trackingOrderStatus').textContent = order.statusText;
-        document.getElementById('trackingOrderStatus').className = `text-xs px-3 py-1 rounded-full ${order.statusClass}`;
-        document.getElementById('estimatedPickupDate').textContent = order.estimatedPickup;
+        // Update progress bar
+        const steps = ['paid', 'processing', 'readyforpickup', 'completed'];
+        const currentStepIndex = steps.indexOf(status);
+        const progressPercentage = currentStepIndex >= 0 ? ((currentStepIndex + 1) / steps.length) * 100 : 0;
+        document.getElementById('progressFill').style.width = `${progressPercentage}%`;
+
+        // Update each step
+        steps.forEach((step, index) => {
+            const stepContainer = document.querySelector(`.step-container[data-status="${step}"]`);
+            const checkIcon = stepContainer.querySelector('.step-check');
+            const currentIcon = stepContainer.querySelector('.step-current');
+            const dateElement = document.getElementById(`${step}Date`);
+
+            checkIcon.classList.add('hidden');
+            currentIcon.classList.add('hidden');
+
+            if (index <= currentStepIndex) {
+                checkIcon.classList.remove('hidden');
+            } else if (index === currentStepIndex + 1) {
+                currentIcon.classList.remove('hidden');
+            }
+
+            // Find the history record for this step
+            const historyRecord = order.status_histories.find(h => h.status.toLowerCase() === step);
+            dateElement.textContent = historyRecord ? formatDate(historyRecord.updated_at) : '';
+        });
+
+        // Update order details
+        const firstItem = order.order_items[0]?.uniform || {};
+        document.getElementById('trackingOrderImage').src = firstItem.image_url || '/images/placeholder.png';
+        document.getElementById('trackingOrderTitle').textContent = firstItem.name || 'Order Items';
+        document.getElementById('trackingOrderNumber').textContent = `Order #${order.order_id}`;
         
-        // Show/hide completed date if exists
+        const statusElement = document.getElementById('trackingOrderStatus');
+        statusElement.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+        statusElement.className = `text-xs px-3 py-1 rounded-full ${getStatusColor(status)}`;
+        
+        document.getElementById('trackingOrderPrice').textContent = `Total: ₱${parseFloat(order.total_price).toFixed(2)}`;
+        document.getElementById('trackingOrderDate').textContent = `Ordered: ${formatDate(order.order_date)}`;
+        
+        const completedRecord = order.status_histories.find(h => h.status.toLowerCase() === 'completed');
         const completedDateEl = document.getElementById('trackingOrderCompletedDate');
-        if (order.completedDate) {
-            completedDateEl.textContent = order.completedDate;
+        if (completedRecord) {
+            completedDateEl.textContent = `Completed: ${formatDate(completedRecord.updated_at)}`;
             completedDateEl.classList.remove('hidden');
         } else {
             completedDateEl.classList.add('hidden');
         }
-        
-        // Update tracking steps
-        updateTrackingSteps(order.status, order.steps);
-    }
-    
-    // Function to update tracking steps visualization
-    function updateTrackingSteps(currentStatus, steps) {
-        const statusOrder = ['paid', 'processing', 'transit', 'ready'];
-        let currentStepIndex = statusOrder.indexOf(currentStatus);
-        
-        // Reset all steps
-        document.querySelectorAll('.step-container').forEach(container => {
-            container.classList.remove('completed', 'active');
-            const status = container.getAttribute('data-status');
-            
-            // Hide all icons first
-            container.querySelector('.step-check').classList.add('hidden');
-            container.querySelector('.step-current').classList.add('hidden');
-            
-            // Show date if exists
-            const dateElement = document.getElementById(`${status}Date`);
-            if (steps[status]) {
-                dateElement.textContent = steps[status];
-                dateElement.classList.remove('text-gray-500');
-                dateElement.classList.add('text-gray-400');
-            } else {
-                dateElement.textContent = '-';
-                dateElement.classList.remove('text-gray-400');
-                dateElement.classList.add('text-gray-500');
-            }
-        });
-        
-        // Mark completed steps
-        for (let i = 0; i < currentStepIndex; i++) {
-            const status = statusOrder[i];
-            const container = document.querySelector(`.step-container[data-status="${status}"]`);
-            container.classList.add('completed');
-            
-            // Show check icon
-            container.querySelector('.step-check').classList.remove('hidden');
-        }
-        
-        // Mark current step
-        if (currentStepIndex >= 0) {
-            const currentStatus = statusOrder[currentStepIndex];
-            const container = document.querySelector(`.step-container[data-status="${currentStatus}"]`);
-            container.classList.add('active');
-            
-            // Show current icon
-            container.querySelector('.step-current').classList.remove('hidden');
-        }
-        
-        // Update progress line
-        const progressFill = document.getElementById('progressFill');
-        if (currentStepIndex >= 0) {
-            const percentage = (currentStepIndex / (statusOrder.length - 1)) * 100;
-            progressFill.style.height = `${percentage}%`;
-        } else {
-            progressFill.style.height = '0%';
-        }
-    }
-    
-    // Add click handlers to view details buttons
-    document.addEventListener('DOMContentLoaded', function() {
-        // Select all view details buttons
-        const viewDetailsButtons = document.querySelectorAll('.view-details-btn');
-        
-        // Add click event to each button
-        viewDetailsButtons.forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.stopPropagation(); // Prevent event bubbling
-                const orderNumber = this.getAttribute('data-order-number');
-                selectOrder(orderNumber);
-            });
-        });
 
-        // Optional: Add click handler to the entire order item if you want
-        document.querySelectorAll('.order-item').forEach(item => {
-            item.addEventListener('click', function() {
-                const button = this.querySelector('.view-details-btn');
-                const orderNumber = button.getAttribute('data-order-number');
-                selectOrder(orderNumber);
+        const readyforpickupRecord = order.status_histories.find(h => h.status.toLowerCase() === 'readyforpickup');
+        document.getElementById('estimatedPickupDate').textContent = readyforpickupRecord ? 
+            `Ready by: ${formatDate(readyforpickupRecord.updated_at)}` : 'Not ready yet';
+
+        // Show the tracking container
+        userOrdersContainer.classList.remove('hidden');
+        emptyState.classList.add('hidden');
+    }
+
+    // Initialize the page
+    fetchUserOrders()
+        .then(orders => {
+            loadingState.classList.add('hidden');
+
+            if (orders.length === 0) {
+                emptyOrdersState.classList.remove('hidden');
+                return;
+            }
+
+            // Populate order history
+            ordersContainer.innerHTML = orders.map(order => {
+                const currentStatus = getCurrentStatus(order.status_histories);
+                const firstItem = order.order_items[0]?.uniform || {};
+                
+                return `
+                    <div class="bg-[#1F1E1E]/60 p-4 rounded-lg cursor-pointer hover:bg-[#2F2E2E]/60 transition border border-white/10 order-item" data-order-id="${order.order_id}">
+                        <div class="flex items-center">
+                            <div class="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 mr-4">
+                                <img src="${firstItem.image_url || '/images/placeholder.png'}" alt="Order Image" class="w-full h-full object-contain">
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-white font-medium text-sm">${firstItem.name || 'Order Items'}</h3>
+                                <p class="text-gray-400 text-xs">Order #${order.order_id}</p>
+                                <p class="text-gray-400 text-xs">Placed: ${formatDate(order.order_date)}</p>
+                            </div>
+                            <span class="text-xs px-2 py-1 rounded-full ${getStatusColor(currentStatus.status)}">
+                                ${currentStatus.status.charAt(0).toUpperCase() + currentStatus.status.slice(1)}
+                            </span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Add click handlers for each order
+            document.querySelectorAll('.order-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const orderId = item.dataset.orderId;
+                    const selectedOrder = orders.find(o => o.order_id == orderId);
+                    if (selectedOrder) {
+                        updateTrackingProgress(selectedOrder);
+                        document.querySelectorAll('.order-item').forEach(el => el.classList.remove('bg-[#2F2E2E]/60'));
+                        item.classList.add('bg-[#2F2E2E]/60');
+                    }
+                });
             });
+
+            // Select the first order by default if there are orders
+            if (orders.length > 0) {
+                const firstOrderItem = ordersContainer.querySelector('.order-item');
+                firstOrderItem?.click();
+            }
+        })
+        .catch(error => {
+            loadingState.classList.add('hidden');
+            emptyOrdersState.classList.remove('hidden');
+            emptyOrdersState.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <h3 class="text-xl font-medium text-white mb-2">Error Loading Orders</h3>
+                <p class="text-gray-400">${error.message}</p>
+            `;
+            console.error('Error:', error);
         });
-    });
+});
 </script>
 @endsection

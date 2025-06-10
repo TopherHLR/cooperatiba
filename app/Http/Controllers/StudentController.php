@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use App\Models\OrderModel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -260,5 +261,77 @@ class StudentController extends Controller
             return back()->withErrors(['error' => 'Update failed. Please try again.'])->withInput();
         }
     }
+    public function orders(Request $request)
+    {
+        Log::info('Reached StudentController::orders', [
+            'user_id' => Auth::id(),
+            'user' => Auth::user() ? Auth::user()->toArray() : null,
+            'student_number' => Auth::user()?->student_number,
+            'session_id' => $request->session()->getId(),
+            'ip_address' => $request->ip(),
+            'headers' => $request->headers->all(),
+            'cookies' => $request->cookies->all(),
+            'route' => $request->route()?->getName()
+        ]);
+
+        try {
+            $user = Auth::user();
+            if (!$user) {
+                Log::warning('User not authenticated for /orders', [
+                    'ip_address' => $request->ip(),
+                    'session_id' => $request->session()->getId()
+                ]);
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthenticated'
+                ], 401);
+            }
+
+            // Step 1: Get student record by student number
+            $student = \App\Models\StudentModel::where('student_number', $user->student_number)->first();
+
+            if (!$student) {
+                Log::warning('No student found for user', [
+                    'user_id' => $user->id,
+                    'student_number' => $user->student_number
+                ]);
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Student record not found.'
+                ], 404);
+            }
+
+            // Step 2: Fetch orders by student_id
+            $orders = \App\Models\OrderModel::where('student_id', $student->student_id)
+                ->with(['orderItems.uniform', 'statusHistories']) // FIXED: removed invalid eager load
+                ->orderBy('order_date', 'desc')
+                ->get();
+
+            Log::info('Orders fetched successfully', [
+                'user_id' => $user->id,
+                'student_id' => $student->student_id,
+                'student_number' => $user->student_number,
+                'order_count' => $orders->count(),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'orders' => $orders
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Failed to fetch orders', [
+                'user_id' => Auth::id(),
+                'error' => $e->getMessage(),
+                'stack_trace' => $e->getTraceAsString()
+            ]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to fetch orders: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+
 
 }

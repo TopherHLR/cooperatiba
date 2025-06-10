@@ -8,6 +8,9 @@ use App\Http\Controllers\OrderController;
 
 use Illuminate\Support\Facades\Auth;
 
+
+
+// User orders route (place first to avoid conflicts)
 // Main website routes
 Route::name('web.')->group(function () {
     // Public routes (direct views from root)
@@ -22,16 +25,15 @@ Route::name('web.')->group(function () {
     // Authentication routes
     Route::view('/login', 'login')->name('login');
     Route::view('/register', 'register')->name('register');
-       // Add logic routes for login/register (POST)
     Route::post('/login', [StudentController::class, 'login'])->name('login.submit');
     Route::post('/register', [StudentController::class, 'register'])->name('register.submit');
 
     // Optional logout
     Route::post('/logout', [StudentController::class, 'logout'])->name('logout');
+    Route::get('/orders', [StudentController::class, 'orders'])->name('orders')->middleware('auth');
 
     // Payment and order routes
     Route::view('/payment', 'payment')->name('payment');
-    Route::view('/orders', 'orders')->name('orders');
     
     // Other public routes
     Route::view('/about', 'about')->name('about');
@@ -40,6 +42,11 @@ Route::name('web.')->group(function () {
     
     Route::get('/accountsettings', [StudentController::class, 'accountsettings'])->name('accountsettings')->middleware('auth');
     Route::post('/account/update', [StudentController::class, 'update'])->name('account.update');
+
+    Route::get('/test-auth', function () {
+        Log::info('Auth test', ['user' => Auth::user()]);
+        return response()->json(['user' => Auth::user()]);
+    })->middleware('auth');
 });
 
 // Admin routes
@@ -61,3 +68,4 @@ Route::prefix('admin/orders')->group(function () {
     Route::post('/{order}/notes', [OrderController::class, 'addNote']);
     Route::delete('/{order}', [OrderController::class, 'cancel']);
 });
+
