@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\OrderModel;
 use Illuminate\Support\Facades\DB;
+use App\Http\Resources\OrderResource;
 use Illuminate\Support\Facades\Log;
 
 class StudentController extends Controller
@@ -263,17 +264,6 @@ class StudentController extends Controller
     }
     public function orders(Request $request)
     {
-        Log::info('Reached StudentController::orders', [
-            'user_id' => Auth::id(),
-            'user' => Auth::user() ? Auth::user()->toArray() : null,
-            'student_number' => Auth::user()?->student_number,
-            'session_id' => $request->session()->getId(),
-            'ip_address' => $request->ip(),
-            'headers' => $request->headers->all(),
-            'cookies' => $request->cookies->all(),
-            'route' => $request->route()?->getName()
-        ]);
-
         try {
             $user = Auth::user();
             if (!$user) {
@@ -287,9 +277,7 @@ class StudentController extends Controller
                 ], 401);
             }
 
-            // Step 1: Get student record by student number
             $student = \App\Models\StudentModel::where('student_number', $user->student_number)->first();
-
             if (!$student) {
                 Log::warning('No student found for user', [
                     'user_id' => $user->id,
@@ -301,9 +289,8 @@ class StudentController extends Controller
                 ], 404);
             }
 
-            // Step 2: Fetch orders by student_id
             $orders = \App\Models\OrderModel::where('student_id', $student->student_id)
-                ->with(['orderItems.uniform', 'statusHistories']) // FIXED: removed invalid eager load
+                ->with(['orderItems.uniform', 'statusHistories'])
                 ->orderBy('order_date', 'desc')
                 ->get();
 
@@ -316,7 +303,7 @@ class StudentController extends Controller
 
             return response()->json([
                 'success' => true,
-                'orders' => $orders
+                'orders' => OrderResource::collection($orders)
             ]);
 
         } catch (\Exception $e) {

@@ -30,7 +30,10 @@ Route::name('web.')->group(function () {
 
     // Optional logout
     Route::post('/logout', [StudentController::class, 'logout'])->name('logout');
-    Route::get('/orders', [StudentController::class, 'orders'])->name('orders')->middleware('auth');
+    Route::view('/orders', 'orders')->name('orders')->middleware('auth');
+    
+    // API route for fetching orders data
+    Route::get('/api/orders', [StudentController::class, 'orders'])->name('api.orders')->middleware('auth');
 
     // Payment and order routes
     Route::view('/payment', 'payment')->name('payment');
@@ -38,7 +41,7 @@ Route::name('web.')->group(function () {
     // Other public routes
     Route::view('/about', 'about')->name('about');
     //Route::view('/accountsettings', 'accountsettings')->name('accountsettings');
-    Route::view('accountslayout', 'accountslayout')->name('accountslayout');
+    Route::view('accountslayout', 'accountslayout')->name('accountslayout')->middleware('auth');
     
     Route::get('/accountsettings', [StudentController::class, 'accountsettings'])->name('accountsettings')->middleware('auth');
     Route::post('/account/update', [StudentController::class, 'update'])->name('account.update');
@@ -51,9 +54,9 @@ Route::name('web.')->group(function () {
 
 // Admin routes
 Route::name('admin.')->group(function () {
-    Route::view('/adminslayout', 'adminslayout')->name('adminslayout');
-    Route::get('/orderManage', [OrderController::class, 'index'])->name('orderManage');
-    Route::get('/productcatalog', [AdminUniformController::class, 'index'])->name('productcatalog');
+    Route::view('/adminslayout', 'adminslayout')->name('adminslayout')->middleware('auth');
+    Route::get('/orderManage', [OrderController::class, 'index'])->name('orderManage')->middleware('auth');
+    Route::get('/productcatalog', [AdminUniformController::class, 'index'])->name('productcatalog')->middleware('auth');
     Route::resource('uniforms', AdminUniformController::class);
         // Use POST instead of PUT to avoid method spoofing issues
     Route::post('/uniforms/update/{uniform_id}', [AdminUniformController::class, 'update'])->name('uniforms.update');
@@ -62,8 +65,8 @@ Route::name('admin.')->group(function () {
 });
 
 Route::prefix('admin/orders')->group(function () {
-    Route::get('/', [OrderController::class, 'index']);
-    Route::get('/{order}', [OrderController::class, 'show']);
+    Route::get('/', [OrderController::class, 'index'])->middleware('auth');
+    Route::get('/{order}', [OrderController::class, 'show'])->middleware('auth');
     Route::post('/{order}/status', [OrderController::class, 'updateStatus']);
     Route::post('/{order}/notes', [OrderController::class, 'addNote']);
     Route::delete('/{order}', [OrderController::class, 'cancel']);

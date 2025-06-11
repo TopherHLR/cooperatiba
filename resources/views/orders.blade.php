@@ -232,12 +232,15 @@
                                 <div class="flex justify-between px-8">
                                     <!-- Step 1: Paid -->
                                     <div class="step-container flex flex-col items-center w-1/4" data-status="paid">
-                                        <div class="step-icon bg-white border-4 border-gray-600 relative z-10 mb-2">
+                                        <div class="step-icon bg-white border-4 border-gray-600 relative ml-[75px] z-10 mb-2">
                                             <svg class="step-check hidden text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                                             </svg>
                                             <svg class="step-current hidden text-[#047705]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                            </svg>
+                                            <svg class="step-cancel hidden text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
                                             </svg>
                                         </div>
                                         <div class="step-content text-center">
@@ -249,12 +252,15 @@
                                     
                                     <!-- Step 2: Processing -->
                                     <div class="step-container flex flex-col items-center w-1/4" data-status="processing">
-                                        <div class="step-icon bg-white border-4 border-gray-600 relative z-10 mb-2">
+                                        <div class="step-icon bg-white border-4 border-gray-600 relative ml-[48px] z-10 mb-2">
                                             <svg class="step-check hidden text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                                             </svg>
                                             <svg class="step-current hidden text-[#047705]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                            </svg>
+                                            <svg class="step-cancel hidden text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
                                             </svg>
                                         </div>
                                         <div class="step-content text-center">
@@ -266,12 +272,15 @@
                                     
                                     <!-- Step 3: Ready for Pickup -->
                                     <div class="step-container flex flex-col items-center w-1/4" data-status="readyforpickup">
-                                        <div class="step-icon bg-white border-4 border-gray-600 relative z-10 mb-2">
+                                        <div class="step-icon bg-white border-4 border-gray-600 relative ml-[47px]  z-10 mb-2">
                                             <svg class="step-check hidden text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                                             </svg>
                                             <svg class="step-current hidden text-[#047705]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                            </svg>
+                                            <svg class="step-cancel hidden text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
                                             </svg>
                                         </div>
                                         <div class="step-content text-center">
@@ -283,12 +292,15 @@
                                     
                                     <!-- Step 4: Completed -->
                                     <div class="step-container flex flex-col items-center w-1/4" data-status="completed">
-                                        <div class="step-icon bg-white border-4 border-gray-600 relative z-10 mb-2">
+                                        <div class="step-icon bg-white border-4 border-gray-600 relative ml-[56px] z-10 mb-2">
                                             <svg class="step-check hidden text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                                             </svg>
                                             <svg class="step-current hidden text-[#047705]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                            </svg>
+                                            <svg class="step-cancel hidden text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
                                             </svg>
                                         </div>
                                         <div class="step-content text-center">
@@ -354,17 +366,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const emptyState = document.getElementById('emptyState');
 
     async function fetchUserOrders() {
-        const container = document.getElementById('ordersContainer');
-        const loadingState = document.getElementById('loadingState');
-        const emptyState = document.getElementById('emptyOrdersState');
-
         try {
             loadingState.classList.remove('hidden');
-            container.innerHTML = ''; // Clear existing
+            ordersContainer.innerHTML = '';
 
             const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
-            const response = await fetch('/orders', {
-                method: 'GET',
+            const response = await fetch('/api/orders', { // Changed from '/orders' to '/api/orders'                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
@@ -375,7 +382,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (response.redirected && response.url.includes('/login')) {
                 window.location.href = '/login';
-                return;
+                return [];
             }
 
             if (!response.ok) {
@@ -383,106 +390,65 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const data = await response.json();
-
             loadingState.classList.add('hidden');
 
             if (!data.success || data.orders.length === 0) {
-                emptyState.classList.remove('hidden');
-                return;
+                emptyOrdersState.classList.remove('hidden');
+                return [];
             }
 
-            emptyState.classList.add('hidden');
-
-            data.orders.forEach(order => {
-                const orderDiv = document.createElement('div');
-                orderDiv.classList.add('bg-gray-800', 'p-4', 'rounded', 'shadow');
-
-                let orderItemsHTML = '';
-                order.order_items.forEach(item => {
-                    orderItemsHTML += `
-                        <li class="flex items-center space-x-4 mb-2">
-                            <img src="${item.uniform.image_url}" alt="${item.uniform.name}" class="w-12 h-12 object-cover rounded">
-                            <div>
-                                <p class="text-white font-medium">${item.uniform.name} (Size: ${item.size})</p>
-                                <p class="text-gray-400 text-sm">Qty: ${item.quantity} × ₱${parseFloat(item.uniform.price).toFixed(2)} = ₱${parseFloat(item.subtotal_price).toFixed(2)}</p>
-                            </div>
-                        </li>
-                    `;
-                });
-
-                const latestStatus = order.status_histories
-                    .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))[0]?.status || order.payment_status;
-
-                orderDiv.innerHTML = `
-                    <h2 class="text-lg text-white font-semibold mb-2">Order #${order.order_id}</h2>
-                    <p class="text-gray-400 mb-1">Date: ${new Date(order.order_date).toLocaleString()}</p>
-                    <p class="text-gray-400 mb-1">Total: ₱${parseFloat(order.total_price).toFixed(2)}</p>
-                    <p class="text-gray-300 mb-2">Status: <span class="font-semibold">${latestStatus}</span></p>
-
-                    <ul class="mb-2">${orderItemsHTML}</ul>
-
-                    <details class="text-gray-500 text-sm">
-                        <summary class="cursor-pointer mb-1">View Status History</summary>
-                        <ul class="pl-4">
-                            ${order.status_histories.map(history => `
-                                <li>${history.status} - ${new Date(history.updated_at).toLocaleString()}</li>
-                            `).join('')}
-                        </ul>
-                    </details>
-                `;
-
-                container.appendChild(orderDiv);
-            });
+            emptyOrdersState.classList.add('hidden');
+            renderOrders(data.orders);
+            return data.orders;
 
         } catch (error) {
             console.error('Error fetching user orders:', error);
             loadingState.classList.add('hidden');
-            emptyState.classList.remove('hidden');
+            emptyOrdersState.classList.remove('hidden');
+            emptyOrdersState.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <h3 class="text-xl font-medium text-white mb-2">Error Loading Orders</h3>
+                <p class="text-gray-400">${error.message}</p>
+            `;
+            return [];
         }
     }
 
-
     function renderOrders(orders) {
-        const container = document.getElementById('ordersContainer');
-        container.innerHTML = ''; // clear previous content
+        ordersContainer.innerHTML = '';
 
         if (orders.length === 0) {
-            container.innerText = 'No orders found.';
+            emptyOrdersState.classList.remove('hidden');
             return;
         }
 
         orders.forEach(order => {
+            const currentStatus = getCurrentStatus(order.status_histories);
+            const firstItem = order.order_items[0]?.uniform || {};
+
             const orderDiv = document.createElement('div');
-            orderDiv.className = 'order';
+            orderDiv.className = 'bg-[#1F1E1E]/60 p-4 rounded-lg cursor-pointer hover:bg-[#2F2E2E]/60 transition border border-white/10 order-item';
+            orderDiv.dataset.orderId = order.order_id;
 
-            const orderHtml = `
-                <h3>Order #${order.order_id}</h3>
-                <p><strong>Order Date:</strong> ${new Date(order.order_date).toLocaleString()}</p>
-                <p><strong>Total:</strong> ₱${order.total_price}</p>
-                <p><strong>Payment Status:</strong> ${order.payment_status}</p>
-
-                <h4>Items:</h4>
-                <ul>
-                    ${order.order_items.map(item => `
-                        <li>
-                            <img src="${item.uniform.image_url}" alt="${item.uniform.name}" width="50">
-                            ${item.uniform.name} (Size: ${item.size}) x ${item.quantity} = ₱${item.subtotal_price}
-                        </li>
-                    `).join('')}
-                </ul>
-
-                <h4>Status History:</h4>
-                <ul>
-                    ${order.status_histories.map(status => `
-                        <li>${status.status} @ ${new Date(status.updated_at).toLocaleString()}</li>
-                    `).join('')}
-                </ul>
-
-                <hr/>
+            orderDiv.innerHTML = `
+                <div class="flex items-center">
+                    <div class="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 mr-4">
+                        <img src="${firstItem.image_url || '/images/placeholder.png'}" alt="Order Image" class="w-full h-full object-contain">
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-white font-medium text-sm">${firstItem.name || 'Order Items'}</h3>
+                        <p class="text-gray-400 text-xs">Order #${order.order_id}</p>
+                        <p class="text-gray-400 text-xs">Placed: ${formatDate(order.order_date)}</p>
+                    </div>
+                    <span class="text-xs px-2 py-1 rounded-full ${getStatusColor(currentStatus.status)}">
+                        ${currentStatus.status.charAt(0).toUpperCase() + currentStatus.status.slice(1)}
+                    </span>
+                </div>
             `;
 
-            orderDiv.innerHTML = orderHtml;
-            container.appendChild(orderDiv);
+            ordersContainer.appendChild(orderDiv);
         });
     }
 
@@ -515,7 +481,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return { status: 'pending', updated_at: new Date().toISOString() };
         }
         
-        // Find the status with the most recent updated_at
         return statusHistories.reduce((latest, history) => {
             return new Date(history.updated_at) > new Date(latest.updated_at) ? history : latest;
         });
@@ -528,26 +493,51 @@ document.addEventListener('DOMContentLoaded', () => {
         // Update progress bar
         const steps = ['paid', 'processing', 'readyforpickup', 'completed'];
         const currentStepIndex = steps.indexOf(status);
-        const progressPercentage = currentStepIndex >= 0 ? ((currentStepIndex + 1) / steps.length) * 100 : 0;
-        document.getElementById('progressFill').style.width = `${progressPercentage}%`;
+        const progressPercentage = currentStepIndex >= 0 && status !== 'cancelled' ? ((currentStepIndex + 1) / steps.length) * 100 : 0;
+        const progressFill = document.getElementById('progressFill');
+        progressFill.style.width = `${progressPercentage}%`;
+        
+        // Set progress bar color based on status
+        progressFill.classList.remove('bg-[#047705]', 'bg-red-500');
+        progressFill.classList.add(status === 'cancelled' ? 'bg-red-500' : 'bg-[#047705]');
 
         // Update each step
         steps.forEach((step, index) => {
             const stepContainer = document.querySelector(`.step-container[data-status="${step}"]`);
-            const checkIcon = stepContainer.querySelector('.step-check');
-            const currentIcon = stepContainer.querySelector('.step-current');
+            const checkIcon = stepContainer?.querySelector('.step-check');
+            const currentIcon = stepContainer?.querySelector('.step-current');
+            const cancelIcon = stepContainer?.querySelector('.step-cancel');
+            const iconContainer = stepContainer?.querySelector('.step-icon');
             const dateElement = document.getElementById(`${step}Date`);
 
-            checkIcon.classList.add('hidden');
-            currentIcon.classList.add('hidden');
+            if (checkIcon && currentIcon && cancelIcon && iconContainer) {
+                // Reset all icons and styles
+                checkIcon.classList.add('hidden');
+                currentIcon.classList.add('hidden');
+                cancelIcon.classList.add('hidden');
+                iconContainer.classList.remove('border-[#047705]', 'bg-[#047705]/10', 'border-red-500', 'bg-red-500/10');
+                checkIcon.classList.remove('text-[#047705]', 'text-red-500');
+                currentIcon.classList.remove('text-[#047705]', 'text-red-500');
+                cancelIcon.classList.remove('text-red-500');
 
-            if (index <= currentStepIndex) {
-                checkIcon.classList.remove('hidden');
-            } else if (index === currentStepIndex + 1) {
-                currentIcon.classList.remove('hidden');
+                if (status === 'cancelled') {
+                    // For cancelled orders, show red "X" icons for all steps
+                    cancelIcon.classList.remove('hidden');
+                    cancelIcon.classList.add('text-red-500');
+                    iconContainer.classList.add('border-red-500', 'bg-red-500/10');
+                } else if (index === currentStepIndex) {
+                    // Current step - show current indicator
+                    currentIcon.classList.remove('hidden');
+                    currentIcon.classList.add('text-[#047705]');
+                    iconContainer.classList.add('border-[#047705]', 'bg-[#047705]/10');
+                } else if (index < currentStepIndex) {
+                    // Completed step - show green checkmark
+                    checkIcon.classList.remove('hidden');
+                    checkIcon.classList.add('text-[#047705]');
+                    iconContainer.classList.add('border-[#047705]', 'bg-[#047705]/10');
+                }
             }
 
-            // Find the history record for this step
             const historyRecord = order.status_histories.find(h => h.status.toLowerCase() === step);
             dateElement.textContent = historyRecord ? formatDate(historyRecord.updated_at) : '';
         });
@@ -562,7 +552,7 @@ document.addEventListener('DOMContentLoaded', () => {
         statusElement.textContent = status.charAt(0).toUpperCase() + status.slice(1);
         statusElement.className = `text-xs px-3 py-1 rounded-full ${getStatusColor(status)}`;
         
-        document.getElementById('trackingOrderPrice').textContent = `Total: ₱${parseFloat(order.total_price).toFixed(2)}`;
+        document.getElementById('trackingOrderPrice').textContent = `Total: ₱${parseFloat(order.total_price || 0).toFixed(2)}`;
         document.getElementById('trackingOrderDate').textContent = `Ordered: ${formatDate(order.order_date)}`;
         
         const completedRecord = order.status_histories.find(h => h.status.toLowerCase() === 'completed');
@@ -583,71 +573,29 @@ document.addEventListener('DOMContentLoaded', () => {
         emptyState.classList.add('hidden');
     }
 
-    // Initialize the page
-    fetchUserOrders()
-        .then(orders => {
-            loadingState.classList.add('hidden');
-
-            if (orders.length === 0) {
-                emptyOrdersState.classList.remove('hidden');
-                return;
-            }
-
-            // Populate order history
-            ordersContainer.innerHTML = orders.map(order => {
-                const currentStatus = getCurrentStatus(order.status_histories);
-                const firstItem = order.order_items[0]?.uniform || {};
-                
-                return `
-                    <div class="bg-[#1F1E1E]/60 p-4 rounded-lg cursor-pointer hover:bg-[#2F2E2E]/60 transition border border-white/10 order-item" data-order-id="${order.order_id}">
-                        <div class="flex items-center">
-                            <div class="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 mr-4">
-                                <img src="${firstItem.image_url || '/images/placeholder.png'}" alt="Order Image" class="w-full h-full object-contain">
-                            </div>
-                            <div class="flex-1">
-                                <h3 class="text-white font-medium text-sm">${firstItem.name || 'Order Items'}</h3>
-                                <p class="text-gray-400 text-xs">Order #${order.order_id}</p>
-                                <p class="text-gray-400 text-xs">Placed: ${formatDate(order.order_date)}</p>
-                            </div>
-                            <span class="text-xs px-2 py-1 rounded-full ${getStatusColor(currentStatus.status)}">
-                                ${currentStatus.status.charAt(0).toUpperCase() + currentStatus.status.slice(1)}
-                            </span>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            // Add click handlers for each order
-            document.querySelectorAll('.order-item').forEach(item => {
-                item.addEventListener('click', () => {
-                    const orderId = item.dataset.orderId;
-                    const selectedOrder = orders.find(o => o.order_id == orderId);
-                    if (selectedOrder) {
-                        updateTrackingProgress(selectedOrder);
-                        document.querySelectorAll('.order-item').forEach(el => el.classList.remove('bg-[#2F2E2E]/60'));
-                        item.classList.add('bg-[#2F2E2E]/60');
-                    }
-                });
+    function attachOrderClickHandlers(orders) {
+        document.querySelectorAll('.order-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const orderId = item.dataset.orderId;
+                const selectedOrder = orders.find(o => o.order_id == orderId);
+                if (selectedOrder) {
+                    updateTrackingProgress(selectedOrder);
+                    document.querySelectorAll('.order-item').forEach(el => el.classList.remove('bg-[#2F2E2E]/60'));
+                    item.classList.add('bg-[#2F2E2E]/60');
+                }
             });
-
-            // Select the first order by default if there are orders
-            if (orders.length > 0) {
-                const firstOrderItem = ordersContainer.querySelector('.order-item');
-                firstOrderItem?.click();
-            }
-        })
-        .catch(error => {
-            loadingState.classList.add('hidden');
-            emptyOrdersState.classList.remove('hidden');
-            emptyOrdersState.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                <h3 class="text-xl font-medium text-white mb-2">Error Loading Orders</h3>
-                <p class="text-gray-400">${error.message}</p>
-            `;
-            console.error('Error:', error);
         });
+    }
+
+    // Initialize the page
+    fetchUserOrders().then(orders => {
+        if (orders.length > 0) {
+            attachOrderClickHandlers(orders);
+            const firstOrderItem = ordersContainer.querySelector('.order-item');
+            firstOrderItem?.click();
+        }
+    });
 });
+
 </script>
 @endsection

@@ -307,7 +307,7 @@
         </div>
 
         <div class="mt-10 text-center text-sm text-gray-300 border-t border-white/30 pt-4">
-            &copy; {{ date('Y') }} Cooperatiba. All rights reserved.
+            © 2025 Cooperatiba. All rights reserved.
         </div>
     </footer>
 
