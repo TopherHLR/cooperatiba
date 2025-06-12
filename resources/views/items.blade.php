@@ -512,25 +512,6 @@
 
     // Fetch notifications on page load
     document.addEventListener('DOMContentLoaded', fetchNotifications);
-    document.addEventListener("DOMContentLoaded", () => {
-        const modal = document.getElementById('fullscreenNotificationModal');
-        const closeBtn = document.getElementById('fullscreenModalClose');
-        const notificationTrigger = document.querySelector('.nav-link[href="#"]');
-        const modalContent = document.getElementById('fullscreen-notification-content');
-        const sidebarContent = document.getElementById('notification-container');
-
-        // Open modal and copy sidebar notifications
-        notificationTrigger.addEventListener('click', (e) => {
-            e.preventDefault();
-            modal.classList.remove('hidden');
-            modalContent.innerHTML = sidebarContent.innerHTML; // 🔁 Reuse logic output
-        });
-
-        // Close modal
-        closeBtn.addEventListener('click', () => {
-            modal.classList.add('hidden');
-        });
-    });
 
 </script>
 @endsection

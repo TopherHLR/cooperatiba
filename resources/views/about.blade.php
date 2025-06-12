@@ -300,6 +300,7 @@
 
 @section('content')
 <section class="content-section p-11">
+                @include('uniforms.modals')
     <div  class="bg-gradient-to-r from-[#1F1E1E]/100 to-[#100E00]/80 border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[15px] p-6 w-[100%] mt-8 mb-10 h-full backdrop-blur-sm flex flex-col">
         <!-- About Section -->
         <div class="liquid-card gradient-container ">

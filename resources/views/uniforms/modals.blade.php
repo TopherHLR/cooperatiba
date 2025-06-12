@@ -1,5 +1,5 @@
             <!-- Notification Modal -->
-            <div id="notificationModal" class="fixed inset-0 z-[1000] flex items-center justify-center bg-black/70 hidden">
+            <div id="notificationModal" class="fixed inset-0 z-[1500] flex items-center justify-center bg-black/70 hidden">
                 <div class="bg-gradient-to-r from-[#1F1E1E] to-[#001C00] border-[.5px] border-white rounded-[30px] p-6 w-full max-w-md relative">
                     <button id="modalCloseBtn" class="absolute top-4 right-4 text-gray-400 hover:text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -358,7 +358,7 @@
                     </div>
                 </div>
             </div>
-                <!-- Fullscreen Notification Modal -->
+            <!-- Notification Modal -->
             <div id="fullscreenNotificationModal" class="fixed inset-0 z-[1050] bg-black/70 flex items-center justify-center hidden">
                 <div class="bg-gradient-to-br from-[#1F1E1E] to-[#001C00] border border-white rounded-[20px] p-6 w-full max-w-3xl h-[80vh] overflow-hidden relative backdrop-blur-sm shadow-lg">
                     

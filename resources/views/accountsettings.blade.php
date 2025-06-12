@@ -70,8 +70,10 @@
 @endsection
 
 @section('account-content')
+@include('uniforms.modals')
 <div class="content-section min-h-full">
     <div class="content-overlay min-h-full">
+
         <div class="flex mx-2 justify-center gap-10">
             <!-- Container - Account Settings -->
             <div class="w-[100%] h-[750px]">
