@@ -169,76 +169,10 @@
                     </div>
                     <hr class="border-[.5px] border-white mb-6 -mx-6">
                     
+                                <!-- Notification Content - Liquid UI Version -->
                     <!-- Notification Content - Liquid UI Version -->
-                    <div class="text-white space-y-4 h-[580px] overflow-y-auto pr-2">
-                        <!-- Notification Item 1 - Order -->
-                        <div class="relative group">
-                            <div class="absolute inset-0 bg-gradient-to-r from-[#EDD100]/10 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                            <div class="notification-item bg-[#1F1E1E]/60 hover:bg-[#001C00]/40 rounded-xl p-3 cursor-pointer transition-all duration-300 relative overflow-hidden"
-                                onclick="openNotificationModal('order', 'Your order #12345 is ready', 'Your PE uniform order has been completed and is ready for pickup at the coop office.', '10 mins ago')">
-                                <div class="flex items-start z-10 relative">
-                                    <div class="bg-[#EDD100]/20 p-2 rounded-lg mr-3 backdrop-blur-sm border border-[#EDD100]/30">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#EDD100]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                                        </svg>
-                                    </div>
-                                    <div class="flex-1">
-                                        <div class="flex justify-between items-start">
-                                            <span class="text-xs font-medium text-[#EDD100] bg-[#EDD100]/10 px-2 py-1 rounded-full backdrop-blur-sm">ORDER UPDATE</span>
-                                            <span class="text-xs text-gray-400">10 mins ago</span>
-                                        </div>
-                                        <p class="text-sm font-medium mt-1 line-clamp-2">Your order #12345 is ready for pickup</p>
-                                    </div>
-                                </div>
-                                <div class="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-[#EDD100] to-transparent opacity-0 group-hover:opacity-70 transition-opacity duration-500"></div>
-                            </div>
-                        </div>
-
-                        <!-- Notification Item 2 - Chat -->
-                        <div class="relative group">
-                            <div class="absolute inset-0 bg-gradient-to-r from-[#047705]/10 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                            <div class="notification-item bg-[#1F1E1E]/60 hover:bg-[#001C00]/40 rounded-xl p-3 cursor-pointer transition-all duration-300 relative overflow-hidden"
-                                onclick="openNotificationModal('chat', 'New message from Admin', 'Hello! Just checking if you received your order confirmation. Let us know if you have any questions!', '1 hour ago')">
-                                <div class="flex items-start z-10 relative">
-                                    <div class="bg-[#047705]/20 p-2 rounded-lg mr-3 backdrop-blur-sm border border-[#047705]/30">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#047705]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                                        </svg>
-                                    </div>
-                                    <div class="flex-1">
-                                        <div class="flex justify-between items-start">
-                                            <span class="text-xs font-medium text-[#047705] bg-[#047705]/10 px-2 py-1 rounded-full backdrop-blur-sm">CHAT MESSAGE</span>
-                                            <span class="text-xs text-gray-400">1 hour ago</span>
-                                        </div>
-                                        <p class="text-sm font-medium mt-1 line-clamp-2">New message from Admin: Hello! Just checking...</p>
-                                    </div>
-                                </div>
-                                <div class="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-[#047705] to-transparent opacity-0 group-hover:opacity-70 transition-opacity duration-500"></div>
-                            </div>
-                        </div>
-
-                        <!-- Notification Item 3 - Promotion -->
-                        <div class="relative group">
-                            <div class="absolute inset-0 bg-gradient-to-r from-[#8B5CF6]/10 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                            <div class="notification-item bg-[#1F1E1E]/60 hover:bg-[#001C00]/40 rounded-xl p-3 cursor-pointer transition-all duration-300 relative overflow-hidden"
-                                onclick="openNotificationModal('promo', 'New Promotion Available', 'Get 15% off on all PE uniforms this week! Limited offer only until Friday.', '2 days ago')">
-                                <div class="flex items-start z-10 relative">
-                                    <div class="bg-[#8B5CF6]/20 p-2 rounded-lg mr-3 backdrop-blur-sm border border-[#8B5CF6]/30">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#8B5CF6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z" />
-                                        </svg>
-                                    </div>
-                                    <div class="flex-1">
-                                        <div class="flex justify-between items-start">
-                                            <span class="text-xs font-medium text-[#8B5CF6] bg-[#8B5CF6]/10 px-2 py-1 rounded-full backdrop-blur-sm">PROMOTION</span>
-                                            <span class="text-xs text-gray-400">2 days ago</span>
-                                        </div>
-                                        <p class="text-sm font-medium mt-1 line-clamp-2">New Promotion: 15% off on all PE uniforms</p>
-                                    </div>
-                                </div>
-                                <div class="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-[#8B5CF6] to-transparent opacity-0 group-hover:opacity-70 transition-opacity duration-500"></div>
-                            </div>
-                        </div>
+                    <div class="text-white space-y-4 h-[580px] overflow-y-auto pr-2" id="notification-container">
+                        <!-- Notifications will be dynamically loaded here -->
                     </div>
                 </div>    
             </div>
@@ -431,8 +365,6 @@
         console.log("Remove selected items");
     }
 
-
-
     function openAddToCartModal(productName, productPrice, productImage, productId) {
         console.log('openAddToCartModal called');
         
@@ -457,43 +389,51 @@
     function openNotificationModal(type, title, content, time) {
         const modal = document.getElementById('notificationModal');
         
-        // Update modal content
+        // Set content
         document.getElementById('modalTitle').textContent = title;
         document.getElementById('modalContent').textContent = content;
         document.getElementById('modalTime').textContent = time;
-        
-        // Set appropriate icon based on notification type
-        const header = document.getElementById('modalHeader');
+
+        // Get icon container
+        const iconContainer = document.getElementById('iconContainer');
+
+        // Clear previous icon
+        iconContainer.innerHTML = '';
+
+        // Set new icon based on type
         let iconHtml = '';
-        
-        if (type === 'order') {
-            iconHtml = '<div class="bg-[#EDD100]/20 p-2 rounded-lg backdrop-blur-sm border border-[#EDD100]/30">' +
-                '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#EDD100]" fill="none" viewBox="0 0 24 24" stroke="currentColor">' +
-                '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />' +
-                '</svg>' +
-                '</div>';
+        if (type === 'ORDER UPDATE') {
+            iconHtml = `
+                <div class="bg-[#EDD100]/20 p-2 rounded-lg backdrop-blur-sm border border-[#EDD100]/30">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#EDD100]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                </div>`;
         } else if (type === 'chat') {
-            iconHtml = '<div class="bg-[#047705]/20 p-2 rounded-lg backdrop-blur-sm border border-[#047705]/30">' +
-                '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#047705]" fill="none" viewBox="0 0 24 24" stroke="currentColor">' +
-                '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />' +
-                '</svg>' +
-                '</div>';
+            iconHtml = `
+                <div class="bg-[#047705]/20 p-2 rounded-lg backdrop-blur-sm border border-[#047705]/30">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#047705]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                </div>`;
         } else if (type === 'promo') {
-            iconHtml = '<div class="bg-[#8B5CF6]/20 p-2 rounded-lg backdrop-blur-sm border border-[#8B5CF6]/30">' +
-                '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#8B5CF6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">' +
-                '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z" />' +
-                '</svg>' +
-                '</div>';
+            iconHtml = `
+                <div class="bg-[#8B5CF6]/20 p-2 rounded-lg backdrop-blur-sm border border-[#8B5CF6]/30">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#8B5CF6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z" />
+                    </svg>
+                </div>`;
         }
-        
-        header.innerHTML = iconHtml + header.innerHTML;
-        
+
+        iconContainer.innerHTML = iconHtml;
+
         // Show the modal
         modal.classList.remove('hidden');
-        
-        // Close button functionality
-        document.getElementById('modalCloseBtn').onclick = function() {
+
+        // Close the modal
+        document.getElementById('modalCloseBtn').onclick = function () {
             modal.classList.add('hidden');
+            iconContainer.innerHTML = ''; // Clear only the icon, not the whole header
         };
     }
 
@@ -518,12 +458,79 @@
         document.getElementById('openBuyModal').classList.remove('hidden');
     }
 
-
     function closeBuyModal() {
         document.getElementById('openBuyModal').classList.add('hidden');
     }
-    
+    async function fetchNotifications() {
+        try {
+            const response = await fetch('/notifications', {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+            const data = await response.json();
+            if (data.status === 'success') {
+                renderNotifications(data.data);
+            }
+        } catch (error) {
+            console.error('Error fetching notifications:', error);
+        }
+    }
 
+    function renderNotifications(notifications) {
+        const container = document.getElementById('notification-container');
+        container.innerHTML = '';
+
+        notifications.forEach(notification => {
+            const notificationHtml = `
+                <div class="relative group">
+                    <div class="absolute inset-0 bg-gradient-to-r from-[${notification.color}]/10 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="notification-item bg-[#1F1E1E]/60 hover:bg-[#001C00]/40 rounded-xl p-3 cursor-pointer transition-all duration-300 relative overflow-hidden"
+                        onclick="openNotificationModal('${notification.type}', '${notification.title}', '${notification.message}', '${notification.time_ago}')">
+                        <div class="flex items-start z-10 relative">
+                            <div class="bg-[${notification.color}]/20 p-2 rounded-lg mr-3 backdrop-blur-sm border border-[${notification.color}]/30">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[${notification.color}]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${notification.icon}" />
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex justify-between items-start">
+                                    <span class="text-xs font-medium text-[${notification.color}] bg-[${notification.color}]/10 px-2 py-1 rounded-full backdrop-blur-sm">${notification.type}</span>
+                                    <span class="text-xs text-gray-400">${notification.time_ago}</span>
+                                </div>
+                                <p class="text-sm font-medium mt-1 line-clamp-2">${notification.message}</p>
+                            </div>
+                        </div>
+                        <div class="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-[${notification.color}] to-transparent opacity-0 group-hover:opacity-70 transition-opacity duration-500"></div>
+                    </div>
+                </div>
+            `;
+            container.innerHTML += notificationHtml;
+        });
+    }
+
+    // Fetch notifications on page load
+    document.addEventListener('DOMContentLoaded', fetchNotifications);
+    document.addEventListener("DOMContentLoaded", () => {
+        const modal = document.getElementById('fullscreenNotificationModal');
+        const closeBtn = document.getElementById('fullscreenModalClose');
+        const notificationTrigger = document.querySelector('.nav-link[href="#"]');
+        const modalContent = document.getElementById('fullscreen-notification-content');
+        const sidebarContent = document.getElementById('notification-container');
+
+        // Open modal and copy sidebar notifications
+        notificationTrigger.addEventListener('click', (e) => {
+            e.preventDefault();
+            modal.classList.remove('hidden');
+            modalContent.innerHTML = sidebarContent.innerHTML; // 🔁 Reuse logic output
+        });
+
+        // Close modal
+        closeBtn.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+    });
 
 </script>
 @endsection

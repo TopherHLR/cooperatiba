@@ -5,10 +5,9 @@ use App\Http\Controllers\UniformController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\AdminUniformController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-
-
 
 // User orders route (place first to avoid conflicts)
 // Main website routes
@@ -16,7 +15,10 @@ Route::name('web.')->group(function () {
     // Public routes (direct views from root)
     Route::view('/', 'home')->name('home');
     Route::view('/home', 'home')->name('home');
-    
+        // Notifications route (protected by auth middleware)
+    Route::get('/notifications', [NotificationController::class, 'getNotifications'])
+        ->name('notifications.index')
+        ->middleware('auth');
     // Uniform items route - now using controller but pointing to existing items.blade.php
     Route::get('/items', [UniformController::class, 'index'])->name('items');
     Route::get('/items/{id}', [UniformController::class, 'show'])->name('items.show');
@@ -51,7 +53,7 @@ Route::name('web.')->group(function () {
         Log::info('Auth test', ['user' => Auth::user()]);
         return response()->json(['user' => Auth::user()]);
     })->middleware('auth');
-});
+}); 
 
 // Admin routes
 Route::name('admin.')->group(function () {

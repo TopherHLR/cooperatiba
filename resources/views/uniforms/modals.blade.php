@@ -7,11 +7,11 @@
                         </svg>
                     </button>
                     
-                    <div class="flex items-center mb-4" id="modalHeader">
-                        <!-- Icon will be inserted here -->
-                        <h3 class="text-xl font-bold text-white ml-3" id="modalTitle">Notification Title</h3>
+                    <div class="flex items-center mb-4 gap-3" id="modalHeader">
+                        <div id="iconContainer"></div> <!-- 🎯 Icon will go here -->
+                        <h3 class="text-xl font-bold text-white" id="modalTitle">Notification Title</h3>
                     </div>
-                    
+
                     <hr class="border-[.5px] border-white mb-4 -mx-2">
                     
                     <div class="text-white mb-4 text-sm" id="modalContent">
@@ -358,6 +358,34 @@
                     </div>
                 </div>
             </div>
+                <!-- Fullscreen Notification Modal -->
+            <div id="fullscreenNotificationModal" class="fixed inset-0 z-[1050] bg-black/70 flex items-center justify-center hidden">
+                <div class="bg-gradient-to-br from-[#1F1E1E] to-[#001C00] border border-white rounded-[20px] p-6 w-full max-w-3xl h-[80vh] overflow-hidden relative backdrop-blur-sm shadow-lg">
+                    
+                    <!-- Close Button -->
+                    <button id="fullscreenModalClose" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+
+                    <!-- Modal Title -->
+                    <h2 class="text-2xl font-bold text-white mb-4 flex items-center" style="font-family: 'Kalam', cursive; text-shadow: -2px 1px 0px #047705;">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                        Notifications
+                    </h2>
+
+                    <hr class="border-[.5px] border-white mb-4 -mx-4">
+
+                    <!-- Shared Notification List -->
+                    <div class="overflow-y-auto h-[calc(100%-100px)] pr-2 text-white space-y-4" id="fullscreen-notification-content">
+                        <!-- Notifications will be inserted here -->
+                    </div>
+                </div>
+            </div>
+
 
 <script>
     // Size selection
