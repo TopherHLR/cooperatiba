@@ -359,7 +359,7 @@
             checkbox.checked = true;
         });
     }
-
+    
     function removeSelected() {
         // Implement remove selected items functionality
         console.log("Remove selected items");
@@ -367,24 +367,20 @@
 
     function openAddToCartModal(productName, productPrice, productImage, productId) {
         console.log('openAddToCartModal called');
-        
+
         const modal = document.getElementById('addToCartModal');
-        
+
         // Populate modal content
         document.getElementById('modalProductName').textContent = productName;
         document.getElementById('modalProductPrice').textContent = productPrice;
         document.getElementById('modalProductImage').src = productImage;
-        
-        // Set the uniform ID properly here
-        document.getElementById('uniformIdInput').value = uniformId;
-        
-        // Store product ID
-        modal.dataset.productId = productId;
 
-        // 🔥 Show the modal
+        // Correctly assign product ID to the input
+        document.getElementById('uniformIdInput').value = productId;
+
+        // Show the modal
         modal.classList.remove('hidden');
     }
-
 
     function openNotificationModal(type, title, content, time) {
         const modal = document.getElementById('notificationModal');

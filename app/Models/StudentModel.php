@@ -47,7 +47,7 @@ class StudentModel extends Model
         // Relationships
     public function orders()
     {
-        return $this->hasMany(OrderModel::class, 'student_id');
+        return $this->hasMany(OrderModel::class, 'student_id', 'student_id');
     }
 
     public function chats()

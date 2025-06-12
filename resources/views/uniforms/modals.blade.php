@@ -159,6 +159,7 @@
                         
                         <!-- Size Selection -->
                         <div class="mb-4">
+                            <input type="hidden" name="size" id="selectedSizeInputAdd" value="1">
                             <label class="block text-sm font-medium mb-2">Select Size</label>
                             <div class="grid grid-cols-3 gap-2">
                                 <button class="size-option py-2 px-3 rounded-lg border border-white/30 hover:border-[#047705] transition-all" data-size="XS">XS</button>
@@ -195,7 +196,7 @@
                         <button onclick="closeAddToCartModal()" class="px-4 py-2 rounded-lg border text-white border-white/30 hover:bg-white/10 transition-colors">
                             Cancel
                         </button>
-                        <button id="proceedToPayment" class="px-4 py-2 rounded-lg bg-[#047705] hover:bg-[#036603] text-white font-medium transition-colors flex items-center">
+                        <button onclick="submitAddToCart()" class="px-4 py-2 rounded-lg bg-[#047705] hover:bg-[#036603] text-white font-medium transition-colors flex items-center">
                             Add to Cart
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -262,6 +263,7 @@
                         
                         <!-- Quantity -->
                         <div class="mb-6">
+                            <input type="hidden" name="quantity" id="selectedQtyInputAdd" value="1">
                             <label class="block text-sm font-medium mb-2">Quantity</label>
                             <div class="flex items-center">
                                 <button id="decrementQtyBuy" class="bg-[#047705] text-white w-8 h-8 rounded-l-lg flex items-center justify-center">-</button>
@@ -288,7 +290,6 @@
                                 </svg>
                             </button>
                         </form>
-
                     </div>
                 </div>
             </div>
@@ -403,12 +404,84 @@
             document.getElementById('selectedSizeInput').value = button.getAttribute('data-size');
         });
     });
+        // Size selection
+    document.querySelectorAll('.size-option').forEach(button => {
+        button.addEventListener('click', () => {
+            // Remove active style from all buttons
+            document.querySelectorAll('.size-option').forEach(btn => {
+                btn.classList.remove('border-[#047705]', 'bg-[#047705]/20');
+            });
+
+            // Add active style to the clicked button
+            button.classList.add('border-[#047705]', 'bg-[#047705]/20');
+
+            // Set selected size input value
+            document.getElementById('selectedSizeInputAdd').value = button.getAttribute('data-size');
+        });
+    });
+    
+    function submitAddToCart() {
+        const uniformId = document.getElementById('uniformIdInput').value;
+        const quantity = document.getElementById('quantity').value || 1;
+        const size = document.getElementById('selectedSizeInputAdd').value;
+
+        fetch(`/items/${uniformId}/add-To-Cart`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                quantity: quantity,
+                size: size
+            })
+        })
+        .then(response => {
+            if (response.redirected) {
+                window.location.href = response.url;
+            } else {
+                return response.json();
+            }
+        })
+        .then(data => {
+            console.log("Item added to cart:", data);
+        })
+        .catch(error => {
+            console.error('Error adding to cart:', error);
+        });
+    }
+
+
 
     // Quantity increment/decrement
     const qtyInput = document.getElementById('quantityBuy');
+    const qtyInputAdd = document.getElementById('quantity');
+    const decrementBtnAdd = document.getElementById('decrementQty');
+    const incrementBtnAdd = document.getElementById('incrementQty');
+    const selectedQtyInputAdd = document.getElementById('selectedQtyInputAdd');
     const decrementBtn = document.getElementById('decrementQtyBuy');
     const incrementBtn = document.getElementById('incrementQtyBuy');
     const selectedQtyInput = document.getElementById('selectedQtyInput');
+    decrementBtnAdd.addEventListener('click', () => {
+        let current = parseInt(qtyInputAdd.value);
+        if (current > 1) {
+            qtyInputAdd.value = current - 1;
+            selectedQtyInputAdd.value = qtyInputAdd.value;
+        }
+    });
+
+    incrementBtnAdd.addEventListener('click', () => {
+        let current = parseInt(qtyInputAdd.value);
+        qtyInputAdd.value = current + 1;
+        selectedQtyInputAdd.value = qtyInput.value;
+    });
+
+    qtyInputAdd.addEventListener('input', () => {
+        let val = parseInt(qtyInputAdd.value);
+        if (!isNaN(val) && val >= 1) {
+            selectedQtyInputAdd.value = val;
+        }
+    });
 
     decrementBtn.addEventListener('click', () => {
         let current = parseInt(qtyInput.value);

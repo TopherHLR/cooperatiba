@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;   // for authentication
 use App\Models\UniformModel;
 use App\Models\OrderHistoryModel;
+use App\Models\CartsModel;
 use Illuminate\Http\Request;
 use App\Models\OrderModel;
 use App\Models\StudentModel;
@@ -39,22 +40,6 @@ class UniformController extends Controller
     {
         $uniform = UniformModel::findOrFail($id);
         return view('items.show', compact('uniform'));
-    }
-
-    /**
-     * Add item to cart
-     */
-    public function addToCart(Request $request, $id)
-    {
-        $uniform = UniformModel::findOrFail($id);
-        $size = $request->input('size');
-        $quantity = $request->input('quantity', 1);
-        
-        return response()->json([
-            'success' => true,
-            'message' => 'Item added to cart',
-            'cart_count' => 3 // This would be dynamic in a real implementation
-        ]);
     }
 
     /**
@@ -198,7 +183,21 @@ class UniformController extends Controller
     
         // Pass data to payment view
         return view('payment', $data);
+        }
+    public function addToCart(Request $request, $uniform_id)
+    {
+        $request->validate([
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        CartsModel::create([
+            'user_id' => auth()->id(),
+            'uniform_id' => $uniform_id,
+            'quantity' => $request->quantity,
+            'size' => $request->size,
+        ]);
+
+        return back()->with('success', 'Item added to cart!');
     }
-   
 
 }

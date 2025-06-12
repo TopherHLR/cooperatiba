@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UniformController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\AdminUniformController;
+use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Log;
@@ -25,6 +26,9 @@ Route::name('web.')->group(function () {
     Route::get('/items', [UniformController::class, 'index'])->name('items');
     Route::get('/items/{id}', [UniformController::class, 'show'])->name('items.show');
     Route::post('/items/{uniform_id}/buy-now', [UniformController::class, 'buyNow'])->name('items.buyNow');
+    // web.php
+    Route::post('/items/{uniform_id}/add-To-Cart', [UniformController::class, 'addToCart'])->name('items.addToCart');
+
     Route::get('/payment', [UniformController::class, 'payment'])->name('payment');
     // Authentication routes
     Route::view('/login', 'login')->name('login');
@@ -67,8 +71,9 @@ Route::name('admin.')->group(function () {
     Route::resource('uniforms', AdminUniformController::class);
         // Use POST instead of PUT to avoid method spoofing issues
     Route::post('/uniforms/update/{uniform_id}', [AdminUniformController::class, 'update'])->name('uniforms.update');
-    // You might want to add admin uniform management routes here later
-    // Route::resource('admin/uniforms', AdminUniformController::class);
+    // User management routes
+    Route::get('/users', [UserManagementController::class, 'index'])->name('users.index')->middleware('auth');
+    Route::delete('/users/{user_id}', [UserManagementController::class, 'destroy'])->name('users.destroy')->middleware('auth');
 });
 
 Route::prefix('admin/orders')->group(function () {
