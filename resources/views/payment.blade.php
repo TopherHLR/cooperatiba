@@ -96,7 +96,6 @@
                         @endforeach
                         </div>
                     </div>
-                    
                     <!-- Payment Methods -->
                     <div class="mb-6">
                         <h3 class="text-white font-medium text-lg mb-3">Payment Method</h3>
@@ -110,7 +109,16 @@
                                     <span class="text-white ml-3">GCash</span>
                                 </label>
                             </div>
-                            <p class="text-gray-300 text-sm mt-2 ml-7">Pay instantly through GCash mobile app</p>
+                            <p class="text-gray-300 text-sm mt-2 ml-7">Pay instantly through GCash mobile app and send the receipt to our admin's chat | COOP GCash #: 09683151166 </p>
+                        </div>
+                        
+                        <!-- Face-to-Face Option -->
+                        <div class="payment-option bg-[#1F1E1E]/60 hover:bg-[#001C00]/40 rounded-lg p-4 mb-3 cursor-pointer transition-all duration-200 border border-white/10">
+                            <div class="flex items-center">
+                                <input type="radio" id="facetoface" name="payment" value="facetoface" class="h-4 w-4 text-[#047705] focus:ring-[#047705]">
+                                <label for="facetoface" class="ml-3 text-white">Face-to-Face</label>
+                            </div>
+                            <p class="text-gray-300 text-sm mt-2 ml-7">Pay in person at the designated location</p>
                         </div>
                         
                         <!-- Other Payment Options -->
@@ -123,15 +131,21 @@
                         
                         <!-- Coming Soon Message (Hidden by default) -->
                         <div id="comingSoonMessage" class="coming-soon-message bg-[#1F1E1E]/80 border-l-4 border-yellow-500 text-yellow-400 rounded-r">
-                            <p>Other payment methods are coming soon! Please use GCash for now.</p>
+                            <p>Other payment methods are coming soon! Please use GCash or Face-to-Face for now.</p>
                         </div>
                     </div>
 
                     <!-- Checkout Button -->
                     <div class="text-right">
-                        <a href="{{ route('web.orders') }}" class="bg-[#047705] hover:bg-[#036603] text-white font-medium py-2 px-6 rounded-full transition-all duration-200 shadow-md hover:shadow-lg">
-                            Complete Payment
-                        </a>
+                        <form id="buyNowForm" method="POST" action="{{ route('web.items.buyNow', ['uniform_id' => $uniform->uniform_id]) }}">
+                            @csrf
+                            <input type="hidden" name="size" value="{{ $size }}">
+                            <input type="hidden" name="quantity" value="{{ $quantity }}">
+                            <input type="hidden" name="payment_method" value="gcash">
+                            <button type="submit" class="bg-[#047705] hover:bg-[#036603] text-white font-medium py-2 px-6 rounded-full transition-all duration-200 shadow-md hover:shadow-lg">
+                                Complete Payment
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>

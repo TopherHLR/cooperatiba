@@ -189,6 +189,7 @@
                         <div class="bg-[#1F1E1E]/60 rounded-xl p-4 mb-6 border border-white/10">
                             <div class="flex items-start">
                                 <!-- Order Image -->
+                                 
                                 <div class="w-24 h-24 bg-gray-100 rounded-lg flex-shrink-0 mr-4 overflow-hidden">
                                     <img id="trackingOrderImage" src="" alt="Order Image" class="w-full h-full object-contain">
                                 </div>
@@ -200,7 +201,7 @@
                                             <h3 id="trackingOrderTitle" class="text-white font-medium text-lg"></h3>
                                             <p id="trackingOrderNumber" class="text-sm text-gray-400"></p>
                                         </div>
-                                        <span id="trackingOrderStatus" class="text-xs px-3 py-1 rounded-full"></span>
+                                        <span id="trackingOrderStatus" class="text-xs px-3 py-1 rounded-full text-white"></span>
                                     </div>
                                     
                                     <div class="mt-2">
@@ -426,7 +427,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         orders.forEach(order => {
             const currentStatus = getCurrentStatus(order.status_histories);
+            const status = currentStatus.status.toLowerCase();
             const firstItem = order.order_items[0]?.uniform || {};
+
+            // Set display status for "readytopickup" to "Ready for Pickup"
+            const displayStatus = status === 'readyforpickup' ? 'Ready for Pickup' : 
+                status.charAt(0).toUpperCase() + status.slice(1);
 
             const orderDiv = document.createElement('div');
             orderDiv.className = 'bg-[#1F1E1E]/60 p-4 rounded-lg cursor-pointer hover:bg-[#2F2E2E]/60 transition border border-white/10 order-item';
@@ -443,7 +449,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <p class="text-gray-400 text-xs">Placed: ${formatDate(order.order_date)}</p>
                     </div>
                     <span class="text-xs px-2 py-1 rounded-full ${getStatusColor(currentStatus.status)}">
-                        ${currentStatus.status.charAt(0).toUpperCase() + currentStatus.status.slice(1)}
+                        ${displayStatus}
                     </span>
                 </div>
             `;
@@ -466,12 +472,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function getStatusColor(status) {
         const colors = {
-            pending: 'bg-yellow-500 text-yellow-900',
-            paid: 'bg-green-500 text-green-900',
+            pending: 'bg-yellow-500 text-white',
+            paid: 'bg-green-500 text-white',
             processing: 'bg-blue-500 text-blue-900',
-            readyforpickup: 'bg-purple-500 text-purple-900',
-            completed: 'bg-green-700 text-green-100',
-            cancelled: 'bg-red-500 text-red-900'
+            readyforpickup: 'bg-purple-500 text-white',
+            completed: 'bg-green-700 text-white',
+            cancelled: 'bg-red-500 text-white'
         };
         return colors[status.toLowerCase()] || 'bg-gray-500 text-gray-900';
     }
@@ -487,92 +493,95 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateTrackingProgress(order) {
-        const currentStatus = getCurrentStatus(order.status_histories);
-        const status = currentStatus.status.toLowerCase();
-        
-        // Update progress bar
-        const steps = ['paid', 'processing', 'readyforpickup', 'completed'];
-        const currentStepIndex = steps.indexOf(status);
-        const progressPercentage = currentStepIndex >= 0 && status !== 'cancelled' ? ((currentStepIndex + 1) / steps.length) * 100 : 0;
-        const progressFill = document.getElementById('progressFill');
-        progressFill.style.width = `${progressPercentage}%`;
-        
-        // Set progress bar color based on status
-        progressFill.classList.remove('bg-[#047705]', 'bg-red-500');
-        progressFill.classList.add(status === 'cancelled' ? 'bg-red-500' : 'bg-[#047705]');
+    const currentStatus = getCurrentStatus(order.status_histories);
+    const status = currentStatus.status.toLowerCase();
+    
+    // Update progress bar
+    const steps = ['paid', 'processing', 'readyforpickup', 'completed'];
+    const currentStepIndex = steps.indexOf(status);
+    const progressPercentage = status === 'cancelled' ? 100 : (currentStepIndex >= 0 ? ((currentStepIndex + 1) / steps.length) * 100 : 0);
+    const progressFill = document.getElementById('progressFill');
+    progressFill.style.width = `${progressPercentage}%`;
+    
+    // Set progress bar color based on status
+    progressFill.classList.remove('bg-[#047705]', 'bg-red-500');
+    progressFill.classList.add(status === 'cancelled' ? 'bg-red-500' : 'bg-[#047705]');
 
-        // Update each step
-        steps.forEach((step, index) => {
-            const stepContainer = document.querySelector(`.step-container[data-status="${step}"]`);
-            const checkIcon = stepContainer?.querySelector('.step-check');
-            const currentIcon = stepContainer?.querySelector('.step-current');
-            const cancelIcon = stepContainer?.querySelector('.step-cancel');
-            const iconContainer = stepContainer?.querySelector('.step-icon');
-            const dateElement = document.getElementById(`${step}Date`);
+    // Update each step
+    steps.forEach((step, index) => {
+        const stepContainer = document.querySelector(`.step-container[data-status="${step}"]`);
+        const checkIcon = stepContainer?.querySelector('.step-check');
+        const currentIcon = stepContainer?.querySelector('.step-current');
+        const cancelIcon = stepContainer?.querySelector('.step-cancel');
+        const iconContainer = stepContainer?.querySelector('.step-icon');
+        const dateElement = document.getElementById(`${step}Date`);
 
-            if (checkIcon && currentIcon && cancelIcon && iconContainer) {
-                // Reset all icons and styles
-                checkIcon.classList.add('hidden');
-                currentIcon.classList.add('hidden');
-                cancelIcon.classList.add('hidden');
-                iconContainer.classList.remove('border-[#047705]', 'bg-[#047705]/10', 'border-red-500', 'bg-red-500/10');
-                checkIcon.classList.remove('text-[#047705]', 'text-red-500');
-                currentIcon.classList.remove('text-[#047705]', 'text-red-500');
-                cancelIcon.classList.remove('text-red-500');
+        if (checkIcon && currentIcon && cancelIcon && iconContainer) {
+            // Reset all icons and styles
+            checkIcon.classList.add('hidden');
+            currentIcon.classList.add('hidden');
+            cancelIcon.classList.add('hidden');
+            iconContainer.classList.remove('border-[#047705]', 'bg-[#047705]/10', 'border-red-500', 'bg-red-500/10');
+            checkIcon.classList.remove('text-[#047705]', 'text-red-500');
+            currentIcon.classList.remove('text-[#047705]', 'text-red-500');
+            cancelIcon.classList.remove('text-red-500');
 
-                if (status === 'cancelled') {
-                    // For cancelled orders, show red "X" icons for all steps
-                    cancelIcon.classList.remove('hidden');
-                    cancelIcon.classList.add('text-red-500');
-                    iconContainer.classList.add('border-red-500', 'bg-red-500/10');
-                } else if (index === currentStepIndex) {
-                    // Current step - show current indicator
-                    currentIcon.classList.remove('hidden');
-                    currentIcon.classList.add('text-[#047705]');
-                    iconContainer.classList.add('border-[#047705]', 'bg-[#047705]/10');
-                } else if (index < currentStepIndex) {
-                    // Completed step - show green checkmark
-                    checkIcon.classList.remove('hidden');
-                    checkIcon.classList.add('text-[#047705]');
-                    iconContainer.classList.add('border-[#047705]', 'bg-[#047705]/10');
-                }
+            if (status === 'cancelled') {
+                // For cancelled orders, show red "X" icons for all steps
+                cancelIcon.classList.remove('hidden');
+                cancelIcon.classList.add('text-red-500');
+                iconContainer.classList.add('border-red-500', 'bg-red-500/10');
+            } else if (index === currentStepIndex) {
+                // Current step - show current indicator
+                currentIcon.classList.remove('hidden');
+                currentIcon.classList.add('text-[#047705]');
+                iconContainer.classList.add('border-[#047705]', 'bg-[#047705]/10');
+            } else if (index < currentStepIndex) {
+                // Completed step - show green checkmark
+                checkIcon.classList.remove('hidden');
+                checkIcon.classList.add('text-[#047705]');
+                iconContainer.classList.add('border-[#047705]', 'bg-[#047705]/10');
             }
-
-            const historyRecord = order.status_histories.find(h => h.status.toLowerCase() === step);
-            dateElement.textContent = historyRecord ? formatDate(historyRecord.updated_at) : '';
-        });
-
-        // Update order details
-        const firstItem = order.order_items[0]?.uniform || {};
-        document.getElementById('trackingOrderImage').src = firstItem.image_url || '/images/placeholder.png';
-        document.getElementById('trackingOrderTitle').textContent = firstItem.name || 'Order Items';
-        document.getElementById('trackingOrderNumber').textContent = `Order #${order.order_id}`;
-        
-        const statusElement = document.getElementById('trackingOrderStatus');
-        statusElement.textContent = status.charAt(0).toUpperCase() + status.slice(1);
-        statusElement.className = `text-xs px-3 py-1 rounded-full ${getStatusColor(status)}`;
-        
-        document.getElementById('trackingOrderPrice').textContent = `Total: ₱${parseFloat(order.total_price || 0).toFixed(2)}`;
-        document.getElementById('trackingOrderDate').textContent = `Ordered: ${formatDate(order.order_date)}`;
-        
-        const completedRecord = order.status_histories.find(h => h.status.toLowerCase() === 'completed');
-        const completedDateEl = document.getElementById('trackingOrderCompletedDate');
-        if (completedRecord) {
-            completedDateEl.textContent = `Completed: ${formatDate(completedRecord.updated_at)}`;
-            completedDateEl.classList.remove('hidden');
-        } else {
-            completedDateEl.classList.add('hidden');
         }
 
-        const readyforpickupRecord = order.status_histories.find(h => h.status.toLowerCase() === 'readyforpickup');
-        document.getElementById('estimatedPickupDate').textContent = readyforpickupRecord ? 
-            `Ready by: ${formatDate(readyforpickupRecord.updated_at)}` : 'Not ready yet';
+        const historyRecord = order.status_histories.find(h => h.status.toLowerCase() === step);
+        dateElement.textContent = historyRecord ? formatDate(historyRecord.updated_at) : '';
+    });
 
-        // Show the tracking container
-        userOrdersContainer.classList.remove('hidden');
-        emptyState.classList.add('hidden');
+    // Update order details
+    const firstItem = order.order_items[0]?.uniform || {};
+    document.getElementById('trackingOrderImage').src = firstItem.image_url || '/images/placeholder.png';
+    document.getElementById('trackingOrderTitle').textContent = firstItem.name || 'Order Items';
+    document.getElementById('trackingOrderNumber').textContent = `Order #${order.order_id}`;
+    
+    const statusElement = document.getElementById('trackingOrderStatus'); 
+        // Check for readytopickup status (case-insensitive) and set text
+    const displayStatus = status.toLowerCase() === 'readyforpickup' ? 'Ready for Pickup' : 
+        status.charAt(0).toUpperCase() + status.slice(1);
+    statusElement.textContent = displayStatus; 
+    statusElement.className = `text-xs px-3 py-1 rounded-full text-white ${getStatusColor(status)}`;
+    
+    document.getElementById('trackingOrderPrice').textContent = `Total: ₱${parseFloat(order.total_price || 0).toFixed(2)}`;
+    document.getElementById('trackingOrderDate').textContent = `Ordered: ${formatDate(order.order_date)}`;
+    
+    const completedRecord = order.status_histories.find(h => h.status.toLowerCase() === 'completed');
+    const completedDateEl = document.getElementById('trackingOrderCompletedDate');
+    if (completedRecord) {
+        completedDateEl.textContent = `Completed: ${formatDate(completedRecord.updated_at)}`;
+        completedDateEl.classList.remove('hidden');
+    } else {
+        completedDateEl.classList.add('hidden');
     }
 
+    const readyforpickupRecord = order.status_histories.find(h => h.status.toLowerCase() === 'readyforpickup');
+    document.getElementById('estimatedPickupDate').textContent = readyforpickupRecord ? 
+        `Ready by: ${formatDate(readyforpickupRecord.updated_at)}` : 'Not ready yet';
+
+    // Show the tracking container
+    userOrdersContainer.classList.remove('hidden');
+    emptyState.classList.add('hidden');
+}
+    
     function attachOrderClickHandlers(orders) {
         document.querySelectorAll('.order-item').forEach(item => {
             item.addEventListener('click', () => {

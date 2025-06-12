@@ -5,7 +5,7 @@ use App\Http\Controllers\UniformController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\AdminUniformController;
 use App\Http\Controllers\OrderController;
-
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -37,7 +37,8 @@ Route::name('web.')->group(function () {
 
     // Payment and order routes
     Route::view('/payment', 'payment')->name('payment');
-    
+    Route::get('/payment/{uniform_id?}', [UniformController::class, 'checkout'])->name('payment');
+
     // Other public routes
     Route::view('/about', 'about')->name('about');
     //Route::view('/accountsettings', 'accountsettings')->name('accountsettings');

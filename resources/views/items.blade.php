@@ -507,11 +507,13 @@
         document.getElementById('modalProductNameBuy').textContent = uniformName;
         document.getElementById('modalProductPriceBuy').textContent = `${price}`;
         document.getElementById('modalProductImageBuy').src = imageUrl;
-
-        // Set form action dynamically
+                // Set form action dynamically using query parameters
         const form = document.getElementById('buyNowForm');
-        form.action = `/items/${uniformId}/buy-now`;
+        const size = document.getElementById('selectedSizeInput').value;
+        const quantity = document.getElementById('selectedQtyInput').value;
+        const paymentMethod = document.getElementById('selectedPaymentInput').value;
 
+        form.action = `/payment/${uniformId}?size=${size}&quantity=${quantity}&payment_method=${encodeURIComponent(paymentMethod)}`;
         // Show the modal
         document.getElementById('openBuyModal').classList.remove('hidden');
     }

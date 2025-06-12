@@ -196,17 +196,28 @@
                                         @endif
 
                                     </h3>
-                                    <p class="text-sm text-gray-400">Order #{{ $order->order_number }}</p>
+                                    <p class="text-sm text-gray-400">Order #{{ $order->order_id }}</p>
                                 </div>
-                                <span class="text-xs px-2 py-1 rounded-full 
-                                    @if($order->status == 'pending') bg-yellow-500/20 text-yellow-400
-                                    @elseif($order->status == 'paid') bg-blue-500/20 text-blue-400
-                                    @elseif($order->status == 'processing') bg-purple-500/20 text-purple-400
-                                    @elseif($order->status == 'readyforpickup') bg-green-500/20 text-green-400
-                                    @elseif($order->status == 'completed') bg-gray-500/20 text-gray-300
-                                    @endif">
-                                    {{ ucfirst(str_replace('_', ' ', $order->status)) }}
+                                @php
+                                    $normalizedStatus = strtolower($order->current_status);
+                                    $badgeClass = match ($normalizedStatus) {
+                                        'pending' => 'bg-yellow-500/20 text-yellow-400',
+                                        'paid' => 'bg-green-500/20 text-green-400',
+                                        'processing' => 'bg-blue-500/20 text-blue-400',
+                                        'readyforpickup' => 'bg-purple-500/20 text-purple-400',
+                                        'completed' => 'bg-green-500/20 text-green-300',
+                                        default => 'bg-red-500/20 text-red-300',
+                                    };
+
+                                    $displayText = $normalizedStatus === 'readyforpickup'
+                                        ? 'Ready for Pickup'
+                                        : ucwords(str_replace('_', ' ', $normalizedStatus));
+                                @endphp
+
+                                <span class="text-[8px] px-3 py-1 rounded-full {{ $badgeClass }}">
+                                    {{ $displayText }}
                                 </span>
+
                             </div>
                             
                             <div class="mt-2 flex justify-between items-end">
@@ -478,10 +489,6 @@ a
                                 <p class="text-gray-400 text-sm">Shipping Method:</p>
                                 <p id="shippingMethod" class="text-white">-</p>
                             </div>
-                            <div>
-                                <p class="text-gray-400 text-sm">Order Notes:</p>
-                                <p id="orderNotes" class="text-white">-</p>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -693,30 +700,33 @@ function populateOrderDetails(order) {
     
     // Set status badge
     const statusBadge = document.getElementById('trackingOrderStatus');
+    const normalizedStatus = order.latest_status ? order.latest_status.toLowerCase() : 'unknown';
+    
     statusBadge.textContent = order.latest_status 
-        ? order.latest_status === 'ReadyForPickup' 
+        ? normalizedStatus === 'readyforpickup' 
             ? 'Ready for Pickup' 
             : order.latest_status.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
         : 'Unknown';
     
     statusBadge.className = 'text-xs px-3 py-1 rounded-full ' + 
-        (order.latest_status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' :
-         order.latest_status === 'paid' ? 'bg-blue-500/20 text-blue-400' :
-         order.latest_status === 'processing' ? 'bg-purple-500/20 text-purple-400' :
-         order.latest_status === 'readyforickup' ? 'bg-green-500/20 text-green-400' :
-         order.latest_status === 'completed' ? 'bg-gray-500/20 text-gray-300' :
+        (normalizedStatus === 'pending' ? 'bg-yellow-500/20 text-yellow-400' :
+         normalizedStatus === 'paid' ? 'bg-green-500/20 text-green-400' :
+         normalizedStatus === 'processing' ? 'bg-blue-500/20 text-blue-400' :
+         normalizedStatus === 'readyforpickup' ? 'bg-purple-500/20 text-purple-400' :
+         normalizedStatus === 'completed' ? 'bg-green-500/20 text-green-300' :
          'bg-red-500/20 text-red-300');
     
-    // Populate customer info
-    document.getElementById('customerName').textContent = order.student?.name || 'N/A';
+    document.getElementById('customerName').textContent = order.student
+        ? `${order.student.first_name} ${order.student.last_name}`
+        : 'N/A';
     document.getElementById('customerEmail').textContent = order.student?.email || 'N/A';
     document.getElementById('customerPhone').textContent = order.student?.phone || 'N/A';
     document.getElementById('studentId').textContent = order.student_id || 'N/A';
     
     // Populate order details
-    document.getElementById('paymentMethod').textContent = order.payment_method || 'Cash on Delivery';
+    document.getElementById('paymentMethod').textContent = order.payment_method || 'Face to Face | GCash payment';
     document.getElementById('shippingMethod').textContent = order.shipping_method || 'Pickup';
-    document.getElementById('orderNotes').textContent = order.notes || 'No notes';
+
     
     // Populate order items table
     const itemsTable = document.getElementById('orderItemsTable');

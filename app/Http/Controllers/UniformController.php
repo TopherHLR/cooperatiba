@@ -8,6 +8,7 @@ use App\Models\UniformModel;
 use App\Models\OrderHistoryModel;
 use Illuminate\Http\Request;
 use App\Models\OrderModel;
+use App\Models\StudentModel;
 use Carbon\Carbon;
 // Using the Session facade (must import it)
 use Illuminate\Support\Facades\Session;
@@ -59,6 +60,40 @@ class UniformController extends Controller
     /**
      * Process buy now request
      */
+    public function checkout(Request $request, $uniform_id = null)
+    {
+        Log::info('Checkout initiated.', ['uniform_id' => $uniform_id]);
+
+        if (!$uniform_id) {
+            Log::error('Checkout failed: No uniform ID provided.');
+            return redirect()->route('items')->with('error', 'No uniform selected.');
+        }
+
+        $uniform = UniformModel::where('uniform_id', $uniform_id)->first();
+
+        if (!$uniform) {
+            Log::error('Checkout failed: Uniform not found.', ['uniform_id' => $uniform_id]);
+            return redirect()->route('items')->with('error', 'Uniform not found.');
+        }
+
+        $size = $request->input('size');
+        $quantity = $request->input('quantity', 1);
+        $paymentMethod = $request->input('payment_method', 'gcash');
+
+        Log::info('Uniform found, proceeding to checkout.', [
+            'uniform_id' => $uniform_id,
+            'size' => $size,
+            'quantity' => $quantity,
+            'payment_method' => $paymentMethod,
+        ]);
+
+        return view('payment', [
+            'uniforms' => [$uniform],
+            'size' => $size,
+            'quantity' => $quantity,
+            'payment_method' => $paymentMethod
+        ]);
+    }
     public function buyNow(Request $request, $uniform_id)
     {
         Log::info('Form uniform_id', ['uniform_id' => $request->uniform_id]);
@@ -84,9 +119,16 @@ class UniformController extends Controller
 
         $size = $request->input('size');
         $quantity = $request->input('quantity', 1);
+        $paymentMethod = $request->input('payment_method', 'gcash'); // Default to gcash if not provided
+
+        // Validate payment method
+        if (!in_array($paymentMethod, ['gcash', 'facetoface'])) {
+            Log::error("Invalid payment method: {$paymentMethod}");
+            return back()->withErrors(['error' => 'Invalid payment method selected.']);
+        }
 
         $userId = Auth::id();
-        $student = \App\Models\StudentModel::where('user_id', $userId)->first();
+        $student = StudentModel::where('user_id', $userId)->first();
 
         if (!$student) {
             Log::error("Student not found for user_id: {$userId}");
@@ -100,11 +142,12 @@ class UniformController extends Controller
         $order = OrderModel::create([
             'student_id' => $studentId,
             'total_price' => $totalPrice,
+            'payment_method' => $paymentMethod,
             'payment_status' => 'pending',
             'order_date' => Carbon::now(),
         ]);
 
-        Log::info('Order created', ['order_id' => $order->order_id]);
+        Log::info('Order created', ['order_id' => $order->order_id, 'payment_method' => $paymentMethod]);
 
         $subtotalPrice = $uniform->price * $quantity;
 
@@ -124,10 +167,10 @@ class UniformController extends Controller
             'new_stock_quantity' => $uniform->stock_quantity
         ]);
 
-        // ✅ Insert initial status history
+        // Insert initial status history
         OrderHistoryModel::create([
-            'order_id'   => $order->order_id,
-            'status'     => 'pending',
+            'order_id' => $order->order_id,
+            'status' => 'pending',
             'updated_at' => now(),
             'updated_by' => $userId
         ]);
@@ -138,13 +181,10 @@ class UniformController extends Controller
             'updated_by' => $userId
         ]);
 
-        return view('payment', [
-            'uniforms' => [$uniform],
-            'size' => $size,
-            'quantity' => $quantity
-        ]);
+
+    // ✅ Redirect to the orders page after successful purchase
+    return redirect()->route('web.orders')->with('success', 'Order placed successfully!');
     }
-    
     
     public function payment()
     {

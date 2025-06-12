@@ -204,7 +204,7 @@
                     </div>
                 </div>
             </div>
-            <!-- buy Modal -->
+            <!-- Buy Modal -->
             <div id="openBuyModal" class="fixed inset-0 z-[1000] flex items-center justify-center bg-black/70 hidden">
                 <div class="bg-gradient-to-r from-[#1F1E1E] to-[#001C00] border-[.5px] border-white rounded-[30px] p-6 w-full max-w-md relative">
                     <button onclick="closeBuyModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
@@ -275,15 +275,14 @@
                         <button onclick="closeBuyModal()" class="px-4 py-2 rounded-lg border text-white border-white/30 hover:bg-white/10 transition-colors">
                             Cancel
                         </button>
-                        <form id="buyNowForm" method="POST">
-                            @csrf
+                        <form id="buyNowForm" method="GET">
                             <input type="hidden" id="uniformIdInput" name="uniform_id" value="">
                             <input type="hidden" name="size" id="selectedSizeInput" value="M">
                             <input type="hidden" name="quantity" id="selectedQtyInput" value="1">
+                            <input type="hidden" name="payment_method" id="selectedPaymentInput" value="Face to Face">
 
-                            <button type="submit"
-                                class="px-4 py-2 rounded-lg bg-[#047705] hover:bg-[#036603] text-white font-medium transition-colors flex items-center">
-                                Buy now
+                            <button type="submit" class="px-4 py-2 rounded-lg bg-[#047705] hover:bg-[#036603] text-white font-medium transition-colors flex items-center">
+                                Proceed to Checkout
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                 </svg>

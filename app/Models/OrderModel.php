@@ -18,6 +18,7 @@ class OrderModel extends Model
         'total_price',
         'order_date',
         'payment_status',
+        'payment_method',
     ];
 
     protected $casts = [
