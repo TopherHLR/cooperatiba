@@ -212,7 +212,6 @@
                                     <span id="cartCounter" class="absolute -top-0 -right-0 bg-yellow-400 text-black text-[10px] rounded-full h-4 w-4 flex items-center justify-center">
                                         {{ $cartItemCount }}
                                     </span>
-
                             </a>
 
                             <!-- Notification Link -->

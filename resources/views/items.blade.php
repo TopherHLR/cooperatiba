@@ -169,12 +169,18 @@
                         </h2>
                     </div>
                     <hr class="border-[.5px] border-white mb-6 -mx-6">
-                    
-                                <!-- Notification Content - Liquid UI Version -->
-                    <!-- Notification Content - Liquid UI Version -->
-                    <div class="text-white space-y-4 h-[580px] overflow-y-auto pr-2" id="notification-container">
-                        <!-- Notifications will be dynamically loaded here -->
-                    </div>
+                    @if(auth()->check() && auth()->user()->role === 'student')
+                        <!-- Notification Content - Liquid UI Version -->
+                        <div class="text-white space-y-4 h-[580px] overflow-y-auto pr-2" id="notification-container">
+                            <!-- Notifications will be dynamically loaded here -->
+                        </div>
+                    @elseif(!auth()->check())
+                        <!-- Show login first message -->
+                        <div class="text-white text-center h-[580px] flex items-center justify-center">
+                            <p>Please log in to view notifications.</p>
+                        </div>
+                    @endif
+
                 </div>    
             </div>
 
@@ -184,32 +190,33 @@
                     <!-- Title Section with Enhanced Cart Button -->
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="text-2xl font-bold text-white" style="font-family: 'Kalam', cursive; text-shadow: -2px 1px 0px #047705;">COOPERATIBA ITEMS</h2>
-                        <button onclick="openCartModal()" class="relative group flex items-center space-x-2 px-4 py-2 rounded-[20px] bg-white/90 hover:bg-white transition-all duration-300 border border-white/30 hover:border-[#047705] shadow-sm">
-                            @php
-                                use App\Models\CartsModel;
+                        @if(auth()->check() && auth()->user()->role === 'student')
 
-                                $cartItems = CartsModel::with('uniform')->where('user_id', auth()->id())->get();
-                                $cartItemCount = $cartItems->sum('quantity');
-                                $cartTotal = $cartItems->sum(function ($item) {
-                                    return optional($item->uniform)->price * $item->quantity;
-                                });
-                            @endphp
-
-                            <!-- Cart Icon -->
-                            <div class="relative">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#047705] group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                                </svg>
-                                <!-- Cart counter badge -->
-                                <span id="cartCounter" class="absolute -top-2 -right-2 bg-[#EDD100] text-xs text-black font-bold rounded-full h-5 w-5 flex items-center justify-center transform group-hover:scale-125 transition-transform shadow-sm">
-                                    {{ $cartItemCount }}
-                                </span>                      
-                            </div>
-                            <span class="text-[#047705] font-medium text-sm hidden sm:inline-block">Cart</span>
-                            <span class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 px-2 py-1 bg-[#047705] text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap shadow-md">
-                                <span id="cartTotal">{{ number_format($cartTotal, 2) }}</span>
-                            </span>
-                        </button>
+                            <button onclick="openCartModal()" class="relative group flex items-center space-x-2 px-4 py-2 rounded-[20px] bg-white/90 hover:bg-white transition-all duration-300 border border-white/30 hover:border-[#047705] shadow-sm">
+                                @php
+                                    $cartItems = \App\Models\CartsModel::with('uniform')->where('user_id', auth()->id())->get();
+                                    $cartItemCount = $cartItems->sum('quantity');
+                                    $cartTotal = $cartItems->sum(function ($item) {
+                                        return optional($item->uniform)->price * $item->quantity;
+                                    });
+                                @endphp
+                    
+                                <!-- Cart Icon -->
+                                <div class="relative">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#047705] group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                    <!-- Cart counter badge -->
+                                    <span id="cartCounter" class="absolute -top-2 -right-2 bg-[#EDD100] text-xs text-black font-bold rounded-full h-5 w-5 flex items-center justify-center transform group-hover:scale-125 transition-transform shadow-sm">
+                                        {{ $cartItemCount }}
+                                    </span>                      
+                                </div>
+                                <span class="text-[#047705] font-medium text-sm hidden sm:inline-block">Cart</span>
+                                <span class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 px-2 py-1 bg-[#047705] text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap shadow-md">
+                                    <span id="cartTotal">{{ number_format($cartTotal, 2) }}</span>
+                                </span>
+                            </button>
+                        @endif
                     </div>
                     <hr class="border-[.5px] border-white mb-6 -mx-6">
                     
