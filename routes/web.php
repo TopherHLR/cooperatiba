@@ -8,6 +8,8 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+// routes/web.php
+use App\Http\Controllers\DashboardController;
 
 // User orders route (place first to avoid conflicts)
 // Main website routes
@@ -58,6 +60,8 @@ Route::name('web.')->group(function () {
 // Admin routes
 Route::name('admin.')->group(function () {
     Route::view('/adminslayout', 'adminslayout')->name('adminslayout')->middleware('auth');
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/orderManage', [OrderController::class, 'index'])->name('orderManage')->middleware('auth');
     Route::get('/productcatalog', [AdminUniformController::class, 'index'])->name('productcatalog')->middleware('auth');
     Route::resource('uniforms', AdminUniformController::class);

@@ -429,7 +429,7 @@ a
                             <div class="admin-step-content">
                                 <div class="flex justify-between items-center">
                                     <div>
-                                        <h4 class="text-white font-medium">Completetion</h4>
+                                        <h4 class="text-white font-medium">Order Completion</h4>
                                         <p class="text-gray-400 text-sm">Confirm order completion</p>
                                         <p id="completedDate" class="text-gray-500 text-xs mt-1"></p>
                                     </div>

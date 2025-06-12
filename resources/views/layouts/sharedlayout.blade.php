@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
                 /* Liquid UI Background Effects */
@@ -217,7 +218,7 @@
 
                         @endif
                         @if(auth()->user()->role === 'admin')
-                            <a href="{{ route('admin.adminslayout') }}" class="nav-link text-white" style="font-family: 'Inria Sans', sans-serif; font-weight: 300; text-shadow: -2px 2px 4px #000000;">Admin</a>
+                            <a href="{{ route('admin.dashboard') }}" class="nav-link text-white" style="font-family: 'Inria Sans', sans-serif; font-weight: 300; text-shadow: -2px 2px 4px #000000;">Admin</a>
                             <!-- Logout button inline with nav links -->
                             <form method="POST" action="{{ route('web.logout') }}" class="m-0 p-0">
                                 @csrf

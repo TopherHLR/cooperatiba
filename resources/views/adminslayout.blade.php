@@ -102,7 +102,7 @@
                 <h2 class="text-white text-xl font-semibold mb-6">Admin Control Panel</h2>
                 <nav class="space-y-2">
                     <div class="admin-section-header">Management</div>
-                    <a href="#" 
+                    <a href="{{ route('admin.dashboard') }}" 
                     class="admin-nav-btn text-white @if(request()->routeIs('admin.dashboard')) active @endif">
                         <svg class="admin-btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
