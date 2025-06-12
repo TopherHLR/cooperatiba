@@ -41,71 +41,26 @@
                             </svg>
                         </div>
                         <h3 class="text-xl font-bold text-white ml-3">Your Cart</h3>
-                        <span id="cartItemCount" class="ml-2 text-sm text-gray-300">(3 items)</span>
+                        <span id="cartItemCount" class="ml-2 text-sm text-gray-300">(0 items)</span>
                     </div>
                     
                     <hr class="border-[.5px] border-white mb-4 -mx-2">
-                    
-                    <!-- Cart Items -->
-                    <div class="max-h-[60vh] overflow-y-auto scrollbar-hide">
-                        <!-- Sample Cart Item - Now Selectable -->
-                        <div class="flex items-center justify-between py-3 border-b border-white/10 hover:bg-white/5 transition-colors">
-                            <div class="flex items-center space-x-3">
-                                <input type="checkbox" class="h-5 w-5 rounded border-gray-300 text-[#047705] focus:ring-[#047705]" unchecked>
-                                <div class="flex items-center space-x-4">
-                                    <img src="/images/clothes/pe.png" alt="Product" class="w-12 h-12 rounded-lg object-cover">
-                                    <div>
-                                        <h4 class="text-white font-medium">Product Name</h4>
-                                        <p class="text-sm text-gray-400">₱350.00 × 2</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex items-center space-x-3">
-                                <span class="text-white font-medium">₱700.00</span>
-                                <button class="text-red-400 hover:text-red-300">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <!-- Second Sample Cart Item -->
-                        <div class="flex items-center justify-between py-3 border-b border-white/10 hover:bg-white/5 transition-colors">
-                            <div class="flex items-center space-x-3">
-                                <input type="checkbox" class="h-5 w-5 rounded border-gray-300 text-[#047705] focus:ring-[#047705]" unchecked>
-                                <div class="flex items-center space-x-4">
-                                    <img src="/images/clothes/pe.png" alt="Product" class="w-12 h-12 rounded-lg object-cover">
-                                    <div>
-                                        <h4 class="text-white font-medium">Another Product</h4>
-                                        <p class="text-sm text-gray-400">₱550.00 × 1</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex items-center space-x-3">
-                                <span class="text-white font-medium">₱550.00</span>
-                                <button class="text-red-400 hover:text-red-300">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
+
+                    <!-- Cart Items (Dynamic Content Injected Here) -->
+                    <div class="max-h-[60vh] overflow-y-auto scrollbar-hide cart-items">
+                        <!-- JavaScript will inject items here -->
                     </div>
                     
                     <!-- Cart Summary -->
                     <div class="mt-6 pt-4 border-t border-white/10">
                         <div class="flex justify-between mb-2">
-                            <span class="text-gray-400">Subtotal (2 items):</span>
-                            <span class="text-white font-medium">₱1,250.00</span>
+                            <span class="text-gray-400">Subtotal:</span>
+                            <span id="cartSubtotal" class="text-white font-medium">₱0.00</span>
                         </div>
-                        <div class="flex justify-between mb-4">
-                            <span class="text-gray-400">Shipping:</span>
-                            <span class="text-white font-medium">₱0.00</span>
-                        </div>
+
                         <div class="flex justify-between text-lg">
                             <span class="text-white">Total:</span>
-                            <span class="text-[#EDD100] font-bold">₱1,250.00</span>
+                            <span id="cartTotal" class="text-[#EDD100] font-bold">₱0.00</span>
                         </div>
                         
                         <!-- Action Buttons -->
@@ -116,8 +71,8 @@
                             <div class="space-x-3">
                                 <button onclick="removeSelected()" class="py-2 px-4 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-lg transition-colors">
                                     Remove Selected
-                                </button>
-                                <a href="{{ route('web.payment') }}" class="py-3 px-6 bg-[#047705] hover:bg-[#036504] text-white font-bold rounded-lg transition-colors">
+                                </button>   
+                                <a id="checkoutButton" href="#" class="py-3 px-6 bg-[#047705] hover:bg-[#036504] text-white font-bold rounded-lg transition-colors">
                                     Proceed to Checkout
                                 </a>
                             </div>
@@ -386,10 +341,8 @@
                     </div>
                 </div>
             </div>
-
-
 <script>
-    // Size selection
+
     document.querySelectorAll('.size-option').forEach(button => {
         button.addEventListener('click', () => {
             // Remove active style from all buttons
@@ -450,8 +403,6 @@
             console.error('Error adding to cart:', error);
         });
     }
-
-
 
     // Quantity increment/decrement
     const qtyInput = document.getElementById('quantityBuy');

@@ -3,6 +3,7 @@
 
 @section('account-styles')
 <style>
+
     .account-liquid-card {
         position: relative;
         overflow: hidden;

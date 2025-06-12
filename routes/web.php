@@ -26,8 +26,9 @@ Route::name('web.')->group(function () {
     Route::get('/items', [UniformController::class, 'index'])->name('items');
     Route::get('/items/{id}', [UniformController::class, 'show'])->name('items.show');
     Route::post('/items/{uniform_id}/buy-now', [UniformController::class, 'buyNow'])->name('items.buyNow');
-    // web.php
+    Route::get('/cart/items', [UniformController::class, 'fetchCartItems'])->name('cart.items');
     Route::post('/items/{uniform_id}/add-To-Cart', [UniformController::class, 'addToCart'])->name('items.addToCart');
+    Route::delete('/cart/remove/{id}', [UniformController::class, 'remove'])->name('cart.remove');
 
     Route::get('/payment', [UniformController::class, 'payment'])->name('payment');
     // Authentication routes

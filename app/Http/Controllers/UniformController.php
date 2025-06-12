@@ -81,18 +81,20 @@ class UniformController extends Controller
     }
     public function buyNow(Request $request, $uniform_id)
     {
-        Log::info('Form uniform_id', ['uniform_id' => $request->uniform_id]);
-        Log::info('Route uniform_id', ['uniform_id' => $uniform_id]);
+        $isFromCart = $request->boolean('from_cart');
 
         Log::info('buyNow method called', [
-            'uniform_id' => $uniform_id,
+            'from_cart' => $isFromCart,
+            'uniform_id_form' => $request->uniform_id,
+            'uniform_id_route' => $uniform_id,
             'request_data' => $request->all(),
             'user_id' => Auth::id()
         ]);
 
         if (!Auth::check()) {
             Log::warning("Unauthenticated user attempted to access buyNow");
-            return redirect()->route('web.login')->withErrors(['error' => 'Please log in to proceed with your order.']);
+            return redirect()->route('web.login')
+                            ->withErrors(['error' => 'Please log in to proceed with your order.']);
         }
 
         $uniform = UniformModel::where('uniform_id', $uniform_id)->first();
@@ -104,10 +106,9 @@ class UniformController extends Controller
 
         $size = $request->input('size');
         $quantity = $request->input('quantity', 1);
-        $paymentMethod = $request->input('payment_method', 'gcash'); // Default to gcash if not provided
+        $paymentMethod = $request->input('payment_method', 'gcash');
 
-        // Validate payment method
-        if (!in_array($paymentMethod, ['gcash', 'facetoface'])) {
+        if (!in_array($paymentMethod, ['gcash', 'Face to Face'])) {
             Log::error("Invalid payment method: {$paymentMethod}");
             return back()->withErrors(['error' => 'Invalid payment method selected.']);
         }
@@ -121,7 +122,6 @@ class UniformController extends Controller
         }
 
         $studentId = $student->student_id;
-
         $totalPrice = $uniform->price * $quantity;
 
         $order = OrderModel::create([
@@ -132,7 +132,10 @@ class UniformController extends Controller
             'order_date' => Carbon::now(),
         ]);
 
-        Log::info('Order created', ['order_id' => $order->order_id, 'payment_method' => $paymentMethod]);
+        Log::info('Order created', [
+            'order_id' => $order->order_id,
+            'payment_method' => $paymentMethod
+        ]);
 
         $subtotalPrice = $uniform->price * $quantity;
 
@@ -152,7 +155,6 @@ class UniformController extends Controller
             'new_stock_quantity' => $uniform->stock_quantity
         ]);
 
-        // Insert initial status history
         OrderHistoryModel::create([
             'order_id' => $order->order_id,
             'status' => 'pending',
@@ -166,11 +168,24 @@ class UniformController extends Controller
             'updated_by' => $userId
         ]);
 
+        // ✅ Now it's safe to access the variables inside this block
+        if ($isFromCart) {
+            Log::info('Order originated from cart. Attempting to remove from cart.', [
+                'uniform_id' => $uniform->uniform_id,
+                'size' => $size,
+                'user_id' => $userId
+            ]);
 
-    // ✅ Redirect to the orders page after successful purchase
-    return redirect()->route('web.orders')->with('success', 'Order placed successfully!');
+            CartsModel::where('user_id', $userId)
+                ->where('uniform_id', $uniform->uniform_id)
+                ->where('size', $size)
+                ->delete();
+
+            Log::info('Cart item removed successfully.');
+        }
+
+        return redirect()->route('web.orders')->with('success', 'Order placed successfully!');
     }
-    
     public function payment()
     {
         // Retrieve the purchase data from session
@@ -183,7 +198,7 @@ class UniformController extends Controller
     
         // Pass data to payment view
         return view('payment', $data);
-        }
+    }
     public function addToCart(Request $request, $uniform_id)
     {
         $request->validate([
@@ -199,5 +214,35 @@ class UniformController extends Controller
 
         return back()->with('success', 'Item added to cart!');
     }
+    public function fetchCartItems()
+    {
+        $cartItems = CartsModel::with('uniform')
+            ->where('user_id', auth()->id())
+            ->get();
 
+        // Log each cart item and its related uniform
+        foreach ($cartItems as $item) {
+            Log::info('Cart Item', [
+                'id' => $item->id,
+                'user_id' => $item->user_id,
+                'uniform_id' => $item->uniform_id,
+                'quantity' => $item->quantity,
+                'uniform_exists' => $item->uniform ? true : false,
+                'price' => optional($item->uniform)->price,
+            ]);
+        }
+
+        return response()->json($cartItems);
+    }
+
+    public function remove($id)
+    {
+        $deleted = CartsModel::where('id', $id)->where('user_id', auth()->id())->delete();
+        Log::info('Cart item removed', [
+            'id' => $id,
+            'deleted' => $deleted,
+            'user_id' => auth()->id()
+        ]);
+        return response()->json(['success' => true]);
+    }
 }

@@ -140,7 +140,7 @@ class StudentController extends Controller
                 $request->session()->regenerate();
 
                 return $user->isAdmin()
-                    ? redirect()->route('admin.adminslayout')
+                    ? redirect()->route('admin.dashboard')
                     : redirect()->route('web.items');
             } else {
                 Log::warning('Password mismatch', [

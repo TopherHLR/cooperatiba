@@ -16,7 +16,13 @@
     button {
         font-family: 'Jost', sans-serif;
     }
-    
+    .content-section {
+        background-image: url('/images/cooperatibaitems/2ndBG.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
     /* Liquid UI Background Effects */
     body {
         background: linear-gradient(135deg, #1F1E1E 0%, #001C00 100%);

@@ -16,6 +16,7 @@
     button {
       font-family: 'Jost', sans-serif;
     }
+
     /* Liquid UI Background Effects */
     body {
         background: linear-gradient(135deg, #1F1E1E 0%, #001C00 100%);
@@ -141,7 +142,7 @@
 @endsection
 
 @section('content')
-<div  class="flex mx-10 justify-center  min-h-full">
+<div  class=" content-section flex mx-10 justify-center  min-h-full">
     <div  class="bg-gradient-to-r from-[#1F1E1E]/100 to-[#100E00]/80 border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[15px]  w-[100%] mt-32 mb-10 h-full backdrop-blur-sm flex flex-col">
         @if(session('success'))
             <div 
@@ -184,17 +185,29 @@
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="text-2xl font-bold text-white" style="font-family: 'Kalam', cursive; text-shadow: -2px 1px 0px #047705;">COOPERATIBA ITEMS</h2>
                         <button onclick="openCartModal()" class="relative group flex items-center space-x-2 px-4 py-2 rounded-[20px] bg-white/90 hover:bg-white transition-all duration-300 border border-white/30 hover:border-[#047705] shadow-sm">
+                            @php
+                                use App\Models\CartsModel;
+
+                                $cartItems = CartsModel::with('uniform')->where('user_id', auth()->id())->get();
+                                $cartItemCount = $cartItems->sum('quantity');
+                                $cartTotal = $cartItems->sum(function ($item) {
+                                    return optional($item->uniform)->price * $item->quantity;
+                                });
+                            @endphp
+
                             <!-- Cart Icon -->
                             <div class="relative">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#047705] group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                                 </svg>
                                 <!-- Cart counter badge -->
-                                <span id="cartCounter" class="absolute -top-2 -right-2 bg-[#EDD100] text-xs text-black font-bold rounded-full h-5 w-5 flex items-center justify-center transform group-hover:scale-125 transition-transform shadow-sm">0</span>
+                                <span id="cartCounter" class="absolute -top-2 -right-2 bg-[#EDD100] text-xs text-black font-bold rounded-full h-5 w-5 flex items-center justify-center transform group-hover:scale-125 transition-transform shadow-sm">
+                                    {{ $cartItemCount }}
+                                </span>                      
                             </div>
                             <span class="text-[#047705] font-medium text-sm hidden sm:inline-block">Cart</span>
                             <span class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 px-2 py-1 bg-[#047705] text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap shadow-md">
-                                ₱<span id="cartTotal">0.00</span>
+                                <span id="cartTotal">{{ number_format($cartTotal, 2) }}</span>
                             </span>
                         </button>
                     </div>
@@ -246,6 +259,7 @@
 
 <!-- JavaScript -->
 <script>
+    
     let currentImageIndex = 0;
     let galleryImages = [];
 
@@ -341,28 +355,9 @@
         document.getElementById('openBuyModal').classList.add('hidden');
     }
 
-    function closeCartModal() {
-        document.getElementById('cartModal').classList.add('hidden');
-    }
 
     function closeImageGalleryModal() {
         document.getElementById('imageGalleryModal').classList.add('hidden');
-    }
-
-    function openCartModal() {
-        document.getElementById('cartModal').classList.remove('hidden');
-    }
-
-    function selectAllItems() {
-        const checkboxes = document.querySelectorAll('#cartModal input[type="checkbox"]');
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = true;
-        });
-    }
-    
-    function removeSelected() {
-        // Implement remove selected items functionality
-        console.log("Remove selected items");
     }
 
     function openAddToCartModal(productName, productPrice, productImage, productId) {

@@ -21,6 +21,13 @@
         font-family: 'Inria Sans', sans-serif;
         overflow-x: hidden;
     }
+    .content-section {
+        background-image: url('/images/cooperatibaitems/2ndBG.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
     /* Enhanced Moving Background */
     body::before {
         content: '';
@@ -191,6 +198,23 @@
                     </a>
                     @auth
                         @if(auth()->user()->role === 'student')
+                            <!-- Cart Icon Link (styled like notification bell) -->
+                            <a href="#" onclick="openCartModal()" id="cartTrigger" class="nav-link nav-link-cart text-white relative" style="font-family: 'Inria Sans', sans-serif; font-weight: 300; text-shadow: -2px 2px 4px #000000;">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                                @php
+                                    $cartItems = \App\Models\CartsModel::with('uniform')->where('user_id', auth()->id())->get();
+                                    $cartItemCount = $cartItems->sum('quantity');
+                                @endphp
+
+                                    <span id="cartCounter" class="absolute -top-0 -right-0 bg-yellow-400 text-black text-[10px] rounded-full h-4 w-4 flex items-center justify-center">
+                                        {{ $cartItemCount }}
+                                    </span>
+
+                            </a>
+
                             <!-- Notification Link -->
                             <a href="#" id="notificationTrigger" class="nav-link nav-link-notification text-white relative" style="font-family: 'Inria Sans', sans-serif; font-weight: 300; text-shadow: -2px 2px 4px #000000;">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -244,11 +268,11 @@
                 </div>
             </div>   
         </nav>
-
+@include('uniforms.modals')
     </header>
 
     <!-- Main Content -->
-    <main> <!-- Added padding to account for fixed nav -->
+    <main class="content-section"> <!-- Added padding to account for fixed nav -->
         <div>
             @yield('content')
             @yield('styles')
@@ -320,6 +344,187 @@
     </footer>
 
     <script>
+        document.getElementById('checkoutButton').addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const selectedCheckbox = document.querySelector('.cart-checkbox:checked');
+                if (!selectedCheckbox) {
+                    alert('Please select an item to checkout.');
+                    return;
+                }
+
+                const cartItem = selectedCheckbox.closest('.cart-item');
+                const uniformId = cartItem.dataset.uniformId;
+                const size = cartItem.dataset.size;
+                const quantity = cartItem.dataset.quantity;
+
+                const url = new URL("{{ route('web.payment', '') }}".replace(/\/$/, ''));
+                url.pathname += `/${uniformId}`;
+                url.searchParams.append('size', size);
+                url.searchParams.append('quantity', quantity);
+                url.searchParams.append('from_cart', '1'); // ✅ add this line
+                window.location.href = url.toString();
+            });
+            function closeCartModal() {
+                document.getElementById('cartModal').classList.add('hidden');
+            }
+
+            const cartContainer = document.querySelector('#cartModal .cart-items');
+            const cartItemCount = document.getElementById('cartItemCount');
+            const cartSubtotal = document.getElementById('cartSubtotal');
+
+            const cartTotal = document.getElementById('cartTotal');
+
+            function populateCart(items) {
+                cartContainer.innerHTML = '';
+                let subtotal = 0;
+
+                items.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    subtotal += itemTotal;
+
+                    const cartItem = document.createElement('div');
+                    cartItem.className = 'flex items-center justify-between py-3 border-b border-white/10 hover:bg-white/5 transition-colors';
+                    cartItem.innerHTML = `
+                        <div class="flex items-center space-x-3 cart-item" 
+                            data-cart-id="${item.id}" 
+                            data-uniform-id="${item.uniform_id}"
+                            data-size="${item.size}" 
+                            data-quantity="${item.quantity}">
+                            
+                            <input type="checkbox" 
+                                class="h-5 w-5 rounded border-gray-300 text-[#047705] focus:ring-[#047705] cart-checkbox" 
+                                data-cart-id="${item.id}">
+
+                            <div class="flex items-center space-x-4">
+                                <img src="${item.image}" alt="${item.name}" class="w-12 h-12 rounded-lg object-cover">
+                                <div>
+                                    <h4 class="text-white font-medium">${item.name}</h4>
+                                    <p class="text-sm text-gray-400">₱${item.price.toFixed(2)} × ${item.quantity}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center space-x-3">
+                            <span class="text-white font-medium">₱${itemTotal.toFixed(2)}</span>
+                            <button class="text-red-400 hover:text-red-300" onclick="removeCartItem(${item.id})" data-cart-id="${item.id}">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                            </button>
+                        </div>
+                    `;
+                    cartContainer.appendChild(cartItem);
+                });
+
+                cartItemCount.textContent = `(${items.length} item${items.length !== 1 ? 's' : ''})`;
+                cartSubtotal.textContent = `₱${subtotal.toFixed(2)}`;
+
+                cartTotal.textContent = `₱${subtotal.toFixed(2)}`; // You can add shipping later
+            }
+            
+            async function openCartModal() {
+                try {
+                    const response = await fetch("{{ route('web.cart.items') }}");
+                    const items = await response.json();
+
+                    const formattedItems = items.map(item => {
+                        if (!item.uniform) return null;
+                        return {
+                            id: item.id,
+                            name: item.uniform.name,
+                            price: parseFloat(item.uniform.price),
+                            quantity: item.quantity,
+                            image: item.uniform.image_url,
+                            uniform_id: item.uniform?.uniform_id ?? 'MISSING',
+                            size: item.size ?? 'N/A'
+                        };
+                    });
+
+                    // Use populateCart to render items
+                    populateCart(formattedItems);
+
+                    // Update cart counter
+                    const totalCount = formattedItems.reduce((sum, item) => sum + item.quantity, 0);
+                    document.getElementById('cartCounter').textContent = totalCount;
+
+                    // Show modal
+                    document.getElementById('cartModal').classList.remove('hidden');
+                } catch (error) {
+                    console.error("Failed to load cart items:", error);
+                }
+            }
+            
+            async function removeCartItem(cartId) {
+                if (cartId === undefined || cartId === null || isNaN(cartId)) {
+                    alert("Invalid cart item ID");
+                    return;
+                }
+                if (!confirm("Remove this item from your cart?")) return;
+
+                try {
+                    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+                    if (!csrfToken) {
+                        throw new Error('CSRF token not found');
+                    }
+                    const response = await fetch(`/cart/remove/${cartId}`, {
+                        method: 'DELETE',
+                        headers: { 'X-CSRF-TOKEN': csrfToken }
+                    });
+                    if (response.ok) {
+                        openCartModal();
+                    } else {
+                        const errorData = await response.json();
+                        alert(`Failed to remove item: ${errorData.message || 'Unknown error'}`);
+                    }
+                } catch (error) {
+                    console.error("Failed to remove cart item:", error);
+                    alert("An error occurred while removing the item: " + error.message);
+                }
+            }
+
+            function selectAllItems() {
+                const checkboxes = document.querySelectorAll('#cartModal .cart-items input[type="checkbox"]');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = true;
+                });
+            }
+
+            async function removeSelected() {
+                const checkboxes = document.querySelectorAll('#cartModal .cart-items input[type="checkbox"]:checked');
+                if (checkboxes.length === 0) {
+                    alert('No items selected');
+                    return;
+                }
+                if (!confirm('Remove selected items from your cart?')) return;
+
+                try {
+                    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+                    if (!csrfToken) {
+                        throw new Error('CSRF token not found');
+                    }
+
+                    const cartIds = Array.from(checkboxes).map(cb => cb.dataset.cartId);
+
+                    await Promise.all(cartIds.map(cartId =>
+                        fetch(`/cart/remove/${cartId}`, {
+                            method: 'DELETE',
+                            headers: { 'X-CSRF-TOKEN': csrfToken }
+                        }).then(response => {
+                            if (!response.ok) {
+                                throw new Error(`Failed to remove item with ID ${cartId}`);
+                            }
+                            return response;
+                        })
+                    ));
+
+                    openCartModal(); // Refresh the cart view
+                } catch (error) {
+                    console.error('Error removing selected items:', error);
+                    alert('An error occurred while removing items: ' + error.message);
+                }
+            }
+
         function openNotificationModal(type, title, content, time) {
             const modal = document.getElementById('notificationModal');
             

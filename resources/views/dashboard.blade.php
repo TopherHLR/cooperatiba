@@ -150,7 +150,7 @@
             <div class="lg:w-1/2">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Total Orders -->
-                    <div class="bg-gradient-to-br from-[#1F1E1E]/60 to-[#2D2C2C]/60 rounded-xl p-6 border border-white/10 hover:border-[#5A8BFF]/50 hover:scale-105 transition-all duration-300 backdrop-blur-md">
+                    <div class="h-40 sm:h-44 md:h-38 lg:h-40 bg-gradient-to-br from-[#1F1E1E]/60 to-[#2D2C2C]/60 rounded-xl p-4 border border-white/10 hover:border-[#5A8BFF]/50 hover:scale-105 transition-all duration-300 backdrop-blur-md">
                         <div class="flex items-center justify-between mb-3">
                             <h3 class="text-white font-semibold text-lg" style="font-family: 'Inter', sans-serif;">Total Orders</h3>
                             <div class="bg-[#5A8BFF]/20 p-3 rounded-full backdrop-blur-md border border-[#5A8BFF]/30">
@@ -166,7 +166,7 @@
                     </div>
 
                     <!-- Pending Orders -->
-                    <div class="bg-gradient-to-br from-[#1F1E1E]/60 to-[#2D2C2C]/60 rounded-xl p-6 border border-[#FFB74D]/10 hover:border-[#FFB74D]/50 hover:scale-105 transition-all duration-300 backdrop-blur-md">
+                    <div class="h-40 sm:h-44 md:h-38 lg:h-40 bg-gradient-to-br from-[#1F1E1E]/60 to-[#2D2C2C]/60 rounded-xl p-4 border border-[#FFB74D]/10 hover:border-[#FFB74D]/50 hover:scale-105 transition-all duration-300 backdrop-blur-md">
                         <div class="flex items-center justify-between mb-3">
                             <h3 class="text-white font-semibold text-lg" style="font-family: 'Inter', sans-serif;">Pending Orders</h3>
                             <div class="bg-[#FFB74D]/20 p-3 rounded-full backdrop-blur-md border border-[#FFB74D]/30">
@@ -184,7 +184,7 @@
                     </div>
 
                     <!-- Paid Orders -->
-                    <div class="bg-gradient-to-br from-[#1F1E1E]/60 to-[#2D2C2C]/60 rounded-xl p-6 border border-[#66BB6A]/10 hover:border-[#66BB6A]/50 hover:scale-105 transition-all duration-300 backdrop-blur-md">
+                    <div class="h-40 sm:h-44 md:h-38 lg:h-40 bg-gradient-to-br from-[#1F1E1E]/60 to-[#2D2C2C]/60 rounded-xl p-4 border border-[#66BB6A]/10 hover:border-[#66BB6A]/50 hover:scale-105 transition-all duration-300 backdrop-blur-md">
                         <div class="flex items-center justify-between mb-3">
                             <h3 class="text-white font-semibold text-lg" style="font-family: 'Inter', sans-serif;">Paid Orders</h3>
                             <div class="bg-[#66BB6A]/20 p-3 rounded-full backdrop-blur-md border border-[#66BB6A]/30">
@@ -202,7 +202,7 @@
                     </div>
 
                     <!-- Processing Orders -->
-                    <div class="bg-gradient-to-br from-[#1F1E1E]/60 to-[#2D2C2C]/60 rounded-xl p-6 border border-[#4FC3F7]/10 hover:border-[#4FC3F7]/50 hover:scale-105 transition-all duration-300 backdrop-blur-md">
+                    <div class="h-40 sm:h-44 md:h-38 lg:h-40 bg-gradient-to-br from-[#1F1E1E]/60 to-[#2D2C2C]/60 rounded-xl p-4 border border-[#4FC3F7]/10 hover:border-[#4FC3F7]/50 hover:scale-105 transition-all duration-300 backdrop-blur-md">
                         <div class="flex items-center justify-between mb-3">
                             <h3 class="text-white font-semibold text-lg" style="font-family: 'Inter', sans-serif;">Processing Orders</h3>
                             <div class="bg-[#4FC3F7]/20 p-3 rounded-full backdrop-blur-md border border-[#4FC3F7]/30">
@@ -220,7 +220,7 @@
                     </div>
 
                     <!-- Ready for Pickup Orders -->
-                    <div class="bg-gradient-to-br from-[#1F1E1E]/60 to-[#2D2C2C]/60 rounded-xl p-6 border border-[#BA68C8]/10 hover:border-[#BA68C8]/50 hover:scale-105 transition-all duration-300 backdrop-blur-md">
+                    <div class="h-40 sm:h-44 md:h-38 lg:h-40 bg-gradient-to-br from-[#1F1E1E]/60 to-[#2D2C2C]/60 rounded-xl p-4 border border-[#BA68C8]/10 hover:border-[#BA68C8]/50 hover:scale-105 transition-all duration-300 backdrop-blur-md">
                         <div class="flex items-center justify-between mb-3">
                             <h3 class="text-white font-semibold text-lg" style="font-family: 'Inter', sans-serif;">Ready for Pickup</h3>
                             <div class="bg-[#BA68C8]/20 p-3 rounded-full backdrop-blur-md border border-[#BA68C8]/30">
@@ -238,7 +238,7 @@
                     </div>
 
                     <!-- Completed Orders -->
-                    <div class="bg-gradient-to-br from-[#1F1E1E]/60 to-[#2D2C2C]/60 rounded-xl p-6 border border-[#81C784]/10 hover:border-[#81C784]/50 hover:scale-105 transition-all duration-300 backdrop-blur-md">
+                    <div class="h-40 sm:h-44 md:h-38 lg:h-40 bg-gradient-to-br from-[#1F1E1E]/60 to-[#2D2C2C]/60 rounded-xl p-4 border border-[#81C784]/10 hover:border-[#81C784]/50 hover:scale-105 transition-all duration-300 backdrop-blur-md">
                         <div class="flex items-center justify-between mb-3">
                             <h3 class="text-white font-semibold text-lg" style="font-family: 'Inter', sans-serif;">Completed Orders</h3>
                             <div class="bg-[#81C784]/20 p-3 rounded-full backdrop-blur-md border border-[#81C784]/30">
@@ -256,7 +256,7 @@
                     </div>
 
                     <!-- Cancelled Orders -->
-                    <div class="bg-gradient-to-br from-[#1F1E1E]/60 to-[#2D2C2C]/60 rounded-xl p-6 border border-[#E57373]/10 hover:border-[#E57373]/50 hover:scale-105 transition-all duration-300 backdrop-blur-md">
+                    <div class="h-40 sm:h-44 md:h-38 lg:h-40 bg-gradient-to-br from-[#1F1E1E]/60 to-[#2D2C2C]/60 rounded-xl p-4 border border-[#E57373]/10 hover:border-[#E57373]/50 hover:scale-105 transition-all duration-300 backdrop-blur-md">
                         <div class="flex items-center justify-between mb-3">
                             <h3 class="text-white font-semibold text-lg" style="font-family: 'Inter', sans-serif;">Cancelled Orders</h3>
                             <div class="bg-[#E57373]/20 p-3 rounded-full backdrop-blur-md border border-[#E57373]/30">
@@ -274,7 +274,7 @@
                     </div>
 
                     <!-- Total Uniforms Sold -->
-                    <div class="bg-gradient-to-br from-[#1F1E1E]/60 to-[#2D2C2C]/60 rounded-xl p-6 border border-white/10 hover:border-[#5A8BFF]/50 hover:scale-105 transition-all duration-300 backdrop-blur-md">
+                    <div class="h-40 sm:h-44 md:h-38 lg:h-40 bg-gradient-to-br from-[#1F1E1E]/60 to-[#2D2C2C]/60 rounded-xl p-4 border border-white/10 hover:border-[#5A8BFF]/50 hover:scale-105 transition-all duration-300 backdrop-blur-md">
                         <div class="flex items-center justify-between mb-3">
                             <h3 class="text-white font-semibold text-lg" style="font-family: 'Inter', sans-serif;">Total Uniforms Sold</h3>
                             <div class="bg-[#5A8BFF]/20 p-3 rounded-full backdrop-blur-md border border-[#5A8BFF]/30">

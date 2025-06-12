@@ -99,23 +99,22 @@
                     <!-- Payment Methods -->
                     <div class="mb-6">
                         <h3 class="text-white font-medium text-lg mb-3">Payment Method</h3>
-                        
                         <!-- GCash Option (Selected by default) -->
                         <div class="payment-option bg-[#047705]/30 border-2 border-[#047705] rounded-lg p-4 mb-3 cursor-pointer transition-all duration-200">
                             <div class="flex items-center">
-                                <input type="radio" id="gcash" name="payment" value="gcash" checked class="h-4 w-4 text-[#047705] focus:ring-[#047705]">
+                                <input type="radio" id="gcash" name="payment_method" value="gcash" checked class="h-4 w-4 text-[#047705] focus:ring-[#047705]">
                                 <label for="gcash" class="ml-3 flex items-center">
                                     <img src="/images/gcash.png" alt="GCash" class="h-8 ml-2">
                                     <span class="text-white ml-3">GCash</span>
                                 </label>
                             </div>
-                            <p class="text-gray-300 text-sm mt-2 ml-7">Pay instantly through GCash mobile app and send the receipt to our admin's chat | COOP GCash #: 09683151166 </p>
+                            <p class="text-gray-300 text-sm mt-2 ml-7">Pay instantly through GCash mobile app and send the receipt to our admin's chat | COOP GCash #: 09683151166</p>
                         </div>
                         
                         <!-- Face-to-Face Option -->
                         <div class="payment-option bg-[#1F1E1E]/60 hover:bg-[#001C00]/40 rounded-lg p-4 mb-3 cursor-pointer transition-all duration-200 border border-white/10">
                             <div class="flex items-center">
-                                <input type="radio" id="facetoface" name="payment" value="facetoface" class="h-4 w-4 text-[#047705] focus:ring-[#047705]">
+                                <input type="radio" id="facetoface" name="payment_method" value="Face to Face" class="h-4 w-4 text-[#047705] focus:ring-[#047705]">
                                 <label for="facetoface" class="ml-3 text-white">Face-to-Face</label>
                             </div>
                             <p class="text-gray-300 text-sm mt-2 ml-7">Pay in person at the designated location</p>
@@ -124,13 +123,13 @@
                         <!-- Other Payment Options -->
                         <div class="payment-option bg-[#1F1E1E]/60 hover:bg-[#001C00]/40 rounded-lg p-4 mb-3 cursor-pointer transition-all duration-200 border border-white/10" onclick="showComingSoon()">
                             <div class="flex items-center">
-                                <input type="radio" id="other" name="payment" value="other" class="h-4 w-4 text-gray-400 focus:ring-gray-400">
+                                <input type="radio" id="other" name="payment_method" value="other" class="h-4 w-4 text-gray-400 focus:ring-gray-400">
                                 <label for="other" class="ml-3 text-gray-400">Other Payment Methods</label>
                             </div>
                         </div>
                         
                         <!-- Coming Soon Message (Hidden by default) -->
-                        <div id="comingSoonMessage" class="coming-soon-message bg-[#1F1E1E]/80 border-l-4 border-yellow-500 text-yellow-400 rounded-r">
+                        <div id="comingSoonMessage" class="coming-soon-message bg-[#1F1E1E]/80 border-l-4 border-yellow-500 text-yellow-400 rounded-r hidden">
                             <p>Other payment methods are coming soon! Please use GCash or Face-to-Face for now.</p>
                         </div>
                     </div>
@@ -139,9 +138,12 @@
                     <div class="text-right">
                         <form id="buyNowForm" method="POST" action="{{ route('web.items.buyNow', ['uniform_id' => $uniform->uniform_id]) }}">
                             @csrf
+                            @if(request()->has('from_cart') && request()->get('from_cart') == 1)
+                                <input type="hidden" name="from_cart" value="1">
+                            @endif
                             <input type="hidden" name="size" value="{{ $size }}">
                             <input type="hidden" name="quantity" value="{{ $quantity }}">
-                            <input type="hidden" name="payment_method" value="gcash">
+                            <input type="hidden" name="payment_method" id="paymentMethodInput" value="gcash">                            
                             <button type="submit" class="bg-[#047705] hover:bg-[#036603] text-white font-medium py-2 px-6 rounded-full transition-all duration-200 shadow-md hover:shadow-lg">
                                 Complete Payment
                             </button>
@@ -155,14 +157,44 @@
 
 @section('scripts')
 <script>
-    function showComingSoon() {
-        document.getElementById('comingSoonMessage').classList.add('show-message');
-        // Uncheck the other payment option after 3 seconds
-        setTimeout(() => {
-            document.getElementById('gcash').checked = true;
-            document.getElementById('comingSoonMessage').classList.remove('show-message');
-        }, 3000);
-    }
+// Update hidden input when a payment method is selected
+document.querySelectorAll('input[name="payment_method"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+        const selectedValue = document.querySelector('input[name="payment_method"]:checked').value;
+        document.getElementById('paymentMethodInput').value = selectedValue;
+        
+        // Update visual styles for selected option
+        document.querySelectorAll('.payment-option').forEach(option => {
+            option.classList.remove('bg-[#047705]/30', 'border-2', 'border-[#047705]');
+            option.classList.add('bg-[#1F1E1E]/60', 'border', 'border-white/10');
+        });
+        const selectedOption = radio.closest('.payment-option');
+        selectedOption.classList.add('bg-[#047705]/30', 'border-2', 'border-[#047705]');
+        selectedOption.classList.remove('bg-[#1F1E1E]/60', 'border-white/10');
+    });
+});
+
+// Show "Coming Soon" message and revert to GCash
+function showComingSoon() {
+    const comingSoonMessage = document.getElementById('comingSoonMessage');
+    comingSoonMessage.classList.remove('hidden');
+    
+    // Revert to GCash after a delay
+    setTimeout(() => {
+        comingSoonMessage.classList.add('hidden');
+        document.getElementById('gcash').checked = true;
+        document.getElementById('paymentMethodInput').value = 'gcash';
+        
+        // Update visual styles
+        document.querySelectorAll('.payment-option').forEach(option => {
+            option.classList.remove('bg-[#047705]/30', 'border-2', 'border-[#047705]');
+            option.classList.add('bg-[#1F1E1E]/60', 'border', 'border-white/10');
+        });
+        const gcashOption = document.getElementById('gcash').closest('.payment-option');
+        gcashOption.classList.add('bg-[#047705]/30', 'border-2', 'border-[#047705]');
+        gcashOption.classList.remove('bg-[#1F1E1E]/60', 'border-white/10');
+    }, 3000); // Hide message after 3 seconds
+}
 </script>
 @endsection
 @endsection
