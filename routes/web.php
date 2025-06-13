@@ -25,12 +25,15 @@ Route::name('web.')->group(function () {
     // Uniform items route - now using controller but pointing to existing items.blade.php
     Route::get('/items', [UniformController::class, 'index'])->name('items');
     Route::get('/items/{id}', [UniformController::class, 'show'])->name('items.show');
-    Route::post('/items/{uniform_id}/buy-now', [UniformController::class, 'buyNow'])->name('items.buyNow');
+    Route::post('/buy-now', [UniformController::class, 'buyNow'])->name('items.buyNow');
     Route::get('/cart/items', [UniformController::class, 'fetchCartItems'])->name('cart.items');
     Route::post('/items/{uniform_id}/add-To-Cart', [UniformController::class, 'addToCart'])->name('items.addToCart');
     Route::delete('/cart/remove/{id}', [UniformController::class, 'remove'])->name('cart.remove');
 
-    Route::get('/payment', [UniformController::class, 'payment'])->name('payment');
+    // Payment and order routes
+    Route::post('/payment', [UniformController::class, 'showPayment'])->name('payment');
+    Route::get('/payment/{uniform_id?}', [UniformController::class, 'showPayment'])->name('payment.single');
+
     // Authentication routes
     Route::view('/login', 'login')->name('login');
     Route::view('/register', 'register')->name('register');
@@ -44,9 +47,6 @@ Route::name('web.')->group(function () {
     // API route for fetching orders data
     Route::get('/api/orders', [StudentController::class, 'orders'])->name('api.orders')->middleware('auth');
 
-    // Payment and order routes
-    Route::view('/payment', 'payment')->name('payment');
-    Route::get('/payment/{uniform_id?}', [UniformController::class, 'checkout'])->name('payment');
 
     // Other public routes
     Route::view('/about', 'about')->name('about');

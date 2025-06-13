@@ -343,26 +343,72 @@
     </footer>
 
     <script>
-        document.getElementById('checkoutButton').addEventListener('click', function (e) {
+            document.getElementById('checkoutButton').addEventListener('click', function (e) {
                 e.preventDefault();
 
-                const selectedCheckbox = document.querySelector('.cart-checkbox:checked');
-                if (!selectedCheckbox) {
-                    alert('Please select an item to checkout.');
+                // Get all checked items
+                const selectedCheckboxes = document.querySelectorAll('.cart-checkbox:checked');
+                if (selectedCheckboxes.length === 0) {
+                    alert('Please select at least one item to checkout.');
                     return;
                 }
 
-                const cartItem = selectedCheckbox.closest('.cart-item');
-                const uniformId = cartItem.dataset.uniformId;
-                const size = cartItem.dataset.size;
-                const quantity = cartItem.dataset.quantity;
+                // Collect selected items' details
+                const selectedItems = Array.from(selectedCheckboxes).map(checkbox => {
+                    const cartItem = checkbox.closest('.cart-item');
+                    return {
+                        uniformId: cartItem.dataset.uniformId,
+                        size: cartItem.dataset.size,
+                        quantity: cartItem.dataset.quantity
+                    };
+                });
 
-                const url = new URL("{{ route('web.payment', '') }}".replace(/\/$/, ''));
-                url.pathname += `/${uniformId}`;
-                url.searchParams.append('size', size);
-                url.searchParams.append('quantity', quantity);
-                url.searchParams.append('from_cart', '1'); // ✅ add this line
-                window.location.href = url.toString();
+                // Create form dynamically to submit multiple items
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = "{{ route('web.payment') }}";
+
+                // Add CSRF token
+                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+                if (csrfToken) {
+                    const csrfInput = document.createElement('input');
+                    csrfInput.type = 'hidden';
+                    csrfInput.name = '_token';
+                    csrfInput.value = csrfToken;
+                    form.appendChild(csrfInput);
+                }
+
+                // Add from_cart parameter
+                const fromCartInput = document.createElement('input');
+                fromCartInput.type = 'hidden';
+                fromCartInput.name = 'from_cart';
+                fromCartInput.value = '1';
+                form.appendChild(fromCartInput);
+
+                // Add selected items as JSON or individual inputs
+                selectedItems.forEach((item, index) => {
+                    const uniformIdInput = document.createElement('input');
+                    uniformIdInput.type = 'hidden';
+                    uniformIdInput.name = `items[${index}][uniform_id]`;
+                    uniformIdInput.value = item.uniformId;
+                    form.appendChild(uniformIdInput);
+
+                    const sizeInput = document.createElement('input');
+                    sizeInput.type = 'hidden';
+                    sizeInput.name = `items[${index}][size]`;
+                    sizeInput.value = item.size;
+                    form.appendChild(sizeInput);
+
+                    const quantityInput = document.createElement('input');
+                    quantityInput.type = 'hidden';
+                    quantityInput.name = `items[${index}][quantity]`;
+                    quantityInput.value = item.quantity;
+                    form.appendChild(quantityInput);
+                });
+
+                // Append form to body and submit
+                document.body.appendChild(form);
+                form.submit();
             });
             function closeCartModal() {
                 document.getElementById('cartModal').classList.add('hidden');
@@ -484,11 +530,15 @@
 
             function selectAllItems() {
                 const checkboxes = document.querySelectorAll('#cartModal .cart-items input[type="checkbox"]');
+                if (checkboxes.length === 0) {
+                    alert('No items in the cart to select.');
+                    return;
+                }
                 checkboxes.forEach(checkbox => {
                     checkbox.checked = true;
                 });
+                updateCartSummary();
             }
-
             async function removeSelected() {
                 const checkboxes = document.querySelectorAll('#cartModal .cart-items input[type="checkbox"]:checked');
                 if (checkboxes.length === 0) {

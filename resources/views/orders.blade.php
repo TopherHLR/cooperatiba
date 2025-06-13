@@ -187,27 +187,22 @@
                     <div id="userOrdersContainer" class="hidden">
                         <!-- Order Summary -->
                         <div class="bg-[#1F1E1E]/60 rounded-xl p-4 mb-6 border border-white/10">
-                            <div class="flex items-start">
-                                <!-- Order Image -->
-                                 
-                                <div class="w-24 h-24 bg-gray-100 rounded-lg flex-shrink-0 mr-4 overflow-hidden">
-                                    <img id="trackingOrderImage" src="" alt="Order Image" class="w-full h-full object-contain">
+                            <!-- Vertical Stack: Items on top, Details below -->
+                            <div class="flex flex-col gap-6">
+                                <!-- Order Items -->
+                                <div id="trackingOrderItemsContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <!-- JS will append items here -->
                                 </div>
-                                
+
                                 <!-- Order Details -->
-                                <div class="flex-1">
-                                    <div class="flex justify-between items-start">
-                                        <div>
-                                            <h3 id="trackingOrderTitle" class="text-white font-medium text-lg"></h3>
-                                            <p id="trackingOrderNumber" class="text-sm text-gray-400"></p>
-                                        </div>
-                                        <span id="trackingOrderStatus" class="text-xs px-3 py-1 rounded-full text-white"></span>
-                                    </div>
-                                    
-                                    <div class="mt-2">
-                                        <p id="trackingOrderPrice" class="text-sm text-white"></p>
-                                        <p id="trackingOrderDate" class="text-xs text-gray-400"></p>
-                                        <p id="trackingOrderCompletedDate" class="text-xs text-gray-400 hidden"></p>
+                                <div class="flex flex-col justify-between">
+                                    <!-- Horizontal Details Row -->
+                                    <div class="flex flex-wrap gap-x-6 gap-y-1 text-sm text-gray-300">
+                                        <p id="trackingOrderNumber" class="text-sm text-gray-400"></p>
+                                        <p id="trackingOrderPrice" class="text-white"></p>
+                                        <p id="trackingOrderDate"></p>
+                                        <p id="trackingOrderCompletedDate" class="hidden"></p>
+                                        <p id="estimatedPickupDate" class="text-xs text-gray-300"></p>
                                     </div>
                                 </div>
                             </div>
@@ -434,6 +429,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const displayStatus = status === 'readyforpickup' ? 'Ready for Pickup' : 
                 status.charAt(0).toUpperCase() + status.slice(1);
 
+            // Create order title with multiple items indicator
+            let orderTitle = firstItem.name || 'Order Items';
+            if (order.order_items.length > 1) {
+                orderTitle += ` + ${order.order_items.length - 1} more`;
+            }
+
             const orderDiv = document.createElement('div');
             orderDiv.className = 'bg-[#1F1E1E]/60 p-4 rounded-lg cursor-pointer hover:bg-[#2F2E2E]/60 transition border border-white/10 order-item';
             orderDiv.dataset.orderId = order.order_id;
@@ -444,7 +445,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <img src="${firstItem.image_url || '/images/placeholder.png'}" alt="Order Image" class="w-full h-full object-contain">
                     </div>
                     <div class="flex-1">
-                        <h3 class="text-white font-medium text-sm">${firstItem.name || 'Order Items'}</h3>
+                        <h3 class="text-white font-medium text-sm">${orderTitle}</h3>
                         <p class="text-gray-400 text-xs">Order #${order.order_id}</p>
                         <p class="text-gray-400 text-xs">Placed: ${formatDate(order.order_date)}</p>
                     </div>
@@ -457,7 +458,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ordersContainer.appendChild(orderDiv);
         });
     }
-
+        
     function formatDate(dateStr) {
         if (!dateStr) return '';
         const date = new Date(dateStr);
@@ -493,28 +494,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateTrackingProgress(order) {
-    const currentStatus = getCurrentStatus(order.status_histories);
-    const status = currentStatus.status.toLowerCase();
-    
-    // Update progress bar
-    const steps = ['paid', 'processing', 'readyforpickup', 'completed'];
-    const currentStepIndex = steps.indexOf(status);
-    const progressPercentage = status === 'cancelled' ? 100 : (currentStepIndex >= 0 ? ((currentStepIndex + 1) / steps.length) * 100 : 0);
-    const progressFill = document.getElementById('progressFill');
-    progressFill.style.width = `${progressPercentage}%`;
-    
-    // Set progress bar color based on status
-    progressFill.classList.remove('bg-[#047705]', 'bg-red-500');
-    progressFill.classList.add(status === 'cancelled' ? 'bg-red-500' : 'bg-[#047705]');
+        const currentStatus = getCurrentStatus(order.status_histories);
+        const status = currentStatus.status.toLowerCase();
+        
+        // Update progress bar
+        const steps = ['paid', 'processing', 'readyforpickup', 'completed'];
+        const currentStepIndex = steps.indexOf(status);
+        const progressPercentage = status === 'cancelled' ? 100 : (currentStepIndex >= 0 ? ((currentStepIndex + 1) / steps.length) * 100 : 0);
+        const progressFill = document.getElementById('progressFill');
+        progressFill.style.width = `${progressPercentage}%`;
+        
+        // Set progress bar color based on status
+        progressFill.classList.remove('bg-[#047705]', 'bg-red-500');
+        progressFill.classList.add(status === 'cancelled' ? 'bg-red-500' : 'bg-[#047705]');
 
-    // Update each step
-    steps.forEach((step, index) => {
-        const stepContainer = document.querySelector(`.step-container[data-status="${step}"]`);
-        const checkIcon = stepContainer?.querySelector('.step-check');
-        const currentIcon = stepContainer?.querySelector('.step-current');
-        const cancelIcon = stepContainer?.querySelector('.step-cancel');
-        const iconContainer = stepContainer?.querySelector('.step-icon');
-        const dateElement = document.getElementById(`${step}Date`);
+        // Update each step
+        steps.forEach((step, index) => {
+            const stepContainer = document.querySelector(`.step-container[data-status="${step}"]`);
+            const checkIcon = stepContainer?.querySelector('.step-check');
+            const currentIcon = stepContainer?.querySelector('.step-current');
+            const cancelIcon = stepContainer?.querySelector('.step-cancel');
+            const iconContainer = stepContainer?.querySelector('.step-icon');
+            const dateElement = document.getElementById(`${step}Date`);
 
         if (checkIcon && currentIcon && cancelIcon && iconContainer) {
             // Reset all icons and styles
@@ -548,39 +549,47 @@ document.addEventListener('DOMContentLoaded', () => {
         dateElement.textContent = historyRecord ? formatDate(historyRecord.updated_at) : '';
     });
 
-    // Update order details
-    const firstItem = order.order_items[0]?.uniform || {};
-    document.getElementById('trackingOrderImage').src = firstItem.image_url || '/images/placeholder.png';
-    document.getElementById('trackingOrderTitle').textContent = firstItem.name || 'Order Items';
-    document.getElementById('trackingOrderNumber').textContent = `Order #${order.order_id}`;
-    
-    const statusElement = document.getElementById('trackingOrderStatus'); 
-        // Check for readytopickup status (case-insensitive) and set text
-    const displayStatus = status.toLowerCase() === 'readyforpickup' ? 'Ready for Pickup' : 
-        status.charAt(0).toUpperCase() + status.slice(1);
-    statusElement.textContent = displayStatus; 
-    statusElement.className = `text-xs px-3 py-1 rounded-full text-white ${getStatusColor(status)}`;
-    
-    document.getElementById('trackingOrderPrice').textContent = `Total: ₱${parseFloat(order.total_price || 0).toFixed(2)}`;
-    document.getElementById('trackingOrderDate').textContent = `Ordered: ${formatDate(order.order_date)}`;
-    
-    const completedRecord = order.status_histories.find(h => h.status.toLowerCase() === 'completed');
-    const completedDateEl = document.getElementById('trackingOrderCompletedDate');
-    if (completedRecord) {
-        completedDateEl.textContent = `Completed: ${formatDate(completedRecord.updated_at)}`;
-        completedDateEl.classList.remove('hidden');
-    } else {
-        completedDateEl.classList.add('hidden');
+        const itemsContainer = document.getElementById('trackingOrderItemsContainer');
+        itemsContainer.innerHTML = ''; // Clear previous items
+
+        order.order_items.forEach(item => {
+            const uniform = item.uniform || {};
+            const itemElement = document.createElement('div');
+            itemElement.className = 'flex items-center gap-4 p-3 bg-white/10 rounded-lg';
+
+            itemElement.innerHTML = `
+                <img src="${uniform.image_url || '/images/placeholder.png'}" alt="${uniform.name || 'Item'}" class="w-16 h-16 object-cover rounded" />
+                <div>
+                    <div class="font-semibold text-white">${uniform.name || 'Unnamed Item'}</div>
+                    <div class="text-sm text-gray-300">Qty: ${item.quantity || 1}</div>
+                </div>
+            `;
+
+            itemsContainer.appendChild(itemElement);
+        });
+
+        document.getElementById('trackingOrderNumber').textContent = `Order #${order.order_id} |`;
+
+        document.getElementById('trackingOrderPrice').textContent = `Total: ₱${parseFloat(order.total_price || 0).toFixed(2)} |`;
+        document.getElementById('trackingOrderDate').textContent = `Ordered: ${formatDate(order.order_date)} |`;
+        
+        const completedRecord = order.status_histories.find(h => h.status.toLowerCase() === 'completed');
+        const completedDateEl = document.getElementById('trackingOrderCompletedDate');
+        if (completedRecord) {
+            completedDateEl.textContent = `Completed: ${formatDate(completedRecord.updated_at)} |`;
+            completedDateEl.classList.remove('hidden');
+        } else {
+            completedDateEl.classList.add('hidden');
+        }
+
+        const readyforpickupRecord = order.status_histories.find(h => h.status.toLowerCase() === 'readyforpickup');
+        document.getElementById('estimatedPickupDate').textContent = readyforpickupRecord ? 
+            `Ready by: ${formatDate(readyforpickupRecord.updated_at)}` : 'Not ready yet';
+
+        // Show the tracking container
+        userOrdersContainer.classList.remove('hidden');
+        emptyState.classList.add('hidden');
     }
-
-    const readyforpickupRecord = order.status_histories.find(h => h.status.toLowerCase() === 'readyforpickup');
-    document.getElementById('estimatedPickupDate').textContent = readyforpickupRecord ? 
-        `Ready by: ${formatDate(readyforpickupRecord.updated_at)}` : 'Not ready yet';
-
-    // Show the tracking container
-    userOrdersContainer.classList.remove('hidden');
-    emptyState.classList.add('hidden');
-}
     
     function attachOrderClickHandlers(orders) {
         document.querySelectorAll('.order-item').forEach(item => {

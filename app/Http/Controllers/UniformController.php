@@ -42,9 +42,85 @@ class UniformController extends Controller
         return view('items.show', compact('uniform'));
     }
 
-    /**
-     * Process buy now request
-     */
+    public function showPayment(Request $request)
+    {
+        Log::info('Payment view initiated.', ['request_data' => $request->all()]);
+
+        // Get items from request (array of {uniform_id, size, quantity})
+        $items = $request->input('items', []);
+        $fromCart = $request->input('from_cart', 0);
+        $paymentMethod = $request->input('payment_method', 'gcash');
+
+        // Handle single item checkout (via GET or direct buy)
+        if (empty($items) && $request->has('uniform_id')) {
+            $uniformId = $request->input('uniform_id');
+            $size = $request->input('size');
+            $quantity = $request->input('quantity', 1);
+
+            $uniform = UniformModel::where('uniform_id', $uniformId)->first();
+            if (!$uniform) {
+                Log::error('Payment failed: Uniform not found.', ['uniform_id' => $uniformId]);
+                return redirect()->route('items')->with('error', 'Uniform not found.');
+            }
+
+            $items = [
+                [
+                    'uniform_id' => $uniformId,
+                    'size' => $size,
+                    'quantity' => $quantity,
+                ]
+            ];
+        }
+
+        // Validate and process items
+        if (empty($items)) {
+            Log::error('Payment failed: No items provided.');
+            return redirect()->route('items')->with('error', 'No items selected.');
+        }
+
+        $uniforms = [];
+        $total = 0;
+
+        foreach ($items as $item) {
+            $uniform = UniformModel::where('uniform_id', $item['uniform_id'])->first();
+            if (!$uniform) {
+                Log::warning('Uniform not found, skipping.', ['uniform_id' => $item['uniform_id']]);
+                continue;
+            }
+
+            $quantity = (int) $item['quantity'];
+            $subtotal = $uniform->price * $quantity;
+
+            $uniforms[] = [
+                'uniform' => $uniform,
+                'size' => $item['size'],
+                'quantity' => $quantity,
+                'subtotal' => $subtotal,
+            ];
+
+            $total += $subtotal;
+        }
+
+        if (empty($uniforms)) {
+            Log::error('Payment failed: No valid uniforms found.');
+            return redirect()->route('items')->with('error', 'No valid items found.');
+        }
+
+        Log::info('Payment view prepared.', [
+            'uniforms_count' => count($uniforms),
+            'total' => $total,
+            'from_cart' => $fromCart,
+            'payment_method' => $paymentMethod,
+        ]);
+
+        return view('payment', [
+            'uniforms' => $uniforms,
+            'total' => $total,
+            'from_cart' => $fromCart,
+            'payment_method' => $paymentMethod,
+        ]);
+    }
+
     public function checkout(Request $request, $uniform_id = null)
     {
         Log::info('Checkout initiated.', ['uniform_id' => $uniform_id]);
@@ -79,14 +155,12 @@ class UniformController extends Controller
             'payment_method' => $paymentMethod
         ]);
     }
-    public function buyNow(Request $request, $uniform_id)
+    public function buyNow(Request $request)
     {
         $isFromCart = $request->boolean('from_cart');
 
         Log::info('buyNow method called', [
             'from_cart' => $isFromCart,
-            'uniform_id_form' => $request->uniform_id,
-            'uniform_id_route' => $uniform_id,
             'request_data' => $request->all(),
             'user_id' => Auth::id()
         ]);
@@ -97,16 +171,20 @@ class UniformController extends Controller
                             ->withErrors(['error' => 'Please log in to proceed with your order.']);
         }
 
-        $uniform = UniformModel::where('uniform_id', $uniform_id)->first();
-
-        if (!$uniform) {
-            Log::error("Uniform not found for uniform_id: {$uniform_id}");
-            abort(404, "Uniform not found");
-        }
-
-        $size = $request->input('size');
-        $quantity = $request->input('quantity', 1);
+        $uniformIds = $request->input('uniforms', []);
+        $sizes = $request->input('sizes', []);
+        $quantities = $request->input('quantities', []);
         $paymentMethod = $request->input('payment_method', 'gcash');
+
+        // Validate input arrays
+        if (empty($uniformIds) || count($uniformIds) !== count($sizes) || count($sizes) !== count($quantities)) {
+            Log::error('Invalid input data: Mismatched or empty arrays', [
+                'uniforms_count' => count($uniformIds),
+                'sizes_count' => count($sizes),
+                'quantities_count' => count($quantities)
+            ]);
+            return back()->withErrors(['error' => 'Invalid items selected.']);
+        }
 
         if (!in_array($paymentMethod, ['gcash', 'Face to Face'])) {
             Log::error("Invalid payment method: {$paymentMethod}");
@@ -122,8 +200,37 @@ class UniformController extends Controller
         }
 
         $studentId = $student->student_id;
-        $totalPrice = $uniform->price * $quantity;
+        $totalPrice = 0;
+        $orderItems = [];
 
+        // Process each item
+        foreach ($uniformIds as $index => $uniformId) {
+            $uniform = UniformModel::where('uniform_id', $uniformId)->first();
+            if (!$uniform) {
+                Log::warning("Uniform not found for uniform_id: {$uniformId}");
+                continue; // Skip invalid uniforms
+            }
+
+            $size = $sizes[$index];
+            $quantity = (int) $quantities[$index];
+            $subtotal = $uniform->price * $quantity;
+
+            $orderItems[] = [
+                'uniform' => $uniform,
+                'size' => $size,
+                'quantity' => $quantity,
+                'subtotal' => $subtotal,
+            ];
+
+            $totalPrice += $subtotal;
+        }
+
+        if (empty($orderItems)) {
+            Log::error('No valid items to process');
+            return back()->withErrors(['error' => 'No valid items found.']);
+        }
+
+        // Create order
         $order = OrderModel::create([
             'student_id' => $studentId,
             'total_price' => $totalPrice,
@@ -134,27 +241,32 @@ class UniformController extends Controller
 
         Log::info('Order created', [
             'order_id' => $order->order_id,
-            'payment_method' => $paymentMethod
+            'payment_method' => $paymentMethod,
+            'total_price' => $totalPrice
         ]);
 
-        $subtotalPrice = $uniform->price * $quantity;
+        // Create order items and update stock
+        foreach ($orderItems as $item) {
+            OrderItemModel::create([
+                'order_id' => $order->order_id,
+                'uniform_id' => $item['uniform']->uniform_id,
+                'size' => $item['size'],
+                'quantity' => $item['quantity'],
+                'price' => $item['uniform']->price,
+                'subtotal_price' => $item['subtotal'],
+            ]);
 
-        OrderItemModel::create([
-            'order_id' => $order->order_id,
-            'uniform_id' => $uniform->uniform_id,
-            'size' => $size,
-            'quantity' => $quantity,
-            'price' => $uniform->price,
-            'subtotal_price' => $subtotalPrice,
-        ]);
+            $item['uniform']->decrement('stock_quantity', $item['quantity']);
 
-        $uniform->decrement('stock_quantity', $quantity);
+            Log::info('Stock decremented', [
+                'uniform_id' => $item['uniform']->uniform_id,
+                'size' => $item['size'],
+                'quantity' => $item['quantity'],
+                'new_stock_quantity' => $item['uniform']->stock_quantity
+            ]);
+        }
 
-        Log::info('Stock decremented', [
-            'uniform_id' => $uniform->uniform_id,
-            'new_stock_quantity' => $uniform->stock_quantity
-        ]);
-
+        // Record order history
         OrderHistoryModel::create([
             'order_id' => $order->order_id,
             'status' => 'pending',
@@ -168,20 +280,24 @@ class UniformController extends Controller
             'updated_by' => $userId
         ]);
 
-        // ✅ Now it's safe to access the variables inside this block
+        // Remove items from cart if from_cart
         if ($isFromCart) {
-            Log::info('Order originated from cart. Attempting to remove from cart.', [
-                'uniform_id' => $uniform->uniform_id,
-                'size' => $size,
-                'user_id' => $userId
+            Log::info('Order originated from cart. Attempting to remove items from cart.', [
+                'user_id' => $userId,
+                'items_count' => count($orderItems)
             ]);
 
-            CartsModel::where('user_id', $userId)
-                ->where('uniform_id', $uniform->uniform_id)
-                ->where('size', $size)
-                ->delete();
+            foreach ($orderItems as $item) {
+                CartsModel::where('user_id', $userId)
+                    ->where('uniform_id', $item['uniform']->uniform_id)
+                    ->where('size', $item['size'])
+                    ->delete();
 
-            Log::info('Cart item removed successfully.');
+                Log::info('Cart item removed', [
+                    'uniform_id' => $item['uniform']->uniform_id,
+                    'size' => $item['size']
+                ]);
+            }
         }
 
         return redirect()->route('web.orders')->with('success', 'Order placed successfully!');

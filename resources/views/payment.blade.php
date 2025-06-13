@@ -43,9 +43,9 @@
 
 <div class="content-section min-h-screen">
     <div class="content-overlay min-h-screen">
-        <div class="flex mx-10 justify-center gap-10 pt-40">
+        <div class="flex mx-10 justify-center gap-10 pt-32">
             <!-- Checkout Container -->
-            <div class="w-[100%]">
+            <div class="w-[100%] mb-10">
                 <div class="bg-gradient-to-r from-[#1F1E1E]/100 to-[#001C00]/60 border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[30px] p-6 backdrop-blur-sm">
                     <!-- Title Section -->
                     <div class="flex items-center mb-4">
@@ -59,42 +59,50 @@
                     <hr class="border-[.5px] border-white mb-6 -mx-6">
                     <!-- Item Being Purchased -->
                     <div class="bg-[#1F1E1E]/60 rounded-xl p-4 mb-6 border border-white/10">
-                        <div class="flex items-start">
-                            
-                        @foreach ($uniforms as $uniform)
+                        <!-- Loop through each uniform -->
+                        @forelse ($uniforms as $item)
+                            <div class="flex items-start @if (!$loop->last) mb-6 pb-6 border-b border-white/10 @endif">
+                                <!-- Image -->
+                                <div class="h-32 w-32 bg-gray-100 rounded-lg flex-shrink-0 mr-4 overflow-hidden">
+                                    <img src="{{ $item['uniform']->image_url }}" alt="{{ $item['uniform']->name }}" class="w-full h-full object-contain">
+                                </div>
 
-                            <div class=" h-32 w-32 bg-gray-100 rounded-lg flex-shrink-0 mr-4 overflow-hidden">
-                                <img src="{{ $uniform->image_url }}" alt="{{ $uniform->name }}" class="w-full h-full object-contain">
-                            </div>
-                            
-                            <!-- Product Details -->
-                            <div class="flex-1">
-                                <div class="flex justify-between items-start">
-                                    <div>
-                                    <h3 class="text-white font-medium text-lg">{{ $uniform->name }}</h3>
-                                    <p class="text-sm text-gray-400">Size: {{ $size }}</p>
-
+                                <!-- Product Details -->
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h3 class="text-white font-medium text-lg">{{ $item['uniform']->name }}</h3>
+                                            <p class="text-sm text-gray-400">Size: {{ $item['size'] }}</p>
+                                        </div>
+                                        <span class="text-white font-medium">₱{{ number_format($item['uniform']->price, 2) }}</span>
                                     </div>
-                                        <span class="text-white font-medium">₱{{ number_format($uniform->price, 2) }}</span>
-                                    </div>                                
-                                <div class="mt-4 flex justify-between items-end">
-                                    <div class="flex items-center">
-                                        <span class="text-white mr-2">Quantity:</span>
-                                        <select name="quantity" class="..." disabled>
-                                            @for ($i = 1; $i <= 5; $i++)
-                                                <option value="{{ $i }}" {{ $i == $quantity ? 'selected' : '' }}>{{ $i }}</option>
-                                            @endfor
-                                        </select>
 
-                                    </div>
-                                    <div class="text-right">
-                                    <p class="text-sm text-gray-400">Subtotal: ₱{{ number_format($uniform->price * $quantity, 2) }}</p>
-                                    <p class="text-white font-medium mt-1">Total: ₱{{ number_format($uniform->price * $quantity, 2) }}</p>
+                                    <div class="mt-4 flex justify-between items-end">
+                                        <div class="flex items-center">
+                                            <span class="text-white mr-2">Quantity:</span>
+                                            <select name="quantity" class="bg-[#1F1E1E]/60 text-white border border-white/10 rounded p-1" disabled>
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    <option value="{{ $i }}" {{ $i == $item['quantity'] ? 'selected' : '' }}>{{ $i }}</option>
+                                                @endfor
+                                            </select>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="text-sm text-gray-400">Subtotal: ₱{{ number_format($item['subtotal'], 2) }}</p>
+                                            <p class="text-white font-medium mt-1">Total: ₱{{ number_format($item['subtotal'], 2) }}</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        @endforeach
-                        </div>
+                        @empty
+                            <p class="text-gray-400">No items selected for checkout.</p>
+                        @endforelse
+
+                        <!-- Display Total for All Items -->
+                        @if (!empty($uniforms))
+                            <div class="text-right mt-6">
+                                <p class="text-white font-bold text-lg">Order Total: ₱{{ number_format($total, 2) }}</p>
+                            </div>
+                        @endif
                     </div>
                     <!-- Payment Methods -->
                     <div class="mb-6">
@@ -136,13 +144,22 @@
 
                     <!-- Checkout Button -->
                     <div class="text-right">
-                        <form id="buyNowForm" method="POST" action="{{ route('web.items.buyNow', ['uniform_id' => $uniform->uniform_id]) }}">
+                    @php
+                        $firstUniform = $uniforms[0]['uniform'] ?? null;
+                    @endphp
+
+                    @if($firstUniform)
+                        <form id="buyNowForm" method="POST" action="{{ route('web.items.buyNow', ['uniform_id' => $firstUniform->uniform_id]) }}">
+                    @endif
                             @csrf
                             @if(request()->has('from_cart') && request()->get('from_cart') == 1)
                                 <input type="hidden" name="from_cart" value="1">
                             @endif
-                            <input type="hidden" name="size" value="{{ $size }}">
-                            <input type="hidden" name="quantity" value="{{ $quantity }}">
+                            @foreach ($uniforms as $item)
+                                <input type="hidden" name="uniforms[]" value="{{ $item['uniform']->uniform_id }}">
+                                <input type="hidden" name="sizes[]" value="{{ $item['size'] }}">
+                                <input type="hidden" name="quantities[]" value="{{ $item['quantity'] }}">
+                            @endforeach
                             <input type="hidden" name="payment_method" id="paymentMethodInput" value="gcash">                            
                             <button type="submit" class="bg-[#047705] hover:bg-[#036603] text-white font-medium py-2 px-6 rounded-full transition-all duration-200 shadow-md hover:shadow-lg">
                                 Complete Payment
