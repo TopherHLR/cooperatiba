@@ -143,7 +143,46 @@
             </h2>
         </div>
         <hr class="border-[.5px] border-white mb-6 -mx-6">
-
+        <!-- Order Flow Visualization -->
+        <div class="mb-5">
+            <h3 class="text-lg font-semibold text-white mb-4" style="font-family: 'Inter', sans-serif;">Order Flow</h3>
+            <div class="flex items-center justify-between relative h-12">
+                <!-- Line -->
+                <div class="absolute top-1/2 left-0 right-0 h-1 bg-gray-700/50 transform -translate-y-1/2 z-0"></div>
+                
+                <!-- Flow Steps -->
+                <div class="relative z-10 flex flex-col items-center w-1/5">
+                    <div class="w-8 h-8 rounded-full bg-[#FFB74D] flex items-center justify-center mb-1">
+                        <span class="text-white text-xs font-bold">1</span>
+                    </div>
+                    <span class="text-xs text-gray-300">Pending</span>
+                </div>
+                <div class="relative z-10 flex flex-col items-center w-1/5">
+                    <div class="w-8 h-8 rounded-full bg-[#66BB6A] flex items-center justify-center mb-1">
+                        <span class="text-white text-xs font-bold">2</span>
+                    </div>
+                    <span class="text-xs text-gray-300">Paid</span>
+                </div>
+                <div class="relative z-10 flex flex-col items-center w-1/5">
+                    <div class="w-8 h-8 rounded-full bg-[#4FC3F7] flex items-center justify-center mb-1">
+                        <span class="text-white text-xs font-bold">3</span>
+                    </div>
+                    <span class="text-xs text-gray-300">Processing</span>
+                </div>
+                <div class="relative z-10 flex flex-col items-center w-1/5">
+                    <div class="w-8 h-8 rounded-full bg-[#BA68C8] flex items-center justify-center mb-1">
+                        <span class="text-white text-xs font-bold">4</span>
+                    </div>
+                    <span class="text-xs text-gray-300">Ready</span>
+                </div>
+                <div class="relative z-10 flex flex-col items-center w-1/5">
+                    <div class="w-8 h-8 rounded-full bg-[#81C784] flex items-center justify-center mb-1">
+                        <span class="text-white text-xs font-bold">5</span>
+                    </div>
+                    <span class="text-xs text-gray-300">Completed</span>
+                </div>
+            </div>
+        </div>
         <!-- Main Content: Metrics and Chart -->
         <div class="flex flex-col lg:flex-row gap-6">
             <!-- Metrics Grid (Left) -->
