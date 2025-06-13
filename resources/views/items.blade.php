@@ -480,32 +480,43 @@
         const container = document.getElementById('notification-container');
         container.innerHTML = '';
 
-        notifications.forEach(notification => {
-            const notificationHtml = `
-                <div class="relative group">
-                    <div class="absolute inset-0 bg-gradient-to-r from-[${notification.color}]/10 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    <div class="notification-item bg-[#1F1E1E]/60 hover:bg-[#001C00]/40 rounded-xl p-3 cursor-pointer transition-all duration-300 relative overflow-hidden"
-                        onclick="openNotificationModal('${notification.type}', '${notification.title}', '${notification.message}', '${notification.time_ago}')">
-                        <div class="flex items-start z-10 relative">
-                            <div class="bg-[${notification.color}]/20 p-2 rounded-lg mr-3 backdrop-blur-sm border border-[${notification.color}]/30">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[${notification.color}]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${notification.icon}" />
-                                </svg>
-                            </div>
-                            <div class="flex-1">
-                                <div class="flex justify-between items-start">
-                                    <span class="text-xs font-medium text-[${notification.color}] bg-[${notification.color}]/10 px-2 py-1 rounded-full backdrop-blur-sm">${notification.type}</span>
-                                    <span class="text-xs text-gray-400">${notification.time_ago}</span>
-                                </div>
-                                <p class="text-sm font-medium mt-1 line-clamp-2">${notification.message}</p>
-                            </div>
-                        </div>
-                        <div class="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-[${notification.color}] to-transparent opacity-0 group-hover:opacity-70 transition-opacity duration-500"></div>
-                    </div>
+        if (notifications.length === 0) {
+            container.innerHTML = `
+                <div class="text-center text-gray-400 py-8">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto mb-3 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M12 20c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8z" />
+                    </svg>
+                    <p class="text-sm">No notifications at the moment.</p>
                 </div>
             `;
-            container.innerHTML += notificationHtml;
-        });
+        } else {
+            notifications.forEach(notification => {
+                const notificationHtml = `
+                    <div class="relative group">
+                        <div class="absolute inset-0 bg-gradient-to-r from-[${notification.color}]/10 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="notification-item bg-[#1F1E1E]/60 hover:bg-[#001C00]/40 rounded-xl p-3 cursor-pointer transition-all duration-300 relative overflow-hidden"
+                            onclick="openNotificationModal('${notification.type}', '${notification.title}', '${notification.message}', '${notification.time_ago}')">
+                            <div class="flex items-start z-10 relative">
+                                <div class="bg-[${notification.color}]/20 p-2 rounded-lg mr-3 backdrop-blur-sm border border-[${notification.color}]/30">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[${notification.color}]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${notification.icon}" />
+                                    </svg>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-start">
+                                        <span class="text-xs font-medium text-[${notification.color}] bg-[${notification.color}]/10 px-2 py-1 rounded-full backdrop-blur-sm">${notification.type}</span>
+                                        <span class="text-xs text-gray-400">${notification.time_ago}</span>
+                                    </div>
+                                    <p class="text-sm font-medium mt-1 line-clamp-2">${notification.message}</p>
+                                </div>
+                            </div>
+                            <div class="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-[${notification.color}] to-transparent opacity-0 group-hover:opacity-70 transition-opacity duration-500"></div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += notificationHtml;
+            });
+        }
     }
 
     // Fetch notifications on page load

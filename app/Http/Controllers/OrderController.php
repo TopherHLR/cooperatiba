@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Spatie\Activitylog\Facades\Activity;
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NotificationMail;
 class OrderController extends Controller
 {
     public function __construct()
@@ -80,7 +81,6 @@ class OrderController extends Controller
         return response()->json($orderData, 200, [], JSON_PRETTY_PRINT);
     }
 
-
     public function updateStatus(Request $request, OrderModel $order)
     {
         Log::info('Status update initiated', [
@@ -91,7 +91,6 @@ class OrderController extends Controller
             'ip_address' => $request->ip()
         ]);
 
-        // Verify admin access
         if (auth()->user()->role !== 'admin') {
             Log::warning('Unauthorized status update attempt', [
                 'order_id' => $order->order_id,
@@ -101,7 +100,6 @@ class OrderController extends Controller
             abort(403, 'Unauthorized action');
         }
 
-        // Validate input
         try {
             $validated = $request->validate([
                 'status' => 'required|in:pending,paid,processing,readyforpickup,completed,cancelled'
@@ -119,30 +117,28 @@ class OrderController extends Controller
             throw $e;
         }
 
-        // Get current status with debug logging
-        $currentStatus = $order->current_status;
+        $currentStatus = strtolower($order->current_status);
+        $newStatus = strtolower($validated['status']);
         Log::debug('Current status retrieved', [
             'order_id' => $order->order_id,
             'current_status' => $currentStatus,
             'history_count' => $order->statusHistories()->count()
         ]);
 
-        // Check valid transition
-        if (!$order->isValidStatusTransition($validated['status'])) {
+        if (!$order->isValidStatusTransition($newStatus)) {
             Log::warning('Invalid status transition attempted', [
                 'order_id' => $order->order_id,
                 'current_status' => $currentStatus,
                 'attempted_status' => $validated['status'],
                 'allowed_transitions' => $order->getAllowedTransitions()
             ]);
-            
+
             return response()->json([
                 'success' => false,
                 'message' => sprintf('Cannot change status from %s to %s', $currentStatus, $validated['status'])
             ], 422);
         }
 
-        // Record the change
         try {
             $historyRecord = $order->recordStatusChange($validated['status'], auth()->id());
             Log::info('Status change recorded', [
@@ -159,18 +155,15 @@ class OrderController extends Controller
             ]);
             throw $e;
         }
-        // Update payment status if needed
+
         if ($validated['status'] === 'paid') {
             try {
-                // Explicitly set the payment status using the model's attribute
                 $order->payment_status = 'paid';
-                
-                // Save the model (this will properly escape/quote the value)
                 $order->save();
-                
+
                 \Log::info('Payment status updated to paid', [
                     'order_id' => $order->order_id,
-                    'payment_status' => $order->payment_status // log the actual value
+                    'payment_status' => $order->payment_status
                 ]);
             } catch (\Exception $e) {
                 \Log::error('Failed to update payment status', [
@@ -179,9 +172,40 @@ class OrderController extends Controller
                     'current_payment_status' => $order->payment_status,
                     'attempted_status' => 'paid'
                 ]);
-                throw $e; // Consider re-throwing if you want the API to return the error
+                throw $e;
             }
         }
+
+        // Send Email
+        try {
+            $student = $order->student;
+            if ($student && !empty($student->email)) {
+                $latestStatus = $validated['status'];
+                $formatted = [
+                    'order_id' => $order->order_id,
+                    'status' => $latestStatus,
+                    'student_name' => $student->name ?? 'Student',
+                    'updated_at' => now()->toDateTimeString(),
+                    'updated_by' => auth()->user()->name ?? 'System'
+                ];
+
+                Mail::to($student->email)->send(new NotificationMail($formatted));
+
+                Log::info('Status change email sent to student', [
+                    'order_id' => $order->order_id,
+                    'email' => $student->email,
+                    'status' => $latestStatus
+                ]);
+            }
+        } catch (\Exception $e) {
+            Log::error('Failed to send status change email', [
+                'order_id' => $order->order_id,
+                'error' => $e->getMessage()
+            ]);
+        }
+
+        // ✅ Format Notification for return or logging
+        $formattedNotification = $this->formatNotification($historyRecord);
 
         Log::info('Status update completed successfully', [
             'order_id' => $order->order_id,
@@ -192,8 +216,63 @@ class OrderController extends Controller
         return response()->json([
             'success' => true,
             'current_status' => $validated['status'],
-            'order' => $order->load('statusHistories')
+            'order' => $order->load('statusHistories'),
+            'notification' => $formattedNotification // <-- return it here
         ]);
+    }
+
+    private function formatNotification($history)
+    {
+        $status = strtolower($history->status);
+        $statusMessages = [
+            'pending' => "Your order #{$history->order_id} is pending confirmation.",
+            'paid' => "Your order #{$history->order_id} payment has been confirmed.",
+            'processing' => "Your order #{$history->order_id} is being processed.",
+            'readyforpickup' => "Your order #{$history->order_id} is ready for pickup at the coop office.",
+            'completed' => "Your order #{$history->order_id} has been completed.",
+            'cancelled' => "Your order #{$history->order_id} has been cancelled."
+        ];
+
+        $statusTypes = [
+            'Pending' => 'ORDER UPDATE',
+            'Paid' => 'ORDER UPDATE',
+            'Processing' => 'ORDER UPDATE',
+            'ReadyForPickup' => 'ORDER UPDATE',
+            'Completed' => 'ORDER UPDATE',
+            'Cancelled' => 'ORDER UPDATE'
+        ];
+
+        $statusIcons = [
+            'Pending' => 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2',
+            'Paid' => 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2',
+            'Processing' => 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2',
+            'ReadyForPickup' => 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2',
+            'Completed' => 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2',
+            'Cancelled' => 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2'
+        ];
+
+        $statusColors = [
+            'Pending' => '#EDD100',
+            'Paid' => '#EDD100',
+            'Processing' => '#EDD100',
+            'ReadyForPickup' => '#EDD100',
+            'Completed' => '#EDD100',
+            'Cancelled' => '#EDD100'
+        ];
+
+
+        return [
+            'history_id' => $history->history_id,
+            'status' => $status,
+            'type' => $statusTypes[$status] ?? 'ORDER UPDATE',
+            'title' => "Order #{$history->order_id} Status Update",
+            'message' => $statusMessages[$status] ?? "Order #{$history->order_id} status updated to {$status}.",
+            'icon' => $statusIcons[$status] ?? '',
+            'color' => $statusColors[$status] ?? '#EDD100',
+            'time_ago' => $history->updated_at->diffForHumans(),
+            'updated_at' => $history->updated_at->format('F j, Y g:i A'),
+            'updated_by_name' => optional($history->user)->name ?? 'System'  // ✅ safe access
+        ];
     }
     public function cancel(OrderModel $order)
     {

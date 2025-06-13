@@ -335,7 +335,7 @@
                                 </div>
                                 <div>
                                     <p class="text-gray-400 text-sm">Contact Number:</p>
-                                    <p class="text-white">(02) 8888-9999</p>
+                                    <p class="text-white">(+63) 968-315-1166</p>
                                 </div>
                                 <div>
                                     <p class="text-gray-400 text-sm">Opening Hours:</p>

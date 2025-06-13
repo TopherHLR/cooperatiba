@@ -401,7 +401,7 @@
                     <tr>
                         <td>
                             <div class="flex-shrink-0 h-10 w-10">
-                                <img class="h-10 w-10 rounded-full object-cover" src="https://via.placeholder.com/40" alt="{{ $student->first_name }} {{ $student->last_name }}">
+                                <img class="h-10 w-10 rounded-full object-cover" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Default Profile">
                             </div>
                         </td>
                         <td>{{ $student->user_id }}</td>

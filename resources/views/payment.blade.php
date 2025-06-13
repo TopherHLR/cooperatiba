@@ -115,7 +115,7 @@
                         <div class="payment-option bg-[#1F1E1E]/60 hover:bg-[#001C00]/40 rounded-lg p-4 mb-3 cursor-pointer transition-all duration-200 border border-white/10">
                             <div class="flex items-center">
                                 <input type="radio" id="facetoface" name="payment_method" value="Face to Face" class="h-4 w-4 text-[#047705] focus:ring-[#047705]">
-                                <label for="facetoface" class="ml-3 text-white">Face-to-Face</label>
+                                <label for="facetoface" class="ml-3 text-white">Over-the-counter (OTC)</label>
                             </div>
                             <p class="text-gray-300 text-sm mt-2 ml-7">Pay in person at the designated location</p>
                         </div>

@@ -720,7 +720,7 @@ function populateOrderDetails(order) {
         ? `${order.student.first_name} ${order.student.last_name}`
         : 'N/A';
     document.getElementById('customerEmail').textContent = order.student?.email || 'N/A';
-    document.getElementById('customerPhone').textContent = order.student?.phone || 'N/A';
+    document.getElementById('customerPhone').textContent = order.student?.phone_number || 'N/A';
     document.getElementById('studentId').textContent = order.student_id || 'N/A';
     
     // Populate order details
