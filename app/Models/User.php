@@ -41,10 +41,6 @@ class User extends Authenticatable
         return $this->hasOne(StudentModel::class, 'user_id');
     }
         // In User model:
-    public function processedOrders()
-    {
-        return $this->hasMany(ProcessedOrderModel::class, 'staff_assigned', 'id');
-    }
 
     public function chats()
     {
@@ -55,5 +51,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(OrderHistoryModel::class, 'updated_by', 'id');
     }
-
 }

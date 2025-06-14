@@ -12,9 +12,10 @@ class ChatModel extends Model
 
     protected $fillable = [
         'student_id',
-        'admin_id',
+        'admin_id',  // this refers to users with role = 'admin'
         'message',
         'timestamp',
+        'sent_by'
     ];
 
     protected $casts = [
@@ -22,14 +23,22 @@ class ChatModel extends Model
     ];
 
     // Relationships
+
+    // Refers to the student who sent or received the message
     public function student()
     {
         return $this->belongsTo(StudentModel::class, 'student_id');
     }
 
-    // With this:
+    // Refers to the user acting as admin (User with role = 'admin')
     public function admin()
     {
         return $this->belongsTo(User::class, 'admin_id');
+    }
+    public function scopeWithAdminRole($query)
+    {
+        return $query->whereHas('admin', function ($q) {
+            $q->where('role', 'admin');
+        });
     }
 }

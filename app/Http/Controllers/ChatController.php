@@ -1,0 +1,63 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\ChatModel;
+use App\Models\User;
+use App\Models\StudentModel;
+use Illuminate\Support\Facades\Auth;
+
+class ChatController extends Controller
+{
+public function index()
+    {
+        $user = Auth::user();
+
+        // Only allow students to access this route
+        if (!$user || $user->role !== 'student') {
+            abort(403, 'Unauthorized access.');
+        }
+
+        // Get the associated student model
+        $student = $user->student;
+
+        // Fetch all chats between this student and all admins
+        $chats = ChatModel::with(['admin', 'student'])
+            ->where('student_id', $student->user_id)
+            ->orderBy('timestamp', 'asc')
+            ->get();
+
+        return view('chats', compact('chats', 'student'));
+    }
+
+    public function sendMessage(Request $request)
+    {
+        $request->validate([
+            'message' => 'required|string|max:1000',
+        ]);
+
+        $user = Auth::user();
+        $student = $user->student;
+
+        $admin = User::where('role', 'admin')->first();
+        if (!$admin) {
+            return response()->json(['error' => 'No admin available'], 500);
+        }
+
+        $chat = ChatModel::create([
+            'student_id' => $student->user_id,
+            'admin_id' => $admin->id,
+            'sent_by' => 'student',
+            'message' => $request->message,
+            'timestamp' => now(),
+        ]);
+
+        return response()->json([
+            'message' => $chat->message,
+            'timestamp' => $chat->timestamp->format('M d, Y h:i A'),
+            'initials' => substr($student->first_name, 0, 1) . substr($student->last_name, 0, 1)
+        ]);
+    }
+
+}

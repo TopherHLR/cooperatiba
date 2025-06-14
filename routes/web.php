@@ -7,6 +7,8 @@ use App\Http\Controllers\AdminUniformController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\AdminChatController;
+use App\Http\Controllers\ChatController;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 // routes/web.php
@@ -23,7 +25,7 @@ Route::name('web.')->group(function () {
         ->name('notifications.index')
         ->middleware('auth');
         
-    Route::view('/chats', 'chats')->name('chats');
+
     // Uniform items route - now using controller but pointing to existing items.blade.php
     Route::get('/items', [UniformController::class, 'index'])->name('items');
     Route::get('/items/{id}', [UniformController::class, 'show'])->name('items.show');
@@ -86,4 +88,18 @@ Route::prefix('admin/orders')->group(function () {
     Route::post('/{order}/notes', [OrderController::class, 'addNote']);
     Route::delete('/{order}', [OrderController::class, 'cancel']);
 });
+
+Route::middleware(['auth'])->group(function () {
+    // Display the chat page with messages
+    Route::get('/chats', [ChatController::class, 'index'])->name('student.chat');
+
+    // Handle sending of new messages
+    Route::post('/chats/send', [ChatController::class, 'sendMessage'])->name('student.chat.send');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/chats/{studentId?}', action: [AdminChatController::class, 'show'])->name('admin.chat.show');
+    Route::post('/admin/chats/{studentId}/send', [AdminChatController::class, 'sendMessage'])->name('admin.chat.send');
+});
+
 
