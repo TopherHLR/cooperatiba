@@ -384,56 +384,6 @@
         modal.classList.remove('hidden');
     }
 
-    function openNotificationModal(type, title, content, time) {
-        const modal = document.getElementById('notificationModal');
-        
-        // Set content
-        document.getElementById('modalTitle').textContent = title;
-        document.getElementById('modalContent').textContent = content;
-        document.getElementById('modalTime').textContent = time;
-
-        // Get icon container
-        const iconContainer = document.getElementById('iconContainer');
-
-        // Clear previous icon
-        iconContainer.innerHTML = '';
-
-        // Set new icon based on type
-        let iconHtml = '';
-        if (type === 'ORDER UPDATE') {
-            iconHtml = `
-                <div class="bg-[#EDD100]/20 p-2 rounded-lg backdrop-blur-sm border border-[#EDD100]/30">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#EDD100]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                    </svg>
-                </div>`;
-        } else if (type === 'chat') {
-            iconHtml = `
-                <div class="bg-[#047705]/20 p-2 rounded-lg backdrop-blur-sm border border-[#047705]/30">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#047705]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                    </svg>
-                </div>`;
-        } else if (type === 'promo') {
-            iconHtml = `
-                <div class="bg-[#8B5CF6]/20 p-2 rounded-lg backdrop-blur-sm border border-[#8B5CF6]/30">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#8B5CF6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z" />
-                    </svg>
-                </div>`;
-        }
-
-        iconContainer.innerHTML = iconHtml;
-
-        // Show the modal
-        modal.classList.remove('hidden');
-
-        // Close the modal
-        document.getElementById('modalCloseBtn').onclick = function () {
-            modal.classList.add('hidden');
-            iconContainer.innerHTML = ''; // Clear only the icon, not the whole header
-        };
-    }
 
     function openBuyerModal(uniformId, uniformName, price, imageUrl) {
         // Set hidden inputs
@@ -459,6 +409,7 @@
     function closeBuyModal() {
         document.getElementById('openBuyModal').classList.add('hidden');
     }
+    
     async function fetchNotifications() {
         try {
             const response = await fetch('/notifications', {

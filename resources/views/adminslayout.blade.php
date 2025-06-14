@@ -96,62 +96,73 @@
 @section('content')
 <div class="flex mx-10 justify-center min-h-full">
     <div class="bg-gradient-to-r from-[#1F1E1E]/100 to-[#100E00]/80 border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[15px] w-full mt-32 mb-10 h-full backdrop-blur-sm flex">
-        <!-- Admin Sidebar Navigation - 20% width (left column) -->
-        <div class="w-[20%] mt-6 mb-10 pl-6 pr-2">
-            <div class="admin-liquid-card border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[15px] p-6 h-auto backdrop-blur-sm">
-                <h2 class="text-white text-xl font-semibold mb-6">Admin Control Panel</h2>
-                <nav class="space-y-2">
-                    <div class="admin-section-header">Management</div>
-                    <a href="{{ route('admin.dashboard') }}" 
-                    class="admin-nav-btn text-white @if(request()->routeIs('admin.dashboard')) active @endif">
-                        <svg class="admin-btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                        </svg>
-                        Dashboard
-                    </a>
-                    
-                    <a href="{{ route('admin.users.index') }}" 
-                    class="admin-nav-btn text-white @if(request()->routeIs('admin.users.index')) active @endif">
-                        <svg class="admin-btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                        </svg>
-                        User Management
-                    </a>
-                    
-                    <a href="{{ route('admin.productcatalog') }}" 
-                    class="admin-nav-btn text-white @if(request()->routeIs('admin.productcatalog')) active @endif">
-                        <svg class="admin-btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                        </svg>
-                        Product Catalog
-                    </a>
-                    
-                    <a href="{{ route('admin.orderManage') }}" 
-                    class="admin-nav-btn text-white @if(request()->routeIs('admin.orderManage')) active @endif">
-                        <svg class="admin-btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                        </svg>
-                        Order Management
-                    </a>               
-                    
-                    <div class="admin-section-header">Settings</div>
-                    <a href="#" 
-                    class="admin-nav-btn text-white @if(request()->routeIs('admin.settings')) active @endif">
-                        <svg class="admin-btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                        System Settings
-                    </a>
-                </nav>
+        @if(auth()->user()->role === 'admin')
+            <!-- Admin Sidebar Navigation - 20% width (left column) -->
+            <div class="w-[20%] mt-6 mb-10 pl-6 pr-2">
+                <div class="admin-liquid-card border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[15px] p-6 h-auto backdrop-blur-sm">
+                    <h2 class="text-white text-xl font-semibold mb-6">Admin Control Panel</h2>
+                    <nav class="space-y-2">
+                        <div class="admin-section-header">Management</div>
+                        <a href="{{ route('admin.dashboard') }}" 
+                        class="admin-nav-btn text-white @if(request()->routeIs('admin.dashboard')) active @endif">
+                            <svg class="admin-btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                            </svg>
+                            Dashboard
+                        </a>
+                        
+                        <a href="{{ route('admin.users.index') }}" 
+                        class="admin-nav-btn text-white @if(request()->routeIs('admin.users.index')) active @endif">
+                            <svg class="admin-btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                            User Management
+                        </a>
+                        
+                        <a href="{{ route('admin.productcatalog') }}" 
+                        class="admin-nav-btn text-white @if(request()->routeIs('admin.productcatalog')) active @endif">
+                            <svg class="admin-btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                            </svg>
+                            Product Catalog
+                        </a>
+                        
+                        <a href="{{ route('admin.orderManage') }}" 
+                        class="admin-nav-btn text-white @if(request()->routeIs('admin.orderManage')) active @endif">
+                            <svg class="admin-btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                            </svg>
+                            Order Management
+                        </a>               
+                        
+                        <div class="admin-section-header">Settings</div>
+                        <a href="#" 
+                        class="admin-nav-btn text-white @if(request()->routeIs('admin.settings')) active @endif">
+                            <svg class="admin-btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            System Settings
+                        </a>
+                    </nav>
+                </div>
             </div>
-        </div>
 
-        <!-- Main Content Area - 80% width (right column) -->
-        <div class="w-[80%] mt-6 mb-10 pr-6 pl-2">
-            @yield('admin-content')
-            @yield('admin-styles')
-        </div>
+            <!-- Main Content Area - 80% width (right column) -->
+            <div class="w-[80%] mt-6 mb-10 pr-6 pl-2">
+                @yield('admin-content')
+                @yield('admin-styles')
+            </div>
+            @else
+            <!-- Access Denied Message -->
+            <div class="w-full flex flex-col items-center justify-center h-[70vh] text-center px-4">
+                <h2 class="text-3xl text-white font-bold mb-4">Access Denied</h2>
+                <p class="text-white/70 text-lg">You do not have permission to access this page.</p>
+                <a href="{{ route('web.home') }}" class="mt-6 inline-block bg-white text-black px-6 py-2 rounded-lg font-semibold hover:bg-gray-200 transition">
+                    Return to Homepage
+                </a>
+            </div>
+        @endif
     </div>
 </div>
 @endsection

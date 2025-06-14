@@ -22,6 +22,8 @@ Route::name('web.')->group(function () {
     Route::get('/notifications', [NotificationController::class, 'getNotifications'])
         ->name('notifications.index')
         ->middleware('auth');
+        
+    Route::view('/chats', 'chats')->name('chats');
     // Uniform items route - now using controller but pointing to existing items.blade.php
     Route::get('/items', [UniformController::class, 'index'])->name('items');
     Route::get('/items/{id}', [UniformController::class, 'show'])->name('items.show');
@@ -66,7 +68,7 @@ Route::name('web.')->group(function () {
 Route::name('admin.')->group(function () {
     Route::view('/adminslayout', 'adminslayout')->name('adminslayout')->middleware('auth');
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
     Route::get('/orderManage', [OrderController::class, 'index'])->name('orderManage')->middleware('auth');
     Route::get('/productcatalog', [AdminUniformController::class, 'index'])->name('productcatalog')->middleware('auth');
     Route::resource('uniforms', AdminUniformController::class);
