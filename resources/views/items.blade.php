@@ -406,9 +406,7 @@
         document.getElementById('openBuyModal').classList.remove('hidden');
     }
 
-    function closeBuyModal() {
-        document.getElementById('openBuyModal').classList.add('hidden');
-    }
+
     
     async function fetchNotifications() {
         try {

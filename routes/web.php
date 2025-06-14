@@ -9,6 +9,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\AdminChatController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 // routes/web.php
@@ -102,4 +103,4 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/admin/chats/{studentId}/send', [AdminChatController::class, 'sendMessage'])->name('admin.chat.send');
 });
 
-
+Route::get('/search', [SearchController::class, 'search'])->name('search');

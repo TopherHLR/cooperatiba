@@ -397,7 +397,8 @@
                         <th>ID</th>
                         <th>Name</th>
                         <th>Price</th>
-                        <th>Stock</th>
+                        <th>Total Stock</th>
+                        <th>New Stock</th>
                         <th>Sizes</th>
                         <th>Actions</th>
                     </tr>
@@ -414,6 +415,7 @@
                         <td class="font-medium">{{ $uniform->name }}</td>
                         <td>₱{{ number_format($uniform->price, 2) }}</td>
                         <td>{{ $uniform->stock_quantity }}</td>
+                        <td>{{ $uniform->new_stock }}</td>
                         <td>
                             @if($uniform->size)
                                 @foreach(explode(',', $uniform->size) as $size)
@@ -427,7 +429,8 @@
                                 '{{ $uniform->uniform_id }}',
                                 '{{ addslashes($uniform->name) }}',
                                 '{{ $uniform->price }}',
-                                '{{ $uniform->stock_quantity }}',
+                                '{{ $uniform->stock_quantity}}',
+                                '{{ $uniform->new_stock }}',
                                 `{{ addslashes($uniform->description) }}`,
                                 '{{ $uniform->image_url }}',
                                 '{{ $uniform->size }}'
@@ -447,7 +450,7 @@
     </div>      
 </div>
 
-<!-- Updated Add Product Modal -->
+<!-- Add Product Modal -->
 <div id="addProductModal" class="hidden fixed inset-0 overflow-y-auto z-[1000]">
     <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
         <div class="fixed inset-0 transition-opacity" aria-hidden="true">
@@ -459,6 +462,7 @@
                 @csrf
                 <div class="liquid-modal-header">
                     <h3 class="liquid-modal-title">Add New Product</h3>
+                    <button type="button" onclick="closeAddProductModal()" class="absolute top-2 right-4 text-white text-xl font-bold hover:text-red-500">&times;</button>
                 </div>
                 <div class="liquid-modal-body">
                     <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
@@ -474,8 +478,14 @@
                         
                         <div class="sm:col-span-3 form-group">
                             <label for="stock_quantity" class="liquid-label">Stock Quantity</label>
-                            <input type="number" name="stock_quantity" id="stock_quantity" class="liquid-input" required>
+                            <input type="number" name="stock_quantity" id="stock_quantity" class="liquid-input" readonly>
                         </div>
+
+                        <div class="sm:col-span-3 form-group">
+                            <label for="new_stock" class="liquid-label">New Stock</label>
+                            <input type="number" name="new_stock" id="new_stock" class="liquid-input">
+                        </div>
+
                         
                         <div class="sm:col-span-6 form-group">
                             <label for="size" class="liquid-label">Available Sizes (comma separated)</label>
@@ -509,7 +519,7 @@
     </div>
 </div>
 
-<!-- Updated Edit Product Modal -->
+<!--Edit Product Modal -->
 <div id="editProductModal" class="hidden fixed inset-0 overflow-y-auto z-[1000]">
     <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
         <div class="fixed inset-0 transition-opacity" aria-hidden="true">
@@ -521,6 +531,7 @@
                 @csrf
                 <div class="liquid-modal-header">
                     <h3 class="liquid-modal-title">Edit Product</h3>
+                    <button type="button" onclick="closeEditProductModal()" class="absolute top-2 right-4 text-white text-xl font-bold hover:text-red-500">&times;</button>
                 </div>
                 <div class="liquid-modal-body">
                     <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
@@ -536,7 +547,12 @@
                         
                         <div class="sm:col-span-3 form-group">
                             <label for="edit_stock_quantity" class="liquid-label">Stock Quantity</label>
-                            <input type="number" name="stock_quantity" id="edit_stock_quantity" class="liquid-input" required>
+                            <input type="number" name="stock_quantity" id="edit_stock_quantity" class="liquid-input" readonly>
+                        </div>
+
+                        <div class="sm:col-span-3 form-group">
+                            <label for="edit_new_stock" class="liquid-label">New Stock</label>
+                            <input type="number" name="new_stock" id="edit_new_stock" class="liquid-input">
                         </div>
                         
                         <div class="sm:col-span-6 form-group">
@@ -617,89 +633,116 @@
 
 <!-- JavaScript -->
 <script>
-    // Image preview for add product form
-    document.getElementById('image').addEventListener('change', function(e) {
-        const previewContainer = document.getElementById('imagePreviewContainer');
-        previewContainer.innerHTML = '';
-        
-        if (this.files && this.files[0]) {
-            const reader = new FileReader();
-            
-            reader.onload = function(e) {
-                const img = document.createElement('img');
-                img.src = e.target.result;
-                img.className = 'image-preview';
-                previewContainer.appendChild(img);
+    document.addEventListener('DOMContentLoaded', function () {
+        // --- Stock calculation logic ---
+        const editNewStockInput = document.getElementById('edit_new_stock');
+        const editStockQuantityInput = document.getElementById('edit_stock_quantity');
+        let currentStock = 0;
+
+        window.setEditInitialStock = function (value) {
+            currentStock = parseInt(value) || 0;
+            editStockQuantityInput.value = currentStock; // set only current stock from DB
+        };
+
+        editNewStockInput.addEventListener('input', () => {
+            const newStock = parseInt(editNewStockInput.value) || 0;
+            editStockQuantityInput.value = currentStock + newStock;
+        });
+
+        // --- Add product stock logic ---
+        const newStockInput = document.getElementById('new_stock');
+        const stockQuantityInput = document.getElementById('stock_quantity');
+        let initialStock = 0;
+
+        window.setInitialStock = function (value) {
+            initialStock = parseInt(value) || 0;
+            stockQuantityInput.value = initialStock;
+        };
+
+        newStockInput.addEventListener('input', () => {
+            const newStock = parseInt(newStockInput.value) || 0;
+            stockQuantityInput.value = initialStock + newStock;
+        });
+
+        // --- Image Preview (Add) ---
+        document.getElementById('image').addEventListener('change', function () {
+            const previewContainer = document.getElementById('imagePreviewContainer');
+            previewContainer.innerHTML = '';
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'image-preview';
+                    previewContainer.appendChild(img);
+                };
+                reader.readAsDataURL(this.files[0]);
             }
-            
-            reader.readAsDataURL(this.files[0]);
-        }
-    });
-    
-    // Image preview for edit product form
-    document.getElementById('edit_image').addEventListener('change', function(e) {
-        const previewContainer = document.getElementById('editImagePreviewContainer');
-        previewContainer.innerHTML = '';
-        
-        if (this.files && this.files[0]) {
-            const reader = new FileReader();
-            
-            reader.onload = function(e) {
-                const img = document.createElement('img');
-                img.src = e.target.result;
-                img.className = 'image-preview';
-                previewContainer.appendChild(img);
+        });
+
+        // --- Image Preview (Edit) ---
+        document.getElementById('edit_image').addEventListener('change', function () {
+            const previewContainer = document.getElementById('editImagePreviewContainer');
+            previewContainer.innerHTML = '';
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'image-preview';
+                    previewContainer.appendChild(img);
+                };
+                reader.readAsDataURL(this.files[0]);
             }
-            
-            reader.readAsDataURL(this.files[0]);
-        }
+        });
     });
-    
-    // Modal control functions
+
+    // --- Modal Controls ---
     function openAddProductModal() {
         document.getElementById('addProductModal').classList.remove('hidden');
     }
-    
+
     function closeAddProductModal() {
         document.getElementById('addProductModal').classList.add('hidden');
         document.getElementById('imagePreviewContainer').innerHTML = '';
         document.getElementById('addProductForm').reset();
     }
 
-    function openEditProductModal(uniform_id, name, price, stock, description, imageUrl, size) {
+    function openEditProductModal(uniform_id, name, price, stock, newStock, description, imageUrl, size) {
         const form = document.getElementById('editProductForm');
-        
-        const baseUrl = form.dataset.baseUrl; // e.g., /uniforms
         form.action = `/uniforms/update/${uniform_id}`;
-        // Set the rest of the fields
+
+        // Reset new stock and set actual values
         document.getElementById('edit_name').value = name;
         document.getElementById('edit_price').value = price;
-        document.getElementById('edit_stock_quantity').value = stock;
+        document.getElementById('edit_new_stock').value = ''; // Always start empty
+        document.getElementById('edit_stock_quantity').value = stock; // Actual stock, no calculation yet
         document.getElementById('edit_description').value = description;
         document.getElementById('edit_sizes').value = size;
         document.getElementById('current_image_preview').src = imageUrl;
         document.getElementById('editImagePreviewContainer').innerHTML = '';
 
+        // Set the current stock for JS-side calculation
+        setEditInitialStock(stock);
+
         document.getElementById('editProductModal').classList.remove('hidden');
     }
 
-
-    
     function closeEditProductModal() {
         document.getElementById('editProductModal').classList.add('hidden');
+        document.getElementById('editProductForm').reset();
+        document.getElementById('editImagePreviewContainer').innerHTML = '';
     }
-    
+
     function confirmDelete(id) {
-        // Set form action
         const form = document.getElementById('deleteProductForm');
-            // e.g., /uniforms/{id}
-            form.action = "{{ route('admin.uniforms.destroy', ':id') }}".replace(':id', id);            
-            // Show modal
-            document.getElementById('deleteConfirmationModal').classList.remove('hidden');
-        }
-    
+        form.action = "{{ route('admin.uniforms.destroy', ':id') }}".replace(':id', id);
+        document.getElementById('deleteConfirmationModal').classList.remove('hidden');
+    }
+
     function closeDeleteConfirmationModal() {
         document.getElementById('deleteConfirmationModal').classList.add('hidden');
     }
 </script>
+
 @endsection

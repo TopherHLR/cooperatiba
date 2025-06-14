@@ -71,9 +71,7 @@
                         <h2 class="text-2xl font-bold text-white" style="font-family: 'Kalam', cursive; text-shadow: -2px 1px 0px #047705;">Chat with Admin</h2>
                     </div>
                     <hr class="border-[.5px] border-white mb-6 -mx-6">
-
-
-                                        <!-- Chat Messages -->
+                    <!-- Chat Messages -->
                     <div id="chat-container" class="messages-container h-[560px] overflow-y-auto mb-4 space-y-4">
                         @foreach($chats as $chat)
                             @if($chat->sent_by === 'admin')
@@ -84,7 +82,7 @@
                                             A
                                         </div>
                                         <div class="message-content admin-message text-white">
-                                            <span class="block text-sm">{{ $chat->message }}</span>
+                                            <span class="block text-m">{{ $chat->message }}</span>
                                             <span class="block text-[10px] text-gray-300">{{ $chat->timestamp->format('M d, Y h:i A') }}</span>
                                         </div>
                                     </div>
@@ -94,7 +92,7 @@
                                 <div class="flex justify-end">
                                     <div class="flex items-end max-w-[70%]">
                                         <div class="message-content student-message text-white">
-                                            <span class="block text-sm">{{ $chat->message }}</span>
+                                            <span class="block text-m">{{ $chat->message }}</span>
                                             <span class="block text-[10px] text-gray-300">{{ $chat->timestamp->format('M d, Y h:i A') }}</span>
                                         </div>
                                         <div class="avatar student-avatar ml-2 w-8 h-8 flex items-center justify-center">

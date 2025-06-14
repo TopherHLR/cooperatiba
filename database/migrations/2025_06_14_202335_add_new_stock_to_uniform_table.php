@@ -11,16 +11,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('chat', function (Blueprint $table) {
-            $table->string('sent_by')->after('admin_id')->default('admin'); // Default to 'admin' for existing records
+        Schema::table('uniform', function (Blueprint $table) {
+            $table->integer('new_stock')->default(0)->after('stock_quantity');
         });
     }
 
     public function down()
     {
-        Schema::table('chat', function (Blueprint $table) {
-            $table->dropColumn('sent_by');
+        Schema::table('uniform', function (Blueprint $table) {
+            $table->dropColumn('new_stock');
         });
     }
-
 };

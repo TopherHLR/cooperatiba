@@ -153,6 +153,279 @@
         .gh:hover {
             box-shadow: 0 4px 40px rgba(0, 123, 0, 0.5);
         }
+        /* Liquid UI Background Effects */
+        body {
+            background: linear-gradient(135deg, #1F1E1E 0%, #001C00 100%);
+            min-height: 100vh;
+            font-family: 'Inria Sans', sans-serif;
+            overflow-x: hidden;
+        }
+        .content-section {
+            background-image: url('/images/cooperatibaitems/2ndBG.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        /* Enhanced Moving Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(18, 108, 7, 0.15) 0%,
+                rgba(113, 200, 98, 0.15) 25%,
+                rgba(210, 220, 50, 0.12) 50%,
+                rgba(113, 200, 98, 0.15) 75%,
+                rgba(10, 56, 14, 0.15) 100%
+            );
+            transform: rotate(30deg);
+            animation: liquidFlow 15s linear infinite;
+            z-index: -1;
+            opacity: 0.5;
+        }
+        .glowing-icon {
+            animation: glowColors 3s infinite ease-in-out;
+            filter: drop-shadow(0 0 5px #00ffcc);
+        }
+
+        @keyframes glowColors {
+            0% { stroke: #00ffcc; filter: drop-shadow(0 0 5px #00ffcc); }
+            50% { stroke: #00ff00; filter: drop-shadow(0 0 6px #00ff00); }
+            100% { stroke: #00ffcc; filter: drop-shadow(0 0 5px #00ffcc); }
+        }
+        @keyframes liquidFlow {
+            0% { transform: rotate(30deg) translate(-10%, -10%); }
+            50% { transform: rotate(30deg) translate(10%, 10%); }
+            100% { transform: rotate(30deg) translate(-10%, -10%); }
+        }
+        /* Liquid UI Navigation Effects */
+        .nav-link {
+            position: relative;
+            overflow: hidden;
+            padding: 0.5rem 1rem;
+            transition: all 0.4s ease;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #EDD100, transparent);
+            transition: width 0.4s ease;
+        }
+
+        .nav-link:hover::before {
+            width: 100%;
+        }
+
+        .nav-link.active {
+            color: #EDD100;
+        }
+
+        .nav-link.active::before {
+            width: 100%;
+            background: #EDD100;
+        }
+        /* Add this to your existing styles */
+        .nav-link-footer {
+            position: relative;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link-footer:hover {
+            transform: translateY(-2px);
+            text-shadow: 0 2px 4px rgba(237, 209, 0, 0.4);
+        }
+
+        @keyframes cardShine {
+            0% { opacity: 0.3; }
+            50% { opacity: 0.1; }
+            100% { opacity: 0.3; }
+        }
+        /* Ripple effect */
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(237, 209, 0, 0.4);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+            transition: all 0.6s ease;
+        }
+
+        .nav-link:hover::after {
+            animation: ripple 1s ease-out;
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.4;
+            }
+            100% {
+                transform: scale(20, 20);
+                opacity: 0;
+            }
+        }
+
+        /* Navbar glow effect */
+        .gh {
+            box-shadow: 0 4px 30px rgba(0, 123, 0, 0.3);
+            transition: box-shadow 0.5s ease;
+        }
+
+        .gh:hover {
+            box-shadow: 0 4px 40px rgba(0, 123, 0, 0.5);
+        }
+        /* Theme Toggle Switch */
+        .liquid-toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 28px;
+            height: 50px;
+            cursor: pointer;
+            vertical-align: middle;
+        }
+
+        .liquid-toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .liquid-slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, #1F1E1E 0%, #001C00 100%);
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 15px rgba(0, 28, 0, 0.3);
+        }
+
+        .liquid-slider::before {
+            position: absolute;
+            content: '';
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 4px;
+            background: linear-gradient(90deg, #047705 0%, #0aad0a 100%);
+            border-radius: 50%;
+            transition: all 0.4s ease;
+            box-shadow: 0 2px 8px rgba(4, 119, 5, 0.4);
+        }
+
+        .liquid-toggle-switch input:checked + .liquid-slider::before {
+            transform: translateY(-26px);
+        }
+
+        .liquid-toggle-switch input:checked + .liquid-slider {
+            background: linear-gradient(180deg, #ffffff 0%, #e0e0e0 100%);
+            border: 1px solid rgba(4, 119, 5, 0.3);
+        }
+
+        /* Slider Icon */
+        .slider-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 12px;
+            transition: color 0.4s ease;
+        }
+
+        .liquid-toggle-switch input:checked + .liquid-slider .slider-icon {
+            color: #1F1E1E;
+            content: '☀️';
+        }
+
+        .liquid-toggle-switch input:not(:checked) + .liquid-slider .slider-icon {
+            content: '🌙';
+        }
+
+        /* Light Mode Styles */
+        .light-mode {
+            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%) !important;
+            color: #1F1E1E !important;
+        }
+
+        .light-mode .liquid-card,
+        .light-mode .liquid-table,
+        .light-mode .liquid-modal {
+            background: rgba(255, 255, 255, 0.9) !important;
+            color: #1F1E1E !important;
+        }
+
+        .light-mode .liquid-table thead {
+            background: linear-gradient(90deg, #047705 0%, #0aad0a 100%) !important;
+        }
+
+        .light-mode .liquid-btn,
+        .light-mode .modal-liquid-btn-primary {
+            background: linear-gradient(90deg, #047705 0%, #0aad0a 100%) !important;
+        }
+
+        .light-mode .text-white {
+            color: #1F1E1E !important;
+        }
+
+        .light-mode .liquid-input {
+            background: rgba(0, 0, 0, 0.05) !important;
+            color: #1F1E1E !important;
+        }
+
+        .light-mode .liquid-label {
+            color: #1F1E1E !important;
+        }
+
+        .light-mode .nav-link,
+        .light-mode .item-button,
+        .light-mode .nav-link-cart,
+        .light-mode .nav-link-chat,
+        .light-mode .nav-link-notification {
+            color: white !important; /* Changed to white for light mode */
+            text-shadow: 0 0 2px rgba(0, 0, 0, 0.3) !important; /* Optional: Add subtle shadow for readability */
+        }
+
+        .light-mode .glowing-icon {
+            stroke: #1F1E1E !important;
+        }
+
+        /* Tooltip for accessibility */
+        .group:hover .liquid-toggle-switch::after {
+            content: 'Toggle Theme';
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #047705;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-family: 'Inria Sans', sans-serif;
+            white-space: nowrap;
+        }
     </style>
 </head>
 <body>
@@ -170,22 +443,23 @@
                     </a>
                 </div>
 
-                <!-- Center: Search Bar -->
                 <div class="flex-1 max-w-4xl mx-4">
-                    <div class="relative flex items-center">
+                    <form action="{{ route('search') }}" method="GET" class="relative flex items-center">
+                        @csrf
                         <input 
                             type="text" 
-                            placeholder="Search..." 
+                            name="query"
+                            placeholder="Search uniforms or about info..." 
                             class="w-[90%] py-2 pl-4 pr-2 bg-white/90 border-y border-l border-white/20 rounded-l-[10px] text-[#1F1E1E] placeholder-[#1F1E1E]/70 focus:outline-none focus:ring-1 focus:ring-[#047705]/50 focus:border-transparent transition-all duration-300"
                             style="font-family: 'Inria Sans', sans-serif; font-weight: 300;"
+                            value="{{ request('query') ?? '' }}"
                         >
-                        <button class="w-[10%] h-full py-2 px-4 bg-[#047705] hover:bg-[#036504] text-white rounded-r-[10px] border border-[#047705] transition-colors duration-300 flex items-center justify-center">
+                        <button type="submit" class="w-[10%] h-full py-2 px-4 bg-[#047705] hover:bg-[#036504] text-white rounded-r-[10px] border border-[#047705] transition-colors duration-300 flex items-center justify-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
-                            <span class="ml-2" style="font-family: 'Inria Sans', sans-serif;"> </span>
                         </button>
-                    </div>
+                    </form>
                 </div>
 
                 <!-- Right: Navigation Links -->
@@ -196,6 +470,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                         </svg>         
                     </a>
+
                     @auth
                         @if(auth()->user()->role === 'student')
                             <!-- Cart Icon Link (styled like notification bell) -->
@@ -239,8 +514,7 @@
                     <a href="{{ route('web.about') }}" class="nav-link text-white" style="font-family: 'Inria Sans', sans-serif; font-weight: 300; text-shadow: -2px 2px 4px #000000;">
                         About
                     </a>
-
-                        
+                 
                     @auth
                         @if(auth()->user()->role === 'student')
                         <a href="{{ route('web.accountsettings') }}" class="nav-link text-white" style="font-family: 'Inria Sans', sans-serif; font-weight: 300; text-shadow: -2px 2px 4px #000000;"">My account</a>
@@ -265,11 +539,21 @@
                                 </button>
                             </form>
                         @endif
+
                     @else
                         {{-- User is NOT logged in --}}
                         <a href="{{ route('web.login') }}" class="nav-link text-white" style="font-family: 'Inria Sans', sans-serif; font-weight: 300; text-shadow: -2px 2px 4px #000000;">Login</a>
                     @endauth
 
+                <!-- Theme Toggle Slider (Placed after My account) -->
+                    <div class="theme-toggle ml-2 relative group" title="Toggle Light/Dark Mode">
+                        <label class="liquid-toggle-switch">
+                            <input type="checkbox" id="themeToggle" aria-label="Toggle between light and dark mode">
+                            <span class="liquid-slider">
+                                <span class="slider-icon">🌙</span>
+                            </span>
+                        </label>
+                    </div>
                 </div>
             </div>   
         </nav>
@@ -349,6 +633,74 @@
     </footer>
 
     <script>
+
+            // Theme Toggle Logic
+            document.addEventListener('DOMContentLoaded', function () {
+                const themeToggle = document.getElementById('themeToggle');
+                const body = document.body;
+                const sliderIcon = document.querySelector('.slider-icon');
+
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme === 'light') {
+                    body.classList.add('light-mode');
+                    themeToggle.checked = true;
+                    sliderIcon.textContent = '☀️';
+                } else {
+                    body.classList.remove('light-mode');
+                    themeToggle.checked = false;
+                    sliderIcon.textContent = '🌙';
+                }
+
+                themeToggle.addEventListener('change', function () {
+                    if (this.checked) {
+                        body.classList.add('light-mode');
+                        sliderIcon.textContent = '☀️';
+                        localStorage.setItem('theme', 'light');
+                    } else {
+                        body.classList.remove('light-mode');
+                        sliderIcon.textContent = '🌙';
+                        localStorage.setItem('theme', 'dark');
+                    }
+                });
+            });
+            document.addEventListener('DOMContentLoaded', function() {
+                const searchInput = document.querySelector('input[name="query"]');
+                const searchForm = document.querySelector('form[action="{{ route('search') }}"]');
+                
+                // Debounce function to limit how often search runs
+                function debounce(func, wait) {
+                    let timeout;
+                    return function() {
+                        const context = this, args = arguments;
+                        clearTimeout(timeout);
+                        timeout = setTimeout(function() {
+                            func.apply(context, args);
+                        }, wait);
+                    };
+                }
+                
+                // Live search functionality
+                searchInput.addEventListener('input', debounce(function() {
+                    const query = this.value.trim();
+                    
+                    if(query.length > 2) { // Only search if at least 3 characters
+                        fetch(`/search?query=${encodeURIComponent(query)}`)
+                            .then(response => response.text())
+                            .then(html => {
+                                // You'll need to create a container to show live results
+                                document.getElementById('live-search-results').innerHTML = html;
+                            });
+                    }
+                }, 300));
+                
+                // Prevent form submission if using live search
+                searchForm.addEventListener('submit', function(e) {
+                    if(searchInput.value.trim().length < 1) {
+                        e.preventDefault();
+                    }
+                });
+            });
+                
             document.getElementById('checkoutButton').addEventListener('click', function (e) {
                 e.preventDefault();
 

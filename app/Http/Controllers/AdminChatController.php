@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Models\StudentModel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NotificationMessage; // Make sure this is correctly pointing to your mailable
 
 class AdminChatController extends Controller
 {
@@ -18,11 +20,6 @@ class AdminChatController extends Controller
         if (!$admin || $admin->role !== 'admin') {
             abort(403, 'Unauthorized access.');
         }
-
-        Log::info('Admin accessing chat page', [
-            'admin_id' => $admin->id,
-            'student_id' => $studentId
-        ]);
         
         $distinctStudentIds = ChatModel::where('admin_id', $admin->id)
             ->orWhereIn('student_id', function ($query) use ($admin) {
@@ -50,14 +47,6 @@ class AdminChatController extends Controller
 
             $student = StudentModel::find($studentId);
 
-            Log::debug('Latest message per student', [
-                'student_id' => $studentId,
-                'admin_id' => $admin->id,
-                'message' => $latestMessage?->message,
-                'timestamp' => $latestMessage?->timestamp,
-                'sent_by' => $latestMessage?->sent_by,
-            ]);
-
             return (object)[
                 'student' => $student,
                 'latestMessage' => $latestMessage,
@@ -71,11 +60,6 @@ class AdminChatController extends Controller
                 ->where('student_id', $studentId)
                 ->orderBy('timestamp', 'asc')
                 ->get();
-
-            Log::info('Loaded chats for student via AJAX', [
-                'student_id' => $studentId,
-                'chat_count' => $chats->count(),
-            ]);
 
             return response()->json([
                 'html' => view('admin.chat.chat-content', compact('student', 'chats'))->render()
@@ -107,12 +91,14 @@ class AdminChatController extends Controller
         ]);
     }
 
+
     public function sendMessage(Request $request, $studentId)
     {
         $request->validate(['message' => 'required|string|max:1000']);
         $admin = Auth::user();
         $student = StudentModel::findOrFail($studentId);
 
+        // Create the chat message
         ChatModel::create([
             'student_id' => $student->user_id,
             'admin_id' => $admin->id,
@@ -120,6 +106,25 @@ class AdminChatController extends Controller
             'message' => $request->message,
             'timestamp' => now(),
         ]);
+
+        // ✅ Send email notification to the student
+        try {
+            if ($student && !empty($student->email)) {
+                $notification = [
+                    'status' => 'You have received a new message from COOPERATIBA staff.',
+                    'updated_at' => now()->toDateTimeString(),
+                    'student_name' => $student->name ?? 'Student',
+                    'message' => $request->message
+                ];
+
+                Mail::to($student->email)->send(new NotificationMessage($notification));
+            }
+        } catch (\Exception $e) {
+            Log::error('Failed to send message email', [
+                'student_id' => $student->user_id,
+                'error' => $e->getMessage()
+            ]);
+        }
 
         if ($request->ajax()) {
             $chats = ChatModel::with(['admin', 'student'])

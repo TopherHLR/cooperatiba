@@ -22,6 +22,7 @@ class UniformModel extends Model
         'size',
         'price',
         'stock_quantity',
+        'new_stock',       
         'description',
         'image_url',
     ];
@@ -29,6 +30,7 @@ class UniformModel extends Model
     protected $casts = [
         'price' => 'decimal:2',
         'stock_quantity' => 'integer',
+        'new_stock' => 'integer',
     ];
 
     // Relationships
