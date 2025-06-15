@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
 {
-public function index()
+    public function index()
     {
         $user = Auth::user();
 
@@ -22,13 +22,25 @@ public function index()
         // Get the associated student model
         $student = $user->student;
 
-        // Fetch all chats between this student and all admins
+        // Count unread messages sent by admin
+        $chatCount = ChatModel::where('student_id', $student->user_id)
+            ->where('sent_by', 'admin')
+            ->where('is_read', false)
+            ->count();
+
+        // Mark all unread messages from admin as read
+        ChatModel::where('student_id', $student->user_id)
+            ->where('sent_by', 'admin')
+            ->where('is_read', false)
+            ->update(['is_read' => true]);
+
+        // Fetch all chats
         $chats = ChatModel::with(['admin', 'student'])
             ->where('student_id', $student->user_id)
             ->orderBy('timestamp', 'asc')
             ->get();
 
-        return view('chats', compact('chats', 'student'));
+        return view('chats', compact('chats', 'student', 'chatCount'));
     }
 
     public function sendMessage(Request $request)
@@ -51,6 +63,7 @@ public function index()
             'sent_by' => 'student',
             'message' => $request->message,
             'timestamp' => now(),
+            'is_read' => false, // Optional: mark as unread from student's side
         ]);
 
         return response()->json([
@@ -59,5 +72,4 @@ public function index()
             'initials' => substr($student->first_name, 0, 1) . substr($student->last_name, 0, 1)
         ]);
     }
-
 }

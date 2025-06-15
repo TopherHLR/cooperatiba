@@ -14,11 +14,14 @@ class OrderHistoryModel extends Model
         'order_id',
         'status',
         'updated_at',
-        'updated_by'
+        'updated_by',
+        'is_read'  // <-- Add this
     ];
 
     protected $casts = [
-        'updated_at' => 'datetime'
+        'updated_at' => 'datetime',
+        'is_read' => 'boolean'
+
     ];
 
     // Relationship with Order

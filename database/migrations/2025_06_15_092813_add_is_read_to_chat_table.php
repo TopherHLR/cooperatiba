@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('uniform', function (Blueprint $table) {
-            $table->integer('new_stock')->default(0)->after('stock_quantity');
+        Schema::table('chat', function (Blueprint $table) {
+            $table->boolean('is_read')->default(false)->after('sent_by');
         });
     }
 
     public function down()
     {
-        Schema::table('uniform', function (Blueprint $table) {
-            $table->dropColumn('new_stock');
+        Schema::table('chat', function (Blueprint $table) {
+            $table->dropColumn('is_read');
         });
     }
 };

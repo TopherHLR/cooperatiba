@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.bunny.net">
+
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -494,6 +495,11 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                                 </svg>
+                                    @if(isset($chatCount) && $chatCount > 0)                                    
+                                    <span class="absolute -top-0 -right-0 bg-red-500 text-white text-[10px] rounded-full h-4 w-4 flex items-center justify-center">
+                                        {{ $chatCount }}
+                                    </span>
+                                @endif
                             </a>
                             <!-- Notification Link -->
                             <a href="#" id="notificationTrigger" class="nav-link nav-link-notification text-white relative" style="font-family: 'Inria Sans', sans-serif; font-weight: 300; text-shadow: -2px 2px 4px #000000;">
@@ -504,9 +510,10 @@
                                         1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
                                 </svg>
                                 @if(isset($notificationCount) && $notificationCount > 0)
-                                    <span class="absolute -top-0 -right-0 bg-red-500 text-white text-[10px] rounded-full h-4 w-4 flex items-center justify-center">
+                                    <span id="notificationBadge" class="absolute -top-0 -right-0 bg-red-500 text-white text-[10px] rounded-full h-4 w-4 flex items-center justify-center">
                                         {{ $notificationCount }}
                                     </span>
+
                                 @endif
                             </a>
                         @endif
@@ -934,7 +941,7 @@
 
         function openNotificationModal(type, title, content, time) {
             const modal = document.getElementById('notificationModal');
-            
+
             // Set content
             document.getElementById('modalTitle').textContent = title;
             document.getElementById('modalContent').textContent = content;
@@ -942,11 +949,9 @@
 
             // Get icon container
             const iconContainer = document.getElementById('iconContainer');
+            iconContainer.innerHTML = ''; // Clear previous icon
 
-            // Clear previous icon
-            iconContainer.innerHTML = '';
-
-            // Set new icon based on type
+            // Set icon based on type
             let iconHtml = '';
             if (type === 'ORDER UPDATE') {
                 iconHtml = `
@@ -976,13 +981,12 @@
             // Show the modal
             modal.classList.remove('hidden');
 
-            // Close the modal
+            // Close modal logic
             document.getElementById('modalCloseBtn').onclick = function () {
                 modal.classList.add('hidden');
-                iconContainer.innerHTML = ''; // Clear only the icon, not the whole header
+                iconContainer.innerHTML = ''; // Clear icon
             };
         }
-        
         document.addEventListener("DOMContentLoaded", () => {
             // --- Highlight active nav link ---
             const currentPath = window.location.pathname.replace(/\/$/, "");
@@ -1083,26 +1087,44 @@
             }
 
             function updateNotificationCount(count) {
-                if (notificationCountBadge) {
-                    notificationCountBadge.textContent = count;
-                    notificationCountBadge.style.display = count > 0 ? 'flex' : 'none';
+                    if (notificationCountBadge) {
+                        notificationCountBadge.textContent = count;
+                        notificationCountBadge.style.display = count > 0 ? 'flex' : 'none';
+                    }
                 }
-            }
 
-            if (notificationTrigger) {
-                notificationTrigger.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    modal.classList.remove('hidden');
-                    loadModalNotifications();
-                });
-            }
+                if (notificationTrigger) {
+                    notificationTrigger.addEventListener('click', function () {
+                        modal.classList.remove('hidden');
+                        loadModalNotifications(); // Load notifications into modal
 
-            if (closeBtn) {
-                closeBtn.addEventListener('click', () => {
-                    modal.classList.add('hidden');
-                });
-            }
-        });
+                        // ✅ Mark notifications as read when the notification modal opens
+                        fetch('/notifications/mark-read', {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({})
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('[✓] Notifications marked as read');
+                            const badge = document.getElementById('notificationBadge');
+                            if (badge) badge.style.display = 'none';
+                        })
+                        .catch(error => {
+                            console.error('[x] Error marking notifications as read:', error);
+                        });
+                    });
+                }
+
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', () => {
+                        modal.classList.add('hidden');
+                    });
+                }
+            });
     </script>
 
 </body>

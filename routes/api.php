@@ -8,10 +8,3 @@ use App\Http\Controllers\OrderController;
 
 use Illuminate\Support\Facades\Auth;
 
-Route::middleware('auth:sanctum')->group(function () {
-    // User orders routes
-    Route::prefix('user')->group(function () {
-        Route::get('/orders', [UserOrderController::class, 'index']);
-        Route::get('/orders/{order}', [UserOrderController::class, 'show']);
-    });
-});

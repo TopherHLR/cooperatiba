@@ -17,13 +17,9 @@ class NotificationController extends Controller
 
     public function getNotifications(Request $request)
     {
-        // Log entry point
         Log::info('getNotifications method called', ['user_id' => Auth::id()]);
 
-        // Get the authenticated user
         $user = Auth::user();
-
-        // Fetch student_id from student table using user_id
         $student = StudentModel::where('user_id', $user->id)->first();
 
         if (!$student) {
@@ -37,7 +33,7 @@ class NotificationController extends Controller
         $studentId = $student->student_id;
         Log::info('Student ID resolved', ['student_id' => $studentId]);
 
-        // Fetch order histories for this student
+        // Fetch all notifications
         $notifications = OrderHistoryModel::query()
             ->select(
                 'order_history.history_id',
@@ -45,6 +41,7 @@ class NotificationController extends Controller
                 'order_history.status',
                 'order_history.updated_at',
                 'order_history.updated_by',
+                'order_history.is_read',
                 'users.name as updated_by_name'
             )
             ->join('order', 'order_history.order_id', '=', 'order.order_id')
@@ -56,13 +53,21 @@ class NotificationController extends Controller
                 return $this->formatNotification($history);
             });
 
-        Log::info('Notifications retrieved', ['count' => count($notifications)]);
+        // Count unread
+        $unreadCount = OrderHistoryModel::join('order', 'order_history.order_id', '=', 'order.order_id')
+            ->where('order.student_id', $studentId)
+            ->where('order_history.is_read', false)
+            ->count();
+
+        Log::info('Notifications retrieved', ['count' => count($notifications), 'unreadCount' => $unreadCount]);
 
         return response()->json([
             'status' => 'success',
-            'data' => $notifications
+            'data' => $notifications,
+            'unreadCount' => $unreadCount
         ]);
     }
+
     /**
      * Format a single notification
      */
@@ -97,11 +102,11 @@ class NotificationController extends Controller
 
         $statusColors = [
             'Pending' => '#EDD100',
-            'Paid' => '#EDD100',
-            'Processing' => '#EDD100',
-            'ReadyForPickup' => '#EDD100',
-            'Completed' => '#EDD100',
-            'Cancelled' => '#EDD100'
+            'Paid' => '#047705',
+            'Processing' => '#3B82F6',
+            'ReadyForPickup' => '#8B5CF6',
+            'Completed' => '#10B981',
+            'Cancelled' => '#EF4444'
         ];
 
         return [
@@ -114,5 +119,24 @@ class NotificationController extends Controller
             'time_ago' => $history->updated_at->diffForHumans(),
             'updated_by' => $history->updated_by_name
         ];
+    }
+    public function markNotificationsAsRead()
+    {
+        
+        $user = Auth::user();
+        $student = StudentModel::where('user_id', $user->id)->first();
+        Log::info('🔔 markNotificationsAsRead called', ['user_id' => $user->id]);
+        if (!$student) {
+            return response()->json(['status' => 'error', 'message' => 'Student not found'], 404);
+        }
+
+        $updated = OrderHistoryModel::join('order', 'order_history.order_id', '=', 'order.order_id')
+            ->where('order.student_id', $student->student_id)
+            ->where('order_history.is_read', false)
+            ->update(['order_history.is_read' => true]);
+
+        Log::info('✅ Notifications marked as read', ['updated_rows' => $updated]);
+
+        return response()->json(['status' => 'success', 'message' => 'All notifications marked as read.']);
     }
 }

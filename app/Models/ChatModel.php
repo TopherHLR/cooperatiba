@@ -15,10 +15,12 @@ class ChatModel extends Model
         'admin_id',  // this refers to users with role = 'admin'
         'message',
         'timestamp',
-        'sent_by'
+        'sent_by',
+        'is_read', // add this
     ];
 
     protected $casts = [
+        'is_read' => 'boolean', // add this
         'timestamp' => 'datetime',
     ];
 

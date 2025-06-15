@@ -104,3 +104,4 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('/search', [SearchController::class, 'search'])->name('search');
+Route::post('/notifications/mark-read', [NotificationController::class, 'markNotificationsAsRead']);
