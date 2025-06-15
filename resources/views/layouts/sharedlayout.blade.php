@@ -79,7 +79,7 @@
             bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 0;
+            width:  0;
             height: 2px;
             background: linear-gradient(90deg, transparent, #EDD100, transparent);
             transition: width 0.4s ease;
@@ -370,11 +370,14 @@
             color: #1F1E1E !important;
         }
 
+        /* Dark border for light-mode containers */
         .light-mode .liquid-card,
         .light-mode .liquid-table,
         .light-mode .liquid-modal {
             background: rgba(255, 255, 255, 0.9) !important;
             color: #1F1E1E !important;
+            border: 1px solid rgba(31, 30, 30, 0.2) !important; /* Dark border */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
         }
 
         .light-mode .liquid-table thead {
@@ -386,13 +389,10 @@
             background: linear-gradient(90deg, #047705 0%, #0aad0a 100%) !important;
         }
 
-        .light-mode .text-white {
-            color: #1F1E1E !important;
-        }
-
         .light-mode .liquid-input {
             background: rgba(0, 0, 0, 0.05) !important;
             color: #1F1E1E !important;
+            border: 1px solid rgba(31, 30, 30, 0.2) !important; /* Dark border */
         }
 
         .light-mode .liquid-label {
@@ -404,12 +404,26 @@
         .light-mode .nav-link-cart,
         .light-mode .nav-link-chat,
         .light-mode .nav-link-notification {
-            color: white !important; /* Changed to white for light mode */
-            text-shadow: 0 0 2px rgba(0, 0, 0, 0.3) !important; /* Optional: Add subtle shadow for readability */
+            color: white !important;
+            text-shadow: 0 0 2px rgba(0, 0, 0, 0.3) !important;
         }
 
         .light-mode .glowing-icon {
             stroke: #1F1E1E !important;
+        }
+
+        /* Enhanced border for specific containers */
+        .light-mode .content-section {
+            border: 1px solid rgba(31, 30, 30, 0.15) !important;
+        }
+
+        .light-mode .liquid-card::before {
+            background: linear-gradient(
+                45deg,
+                rgba(4, 119, 5, 0.05) 0%,
+                rgba(237, 209, 0, 0.05) 50%,
+                rgba(4, 119, 5, 0.05) 100%
+            ) !important;
         }
 
         /* Tooltip for accessibility */
