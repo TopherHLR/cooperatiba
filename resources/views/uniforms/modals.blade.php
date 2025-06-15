@@ -1,6 +1,6 @@
             <!-- Notification Modal -->
             <div id="notificationModal" class="fixed inset-0 z-[1500] flex items-center justify-center bg-black/70 hidden">
-                <div class="bg-gradient-to-r from-[#1F1E1E] to-[#001C00] border-[.5px] border-white rounded-[30px] p-6 w-full max-w-md relative">
+                <div class="notification-modal-container">
                     <button id="modalCloseBtn" class="absolute top-4 right-4 text-gray-400 hover:text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -25,9 +25,9 @@
             </div>
             <!-- Global Cart Modal -->
             <div id="cartModal" class="fixed inset-0 z-[2000] flex items-center justify-center bg-black/70 hidden">
-                <div class="bg-gradient-to-r from-[#1F1E1E] to-[#001C00] border-[.5px] border-white rounded-[30px] p-6 w-full max-w-2xl mx-4 relative animate-float">
+                <div class="cart-modal-container dark">
                     <!-- Close Button -->
-                    <button onclick="closeCartModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                    <button onclick="closeCartModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white dark:hover:text-gray-800">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
@@ -35,54 +35,52 @@
                     
                     <!-- Header -->
                     <div class="flex items-center mb-4">
-                        <div class="bg-[#047705]/20 p-2 rounded-lg">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#047705]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div class="bg-[#047705]/20 dark:bg-[#047705]/30 p-2 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#047705] dark:text-[#036504]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                             </svg>
                         </div>
-                        <h3 class="text-xl font-bold text-white ml-3">Your Cart</h3>
+                        <h3 class="text-xl font-bold text-white  ml-3">Your Cart</h3>
                         <span id="cartItemCount" class="ml-2 text-sm text-gray-300">(0 items)</span>
                     </div>
                     
-                    <hr class="border-[.5px] border-white mb-4 -mx-2">
+                    <hr class="border-[.5px] border-white  mb-4 -mx-2">
 
-                    <!-- Cart Items (Dynamic Content Injected Here) -->
+                    <!-- Cart Items -->
                     <div class="max-h-[60vh] overflow-y-auto scrollbar-hide cart-items">
                         <!-- JavaScript will inject items here -->
                     </div>
                     
                     <!-- Cart Summary -->
-                    <div class="mt-6 pt-4 border-t border-white/10">
+                    <div class="mt-6 pt-4 border-t border-white/10 ">
                         <div class="flex justify-between mb-2">
-                            <span class="text-gray-400">Subtotal:</span>
-                            <span id="cartSubtotal" class="text-white font-medium">₱0.00</span>
+                            <span class="text-gray-400 ">Subtotal:</span>
+                            <span id="cartSubtotal" class="text-white  font-medium">₱0.00</span>
                         </div>
 
                         <div class="flex justify-between text-lg">
-                            <span class="text-white">Total:</span>
+                            <span class="text-white ">Total:</span>
                             <span id="cartTotal" class="text-[#EDD100] font-bold">₱0.00</span>
                         </div>
                         
-                        <!-- Action Buttons -->
-                        <div class="flex justify-between mt-6">
-                            <button onclick="selectAllItems()" class="py-2 px-4 border border-white/30 hover:bg-white/10 text-white rounded-lg transition-colors">
+                        <!-- Fixed Action Buttons -->
+                        <div class="mt-6 grid grid-cols-2 gap-3">
+                            <button onclick="selectAllItems()" class="w-full py-2 px-4 border border-white/30 dark:border-gray-300/50 hover:bg-white/10 text-white rounded-lg transition-colors">
                                 Select All
                             </button>
-                            <div class="space-x-3">
-                                <button onclick="removeSelected()" class="py-2 px-4 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-lg transition-colors">
-                                    Remove Selected
-                                </button>   
-                                <a id="checkoutButton" href="#" class="py-3 px-6 bg-[#047705] hover:bg-[#036504] text-white font-bold rounded-lg transition-colors">
-                                    Proceed to Checkout
-                                </a>
-                            </div>
+                            <button onclick="removeSelected()" class="w-full py-2 px-4 bg-red-500/20 dark:bg-red-500/30 hover:bg-red-500/30 dark:hover:bg-red-500/40 text-red-400 dark:text-red-600 rounded-lg transition-colors">
+                                Remove Selected
+                            </button>
+                            <a id="checkoutButton" href="#" class="col-span-2 w-full py-3 px-6 bg-[#047705] hover:bg-[#036504] text-white font-bold rounded-lg transition-colors flex items-center justify-center">
+                                Proceed to Checkout
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- Add to Cart Modal -->
             <div id="addToCartModal" class="fixed inset-0 z-[1000] flex items-center justify-center bg-black/70 hidden">
-                <div class="bg-gradient-to-r from-[#1F1E1E] to-[#001C00] border-[.5px] border-white rounded-[30px] p-6 w-full max-w-md relative">
+                <div class="add-to-cart-modal-container">
                     <button onclick="closeAddToCartModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -162,7 +160,7 @@
             </div>
             <!-- Buy Modal -->
             <div id="openBuyModal" class="fixed inset-0 z-[1000] flex items-center justify-center bg-black/70 hidden">
-                <div class="bg-gradient-to-r from-[#1F1E1E] to-[#001C00] border-[.5px] border-white rounded-[30px] p-6 w-full max-w-md relative">
+                <div class="buy-modal-container">
                     <button onclick="closeBuyModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -250,7 +248,7 @@
             </div>
             <!-- Liquid UI Image Gallery Modal -->
             <div id="imageGalleryModal" class="fixed inset-0 z-[1000] flex items-center justify-center bg-black/70 hidden">
-                <div class="bg-gradient-to-r from-[#1F1E1E] to-[#001C00] border-[.5px] border-white rounded-[30px] p-8 w-full max-w-3xl mx-4 relative">
+                <div class="image-gallery-modal-container">
                     <!-- Close Button (Matched to Buy Modal) -->
                     <button onclick="closeImageGalleryModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -316,8 +314,7 @@
             </div>
             <!-- Notification Modal -->
             <div id="fullscreenNotificationModal" class="fixed inset-0 z-[1050] bg-black/70 flex items-center justify-center hidden">
-                <div class="bg-gradient-to-br from-[#1F1E1E] to-[#001C00] border border-white rounded-[20px] p-6 w-full max-w-3xl h-[80vh] overflow-hidden relative backdrop-blur-sm shadow-lg">
-                    
+                <div class="fullscreen-notification-modal-container">                    
                     <!-- Close Button -->
                     <button id="fullscreenModalClose" class="absolute top-4 right-4 text-gray-400 hover:text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -342,7 +339,6 @@
                 </div>
             </div>
 <script>
-
     document.querySelectorAll('.size-option').forEach(button => {
         button.addEventListener('click', () => {
             // Remove active style from all buttons

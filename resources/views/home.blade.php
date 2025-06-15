@@ -215,9 +215,7 @@
                         <p class="mb-4 font-semibold">
                             Elevate Your Game with Our Premium PE Uniform!
                         </p>
-                        <p class="mb-4">
-                            Get ready to move in style and comfort with our official PE uniform—designed for performance, durability, and school spirit! Featuring a sleek white base for a clean, professional look and bold green sleeves that showcase energy and enthusiasm, this uniform is made to keep you feeling fresh and confident during every activity.
-                        </p>
+
                         <ul class="list-disc list-inside mb-4">
                             <li><span class="font-medium">Perfect Fit</span> – Designed for movement and flexibility.</li>
                             <li><span class="font-medium">Durable Fabric</span> – Built to last through every game and training session.</li>
@@ -253,9 +251,6 @@
                         <p class="mb-4 font-semibold">
                             Dress with Confidence and Poise in Our Premium Women's School Uniform!
                         </p>
-                        <p class="mb-4">
-                            Present yourself with pride and comfort in our official women's school uniform—designed for a smart, professional look and lasting wear throughout the school day! Featuring a classic design with attention to detail, this uniform ensures you feel both comfortable and confident as you focus on your studies and school activities.
-                        </p>
                         <ul class="list-disc list-inside mb-4">
                             <li><span class="font-medium">Flattering Fit</span> – Tailored for a comfortable and professional silhouette.</li>
                             <li><span class="font-medium">Durable Fabric</span> – Made to withstand the demands of the school day.</li>
@@ -290,9 +285,6 @@
                         <h2 class="text-3xl font-bold mb-4">Men's School Uniform</h2>
                         <p class="mb-4 font-semibold">
                             Project a Smart and Confident Image with Our Men's School Uniform!
-                        </p>
-                        <p class="mb-4">
-                            Step into the school day with a sense of purpose and professionalism in our official men's school uniform—designed for a sharp, respectable appearance and lasting comfort. Crafted with quality and practicality in mind, this uniform helps you focus on your studies and school engagements with ease.
                         </p>
                         <ul class="list-disc list-inside mb-4">
                             <li><span class="font-medium">Tailored Fit</span> – Designed for a comfortable yet polished look.</li>

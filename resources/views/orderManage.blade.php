@@ -196,7 +196,7 @@
                                         @endif
 
                                     </h3>
-                                    <p class="text-sm text-gray-400">Order #{{ $order->order_id }}</p>
+                                    <p class="text-sm text-gray-400">Ref. #{{ $order->order_id }}</p>
                                 </div>
                                 @php
                                     $normalizedStatus = strtolower($order->current_status);
@@ -262,7 +262,7 @@
                     ORDER MANAGEMENT
                 </h2>
                 <div class="flex space-x-2">
-a
+
                     <button id="cancelOrderBtn" class="px-4 py-2 rounded-lg bg-[#1F1E1E]/80 border border-white/20 text-white hover:bg-[#EF4444]/50 transition">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -694,7 +694,7 @@ function populateOrderDetails(order) {
         document.getElementById('trackingOrderTitle').textContent += ` + ${order.order_items.length - 1} more`;
     }
     
-    document.getElementById('trackingOrderNumber').textContent = `Order #${order.order_id || order.id}`;
+    document.getElementById('trackingOrderNumber').textContent = `Ref. #${order.order_id || order.id}`;
     document.getElementById('trackingOrderPrice').textContent = `₱${parseFloat(order.total_price).toFixed(2)}`;
     document.getElementById('trackingOrderDate').textContent = `Ordered: ${new Date(order.order_date).toLocaleString()}`;
     

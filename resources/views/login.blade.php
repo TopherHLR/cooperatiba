@@ -258,7 +258,6 @@
                                 <input type="checkbox" name="remember" id="remember" class="w-4 h-4 text-[#047705] rounded focus:ring-[#047705]" {{ old('remember') ? 'checked' : '' }}>
                                 <label for="remember" class="ml-2 text-sm text-gray-300">Remember me</label>
                             </div>
-                            <a href="#" class="text-sm text-[#047705] hover:underline">Forgot password?</a>
                         </div>
                         
                         <!-- Login Button -->

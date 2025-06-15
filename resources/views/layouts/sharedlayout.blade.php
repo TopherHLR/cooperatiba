@@ -283,6 +283,7 @@
                 opacity: 0;
             }
         }
+        
 
         /* Navbar glow effect */
         .gh {
@@ -370,15 +371,32 @@
             color: #1F1E1E !important;
         }
 
-        /* Dark border for light-mode containers */
         .light-mode .liquid-card,
         .light-mode .liquid-table,
         .light-mode .liquid-modal {
             background: rgba(255, 255, 255, 0.9) !important;
             color: #1F1E1E !important;
-            border: 1px solid rgba(31, 30, 30, 0.2) !important; /* Dark border */
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
         }
+                /* Light Mode Styles */
+        .light-mode .account-liquid-card {
+            background: rgba(255, 255, 255, 0.9) !important;
+            border: 1px solid rgba(31, 30, 30, 0.2) !important;
+            color: #1F1E1E !important;
+        }
+
+        .light-mode .account-liquid-card h2,
+        .light-mode .account-nav-btn {
+            color: #1F1E1E !important;
+        }
+
+        .light-mode .account-nav-btn {
+            background: linear-gradient(90deg, rgba(4, 119, 5, 0.2) 0%, rgba(4, 119, 5, 0.4) 100%) !important;
+        }
+
+        .light-mode .account-nav-btn:hover {
+            color: #047705 !important;
+        }
+
 
         .light-mode .liquid-table thead {
             background: linear-gradient(90deg, #047705 0%, #0aad0a 100%) !important;
@@ -389,10 +407,13 @@
             background: linear-gradient(90deg, #047705 0%, #0aad0a 100%) !important;
         }
 
+        .light-mode .text-white {
+            color: #1F1E1E !important;
+        }
+
         .light-mode .liquid-input {
             background: rgba(0, 0, 0, 0.05) !important;
             color: #1F1E1E !important;
-            border: 1px solid rgba(31, 30, 30, 0.2) !important; /* Dark border */
         }
 
         .light-mode .liquid-label {
@@ -404,28 +425,20 @@
         .light-mode .nav-link-cart,
         .light-mode .nav-link-chat,
         .light-mode .nav-link-notification {
-            color: white !important;
-            text-shadow: 0 0 2px rgba(0, 0, 0, 0.3) !important;
+            color: white !important; /* Changed to white for light mode */
+            text-shadow: 0 0 2px rgba(0, 0, 0, 0.3) !important; /* Optional: Add subtle shadow for readability */
         }
 
         .light-mode .glowing-icon {
             stroke: #1F1E1E !important;
         }
-
-        /* Enhanced border for specific containers */
-        .light-mode .content-section {
-            border: 1px solid rgba(31, 30, 30, 0.15) !important;
+        /* Light mode variant */
+        .light-mode .liquid-account-card {
+            background:rgba(255, 255, 255, 0.9) !important;
+            border: 0.5px solid rgba(31, 30, 30, 0.2) !important;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) !important;
+            color: #1F1E1E !important;
         }
-
-        .light-mode .liquid-card::before {
-            background: linear-gradient(
-                45deg,
-                rgba(4, 119, 5, 0.05) 0%,
-                rgba(237, 209, 0, 0.05) 50%,
-                rgba(4, 119, 5, 0.05) 100%
-            ) !important;
-        }
-
         /* Tooltip for accessibility */
         .group:hover .liquid-toggle-switch::after {
             content: 'Toggle Theme';
@@ -441,6 +454,221 @@
             font-family: 'Inria Sans', sans-serif;
             white-space: nowrap;
         }
+        /* Notification Modal Container */
+        .notification-modal-container {
+            background: linear-gradient(to right, #1F1E1E, #001C00);
+            border: 0.5px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 24px;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .light-mode .notification-modal-container {
+            background: linear-gradient(to right, #ffffff, #e0e0e0);
+            border: 0.5px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Cart Modal Container */
+        .cart-modal-container {
+            background: linear-gradient(to right, #1F1E1E, #001C00);
+            border: 0.5px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            padding: 24px;
+            width: 100%;
+            max-width: 32rem;
+            position: relative;
+        }
+
+        .light-mode .cart-modal-container {
+            background: linear-gradient(to right, #ffffff, #e0e0e0);
+            border: 0.5px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Add to Cart Modal Container */
+        .add-to-cart-modal-container {
+            background: linear-gradient(to right, #1F1E1E, #001C00);
+            border: 0.5px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            padding: 24px;
+            width: 100%;
+            max-width: 28rem;
+            position: relative;
+        }
+
+        .light-mode .add-to-cart-modal-container {
+            background: linear-gradient(to right, #ffffff, #e0e0e0);
+            border: 0.5px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Buy Modal Container */
+        .buy-modal-container {
+            background: linear-gradient(to right, #1F1E1E, #001C00);
+            border: 0.5px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            padding: 24px;
+            width: 100%;
+            max-width: 28rem;
+            position: relative;
+        }
+
+        .light-mode .buy-modal-container {
+            background: linear-gradient(to right, #ffffff, #e0e0e0);
+            border: 0.5px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Image Gallery Modal Container */
+        .image-gallery-modal-container {
+            background: linear-gradient(to right, #1F1E1E, #001C00);
+            border: 0.5px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            padding: 32px;
+            width: 100%;
+            max-width: 48rem;
+            position: relative;
+        }
+
+        .light-mode .image-gallery-modal-container {
+            background: linear-gradient(to right, #ffffff, #e0e0e0);
+            border: 0.5px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Fullscreen Notification Modal Container */
+        .fullscreen-notification-modal-container {
+            background: linear-gradient(to bottom right, #1F1E1E, #001C00);
+            border: 0.5px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 24px;
+            width: 100%;
+            max-width: 48rem;
+            height: 80vh;
+            overflow: hidden;
+            position: relative;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .light-mode .fullscreen-notification-modal-container {
+            background: linear-gradient(to bottom right, #ffffff, #e0e0e0);
+            border: 0.5px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Adjust text colors for light mode */
+        .light-mode .notification-modal-container .text-white,
+        .light-mode .cart-modal-container .text-white,
+        .light-mode .add-to-cart-modal-container .text-white,
+        .light-mode .buy-modal-container .text-white,
+        .light-mode .image-gallery-modal-container .text-white,
+        .light-mode .fullscreen-notification-modal-container .text-white {
+            color: #1F1E1E;
+        }
+
+        .light-mode .notification-modal-container .text-gray-400,
+        .light-mode .cart-modal-container .text-gray-400,
+        .light-mode .add-to-cart-modal-container .text-gray-400,
+        .light-mode .buy-modal-container .text-gray-400,
+        .light-mode .image-gallery-modal-container .text-gray-400,
+        .light-mode .fullscreen-notification-modal-container .text-gray-400 {
+            color: #4B5563;
+        }
+
+        .light-mode .cart-modal-container .text-[#EDD100],
+        .light-mode .add-to-cart-modal-container .text-[#EDD100],
+        .light-mode .buy-modal-container .text-[#EDD100] {
+            color: #D97706;
+        }
+
+        /* Adjust border colors for light mode */
+        .light-mode .notification-modal-container hr,
+        .light-mode .cart-modal-container hr,
+        .light-mode .add-to-cart-modal-container hr,
+        .light-mode .buy-modal-container hr,
+        .light-mode .image-gallery-modal-container hr,
+        .light-mode .fullscreen-notification-modal-container hr {
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .light-mode .cart-modal-container .border-white\/10,
+        .light-mode .add-to-cart-modal-container .border-white\/30,
+        .light-mode .buy-modal-container .border-white\/30,
+        .light-mode .image-gallery-modal-container .border-white\/20,
+        .light-mode .image-gallery-modal-container .border-white\/30 {
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Adjust button styles for light mode */
+        .light-mode .cart-modal-container button,
+        .light-mode .add-to-cart-modal-container button,
+        .light-mode .buy-modal-container button,
+        .light-mode .image-gallery-modal-container button,
+        .light-mode .fullscreen-notification-modal-container button {
+            border-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .light-mode .cart-modal-container button:hover,
+        .light-mode .add-to-cart-modal-container button:hover,
+        .light-mode .buy-modal-container button:hover,
+        .light-mode .image-gallery-modal-container button:hover,
+        .light-mode .fullscreen-notification-modal-container button:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .light-mode .cart-modal-container .bg-[#047705],
+        .light-mode .add-to-cart-modal-container .bg-[#047705],
+        .light-mode .buy-modal-container .bg-[#047705] {
+            background: #10B981;
+        }
+
+        .light-mode .cart-modal-container .bg-[#047705]:hover,
+        .light-mode .add-to-cart-modal-container .bg-[#047705]:hover,
+        .light-mode .buy-modal-container .bg-[#047705]:hover {
+            background: #059669;
+        }
+
+        .light-mode .cart-modal-container .bg-[#047705]\/20,
+        .light-mode .add-to-cart-modal-container .bg-[#047705]\/20,
+        .light-mode .buy-modal-container .bg-[#047705]\/20,
+        .light-mode .image-gallery-modal-container .bg-[#047705]\/20 {
+            background: rgba(16, 185, 129, 0.2);
+        }
+
+        .light-mode .add-to-cart-modal-container .hover\:border-[#047705],
+        .light-mode .buy-modal-container .hover\:border-[#047705] {
+            border-color: #10B981;
+        }
+
+        /* Adjust specific elements */
+        .light-mode .cart-modal-container #cartTotal,
+        .light-mode .add-to-cart-modal-container #modalProductPrice,
+        .light-mode .buy-modal-container #modalProductPriceBuy {
+            color: #D97706;
+        }
+
+        .light-mode .image-gallery-modal-container #galleryLoader {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .light-mode .image-gallery-modal-container #galleryLoader .border-t-[#047705],
+        .light-mode .image-gallery-modal-container #galleryLoader .border-r-[#047705] {
+            border-top-color: #10B981;
+            border-right-color: #10B981;
+        }
+
+        /* Animation for cart modal */
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+        
     </style>
 </head>
 <body>

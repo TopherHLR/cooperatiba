@@ -3,7 +3,7 @@
 
 @section('account-styles')
 <style>
-
+    /* Account Card with Dark/Light Mode Support */
     .account-liquid-card {
         position: relative;
         overflow: hidden;
@@ -12,8 +12,11 @@
         background: rgba(31, 30, 30, 0.7);
         box-shadow: 0 8px 32px rgba(0, 28, 0, 0.3);
         transition: all 0.5s ease;
+        
+        /* Light mode styles */
+        @apply dark:bg-white/90 dark:shadow-gray-500/20;
     }
-    
+
     .account-liquid-card::before {
         content: '';
         position: absolute;
@@ -29,15 +32,18 @@
         );
         animation: accountCardShine 8s ease infinite;
         z-index: -1;
+        
+        /* Light mode gradient */
+        @apply dark:bg-gradient-to-r dark:from-green-100/20 dark:via-yellow-100/20 dark:to-green-100/20;
     }
-    
+
     @keyframes accountCardShine {
         0% { opacity: 0.3; }
         50% { opacity: 0.1; }
         100% { opacity: 0.3; }
     }
 
-    /* Enhanced Liquid Button Styles */
+    /* Enhanced Liquid Button Styles with Dark/Light Mode */
     .account-nav-btn {
         position: relative;
         display: flex;
@@ -48,8 +54,11 @@
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         border-radius: 8px;
         padding: 10px 16px;
+        
+        /* Light mode styles */
+        @apply dark:bg-gradient-to-r dark:from-green-500/30 dark:to-green-600/50 dark:text-gray-800;
     }
-    
+
     .account-nav-btn::before {
         content: '';
         position: absolute;
@@ -59,49 +68,66 @@
         height: 100%;
         background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
         transition: all 0.6s ease;
+        
+        /* Light mode shine effect */
+        @apply dark:bg-gradient-to-r dark:from-transparent dark:via-gray-100/20 dark:to-transparent;
     }
-    
+
     .account-nav-btn:hover::before {
         left: 100%;
     }
-    
+
     .account-nav-btn.active {
         background: linear-gradient(90deg, rgba(4, 119, 5, 0.6) 0%, rgba(10, 173, 10, 0.6) 100%);
         box-shadow: 0 4px 15px rgba(4, 119, 5, 0.4);
+        
+        /* Light mode active state */
+        @apply dark:bg-gradient-to-r dark:from-green-600/60 dark:to-green-700/60 dark:shadow-green-500/40;
     }
-    
+
     .account-nav-btn .account-btn-icon {
         margin-right: 10px;
         transition: all 0.3s ease;
+        @apply dark:stroke-gray-800;
     }
-    
+
     .account-nav-btn:hover .account-btn-icon {
         transform: translateX(3px);
     }
-    
+
     /* Profile icon specific */
     .account-profile-icon {
         width: 20px;
         height: 20px;
     }
-    
+
     /* Orders icon specific */
     .account-orders-icon {
         width: 20px;
         height: 20px;
     }
-        /* Cancel state (red version) */
+
+    /* Cancel state (red version) */
     .account-nav-btn.cancel-state {
         background: linear-gradient(90deg, rgba(220, 38, 38, 0.3) 0%, rgba(220, 38, 38, 0.5) 100%) !important;
+        
+        /* Light mode cancel state */
+        @apply dark:bg-gradient-to-r dark:from-red-500/30 dark:to-red-600/50;
     }
 
     .account-nav-btn.cancel-state.active {
         background: linear-gradient(90deg, rgba(220, 38, 38, 0.6) 0%, rgba(248, 113, 113, 0.6) 100%) !important;
         box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4) !important;
+        
+        /* Light mode active cancel state */
+        @apply dark:bg-gradient-to-r dark:from-red-600/60 dark:to-red-700/60 dark:shadow-red-500/40;
     }
 
     .account-nav-btn.cancel-state:hover::before {
         background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent) !important;
+        
+        /* Light mode cancel hover effect */
+        @apply dark:bg-gradient-to-r dark:from-transparent dark:via-gray-100/30 dark:to-transparent;
     }
 </style>
 @endsection

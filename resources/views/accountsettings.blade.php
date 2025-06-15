@@ -52,7 +52,20 @@
         z-index: -1;
         opacity: 0.5;
     }
-    
+    .liquid-account-card {
+        /* Base styles (dark mode) */
+        background: linear-gradient(135deg, #1F1E1E 0%, #100E00 80%);
+        border: 0.5px solid white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+        border-radius: 15px;
+        padding: 1.5rem;
+        height: 100%;
+        backdrop-filter: blur(10px);
+        display: flex;
+        flex-direction: column;
+        transition: all 0.3s ease;
+    }
+
     @keyframes liquidFlow {
         0% { transform: rotate(30deg) translate(-10%, -10%); }
         50% { transform: rotate(30deg) translate(10%, 10%); }
@@ -83,7 +96,7 @@
         <div class="flex mx-2 justify-center gap-10">
             <!-- Container - Account Settings -->
             <div class="w-[100%] h-[750px]">
-                <div class="bg-gradient-to-r from-[#1F1E1E]/100 to-[#100E00]/80 border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[15px] p-6 h-full backdrop-blur-sm flex flex-col">
+                <div class="liquid-account-card"">
                     <!-- Title Section -->
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="text-2xl font-bold text-white flex items-center" style="font-family: 'Kalam', cursive; text-shadow: -2px 1px 0px #047705;">

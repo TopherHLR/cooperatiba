@@ -446,7 +446,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                     <div class="flex-1">
                         <h3 class="text-white font-medium text-sm">${orderTitle}</h3>
-                        <p class="text-gray-400 text-xs">Order #${order.order_id}</p>
+                        <p class="text-gray-400 text-xs">Ref. #${order.order_id}</p>
                         <p class="text-gray-400 text-xs">Placed: ${formatDate(order.order_date)}</p>
                     </div>
                     <span class="text-xs px-2 py-1 rounded-full ${getStatusColor(currentStatus.status)}">
@@ -568,7 +568,7 @@ document.addEventListener('DOMContentLoaded', () => {
             itemsContainer.appendChild(itemElement);
         });
 
-        document.getElementById('trackingOrderNumber').textContent = `Order #${order.order_id} |`;
+        document.getElementById('trackingOrderNumber').textContent = `Ref. #${order.order_id} |`;
 
         document.getElementById('trackingOrderPrice').textContent = `Total: ₱${parseFloat(order.total_price || 0).toFixed(2)} |`;
         document.getElementById('trackingOrderDate').textContent = `Ordered: ${formatDate(order.order_date)} |`;
