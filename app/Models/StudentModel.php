@@ -14,6 +14,7 @@ class StudentModel extends Model
     protected $keyType = 'int'; // or 'string' if not integer
 
     protected $fillable = [
+        'student_id', 
         'user_id',
         'first_name',
         'last_name',

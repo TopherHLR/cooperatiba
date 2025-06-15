@@ -59,6 +59,7 @@ class StudentController extends Controller
             Log::info('Attempting to create student for user ID: ' . $user->id);
 
             $student = StudentModel::create([
+                'student_id' => $user->id, 
                 'user_id' => $user->id,
                 'student_number' => $request->student_number,
                 'first_name' => $request->first_name,

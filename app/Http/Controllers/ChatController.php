@@ -7,7 +7,7 @@ use App\Models\ChatModel;
 use App\Models\User;
 use App\Models\StudentModel;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Log; // Add this at the top if not already imported
 class ChatController extends Controller
 {
     public function index()
@@ -45,31 +45,58 @@ class ChatController extends Controller
 
     public function sendMessage(Request $request)
     {
+        Log::info('Student is attempting to send a message.', [
+            'user_id' => Auth::id(),
+            'payload' => $request->all()
+        ]);
+
         $request->validate([
             'message' => 'required|string|max:1000',
         ]);
 
-        $user = Auth::user();
-        $student = $user->student;
+        try {
+            $user = Auth::user();
+            $student = $user->student;
 
-        $admin = User::where('role', 'admin')->first();
-        if (!$admin) {
-            return response()->json(['error' => 'No admin available'], 500);
+            if (!$student) {
+                Log::warning('Authenticated user has no associated student record.', ['user_id' => $user->id]);
+                return response()->json(['error' => 'Student record not found.'], 404);
+            }
+
+            $admin = User::where('role', 'admin')->first();
+            if (!$admin) {
+                Log::error('No admin found in the system when trying to send a message.', ['user_id' => $user->id]);
+                return response()->json(['error' => 'No admin available'], 500);
+            }
+
+            $chat = ChatModel::create([
+                'student_id' => $student->user_id,
+                'admin_id' => $admin->id,
+                'sent_by' => 'student',
+                'message' => $request->message,
+                'timestamp' => now(),
+                'is_read' => false,
+            ]);
+
+            Log::info('Message successfully sent by student.', [
+                'student_id' => $student->student_id,
+                'admin_id' => $admin->id,
+                'message_id' => $chat->chat_id,
+                'timestamp' => $chat->timestamp,
+            ]);
+
+            return response()->json([
+                'message' => $chat->message,
+                'timestamp' => $chat->timestamp->format('M d, Y h:i A'),
+                'initials' => substr($student->first_name, 0, 1) . substr($student->last_name, 0, 1)
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Error sending message.', [
+                'user_id' => Auth::id(),
+                'error' => $e->getMessage(),
+            ]);
+            return response()->json(['error' => 'An error occurred while sending the message.'], 500);
         }
-
-        $chat = ChatModel::create([
-            'student_id' => $student->user_id,
-            'admin_id' => $admin->id,
-            'sent_by' => 'student',
-            'message' => $request->message,
-            'timestamp' => now(),
-            'is_read' => false, // Optional: mark as unread from student's side
-        ]);
-
-        return response()->json([
-            'message' => $chat->message,
-            'timestamp' => $chat->timestamp->format('M d, Y h:i A'),
-            'initials' => substr($student->first_name, 0, 1) . substr($student->last_name, 0, 1)
-        ]);
     }
 }

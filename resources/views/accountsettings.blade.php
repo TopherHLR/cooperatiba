@@ -105,14 +105,23 @@
                             </svg>
                             Account Settings
                         </h2>
-                        <button id="editToggle" class="account-nav-btn text-white font-medium py-2 px-4 transition duration-300 text-sm">
-                            <span class="account-btn-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                </svg>
-                            </span>
-                            Edit Information
-                        </button>
+                        <div id="buttonContainer" class="md:col-span-2 flex justify-end gap-2 mt-2">
+                                                        <!-- Submit Button (Initially hidden) -->
+                            <div id="submitButton" class="hidden">
+                                <button type="submit" class="account-nav-btn hover:bg-green-700 text-white font-medium py-2 px-6 rounded-lg transition duration-300 text-sm shadow-md">
+                                    Save Changes
+                                </button>
+                            </div>
+                            <button id="editToggle" class="account-nav-btn text-white font-medium py-2 px-4 transition duration-300 text-sm">
+                                <span class="account-btn-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                    </svg>
+                                </span>
+                                Edit Information
+                            </button>
+
+                        </div>
                     </div>
                     <hr class="border-[.5px] border-white mb-6 -mx-6">
                  
@@ -310,13 +319,6 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                            <!-- Submit Button (Initially hidden) -->
-                            <div id="submitButton" class="md:col-span-2 flex justify-end mt-2 hidden">
-                                <button type="submit" class="account-nav-btn hover:bg-green-700 text-white font-medium py-2 px-6 rounded-lg transition duration-300 text-sm shadow-md">
-                                    Save Changes
-                                </button>
-                            </div>
                         </form>
                     </div>
                 </div>
@@ -368,6 +370,7 @@
                     </svg>
                 </span>
                 Cancel Editing`;
+
             editToggle.classList.add('cancel-state');
             editToggle.classList.remove('active');
         } else {
