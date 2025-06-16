@@ -99,7 +99,7 @@
         @if(auth()->user()->role === 'admin')
             <!-- Admin Sidebar Navigation - 20% width (left column) -->
             <div class="w-[20%] mt-6 mb-10 pl-6 pr-2">
-                <div class="admin-liquid-card border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[15px] p-6 h-auto backdrop-blur-sm">
+                <div class="admin-liquid-card border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[15px] p-6 h-[100%] backdrop-blur-sm">
                     <h2 class="text-white text-xl font-semibold mb-6">Admin Control Panel</h2>
                     <nav class="space-y-2">
                         <div class="admin-section-header">Management</div>

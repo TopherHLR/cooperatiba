@@ -137,7 +137,7 @@
     <div class="bg-gradient-to-r from-[#1F1E1E]/100 to-[#100E00]/80 border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[15px] w-full mt-32 mb-10 h-full backdrop-blur-sm flex">
         <!-- Sidebar Navigation - 20% width (left column) -->
         <div class="w-[20%] mt-8 mr-6 mb-10 pl-8">
-            <div class="account-liquid-card border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[15px] p-6 h-auto backdrop-blur-sm">
+            <div class="account-liquid-card border-[.5px] border-white shadow-lg shadow-[#000000]/40 rounded-[15px] p-6 h-[100%] backdrop-blur-sm">
                 <h2 class="text-white text-xl font-semibold mb-6">Account</h2>
                 <nav class="space-y-2">
                     <a href="{{ route('web.accountsettings') }}" 
