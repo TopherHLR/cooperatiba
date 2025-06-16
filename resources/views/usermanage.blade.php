@@ -434,6 +434,9 @@
                             </span>
                         </td>
                         <td class="font-medium">
+                            <a href="{{ route('admin.chat.show', $student->user_id) }}" class="text-blue-300 hover:text-blue-100 admin-action-btn">
+                                Message
+                            </a>
                             <button onclick="confirmDelete('{{ $student->user_id }}')" class="text-red-300 hover:text-red-100 admin-action-btn">
                                 Delete
                             </button>

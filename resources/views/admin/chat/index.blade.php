@@ -315,6 +315,4 @@
         scrollToLatestMessage();
     });
 </script>
-
-
 @endsection

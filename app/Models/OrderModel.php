@@ -7,10 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class OrderModel extends Model
 {
     protected $table = 'order';
-    // In OrderModel.php
     protected $primaryKey = 'order_id';
-    public $incrementing = true; // if it's auto-incrementing
-    protected $keyType = 'int';  // or 'string' if your IDs are like "ORD-0001"
+    public $incrementing = true;
+    protected $keyType = 'int';
     public $timestamps = false;
 
     protected $fillable = [
@@ -25,8 +24,8 @@ class OrderModel extends Model
         'order_date' => 'datetime',
         'total_price' => 'decimal:2',
     ];
-    
-    //relationships
+
+    // Relationships
     public function student()
     {
         return $this->belongsTo(StudentModel::class, 'student_id', 'student_id');
@@ -41,17 +40,28 @@ class OrderModel extends Model
     {
         return $this->hasOne(ProcessedOrderModel::class, 'order_id');
     }
+
     public function statusHistories()
     {
         return $this->hasMany(OrderHistoryModel::class, 'order_id', 'order_id');
     }
-        /**
-     * Get the current status from the latest history record
+
+    /**
+     * Get the current status from the latest history record marked as current
      */
     public function getCurrentStatusAttribute(): string
     {
-        $latestHistory = $this->statusHistories()->latest('updated_at')->first();
-        return $latestHistory ? $latestHistory->status : 'pending';
+        $current = $this->statusHistories()->where('is_current', true)->first();
+        return $current ? $current->status : 'pending';
+    }
+
+    /**
+     * Get only the current status history record
+     */
+    public function currentStatusHistory()
+    {
+        return $this->hasOne(OrderHistoryModel::class, 'order_id', 'order_id')
+            ->where('is_current', true);
     }
 
     /**
@@ -66,14 +76,13 @@ class OrderModel extends Model
             'paid' => ['processing', 'cancelled'],
             'processing' => ['readyforpickup', 'cancelled'],
             'readyforpickup' => ['completed', 'cancelled'],
-            // Final states
             'completed' => [],
             'cancelled' => [],
         ];
 
-        // Check if transition is allowed
         return in_array($newStatus, $allowedTransitions[$currentStatus] ?? []);
     }
+
     public function getAllowedTransitions(): array
     {
         $allowedTransitions = [
@@ -84,19 +93,25 @@ class OrderModel extends Model
             'completed' => [],
             'cancelled' => [],
         ];
-        
+
         return $allowedTransitions[$this->current_status] ?? [];
     }
+
     /**
-     * Add a new status history record
+     * Add a new status history record and mark it as current
      */
     public function recordStatusChange(string $newStatus, int $userId): OrderHistoryModel
     {
+        // Reset all existing status records
+        $this->statusHistories()->update(['is_current' => false]);
+
+        // Create new one marked as current
         return $this->statusHistories()->create([
             'status' => $newStatus,
             'updated_by' => $userId,
-            'updated_at' => now()
+            'updated_at' => now(),
+            'is_read' => 0,
+            'is_current' => 1,
         ]);
     }
-
 }

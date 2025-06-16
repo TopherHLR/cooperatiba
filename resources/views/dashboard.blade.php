@@ -211,7 +211,6 @@
                         <div class="flex items-center text-xs">
                             <span class="text-gray-400 font-light">*Updated now</span>
                         </div>
-                        
                     </div>
 
                     <!-- Pending Orders -->
@@ -224,10 +223,14 @@
                                 </svg>
                             </div>
                         </div>
-                        <p class="text-2xl font-semibold text-white mb-1">{{ \App\Models\OrderModel::whereHas('statusHistories', function($q) use ($startDate, $endDate) {
-                            $q->where('status', 'pending')
+                        <p class="text-2xl font-semibold text-white mb-1">
+                            {{ \App\Models\OrderModel::whereHas('statusHistories', function($q) use ($startDate, $endDate) {
+                                $q->where('status', 'pending')
+                                ->where('is_current', true)
                                 ->whereBetween('updated_at', [$startDate, $endDate]);
-                        })->count() }}</p>
+                            })->count() }}
+                        </p>
+
                         <div class="flex items-center text-xs">
                             <span class="text-[#FFB74D] font-light">Awaiting payment</span>
                         </div>
@@ -244,10 +247,14 @@
                                 </svg>
                             </div>
                         </div>
-                        <p class="text-2xl font-semibold text-white mb-1">{{ \App\Models\OrderModel::whereHas('statusHistories', function($q) use ($startDate, $endDate) {
-                            $q->where('status', 'paid')
+                        <p class="text-2xl font-semibold text-white mb-1">
+                            {{ \App\Models\OrderModel::whereHas('statusHistories', function($q) use ($startDate, $endDate) {
+                                $q->where('status', 'paid')
+                                ->where('is_current', true)
                                 ->whereBetween('updated_at', [$startDate, $endDate]);
-                        })->count() }}</p>
+                            })->count() }}
+                        </p>
+
                         <div class="flex items-center text-xs">
                             <span class="text-[#66BB6A] font-light">Payment confirmed</span>
                         </div>
@@ -264,10 +271,14 @@
                                 </svg>
                             </div>
                         </div>
-                        <p class="text-2xl font-semibold text-white mb-1">{{ \App\Models\OrderModel::whereHas('statusHistories', function($q) use ($startDate, $endDate) {
-                            $q->where('status', 'processing')
+                        <p class="text-2xl font-semibold text-white mb-1">
+                            {{ \App\Models\OrderModel::whereHas('statusHistories', function($q) use ($startDate, $endDate) {
+                                $q->where('status', 'processing')
+                                ->where('is_current', true)
                                 ->whereBetween('updated_at', [$startDate, $endDate]);
-                        })->count() }}</p>
+                            })->count() }}
+                        </p>
+
                         <div class="flex items-center text-xs">
                             <span class="text-[#4FC3F7] font-light">In production</span>
                         </div>
@@ -284,10 +295,14 @@
                                 </svg>
                             </div>
                         </div>
-                        <p class="text-2xl font-semibold text-white mb-1">{{ \App\Models\OrderModel::whereHas('statusHistories', function($q) use ($startDate, $endDate) {
-                            $q->where('status', 'readyforpickup')
+                        <p class="text-2xl font-semibold text-white mb-1">
+                            {{ \App\Models\OrderModel::whereHas('statusHistories', function($q) use ($startDate, $endDate) {
+                                $q->where('status', 'readyforpickup')
+                                ->where('is_current', true)
                                 ->whereBetween('updated_at', [$startDate, $endDate]);
-                        })->count() }}</p>
+                            })->count() }}
+                        </p>
+
                         <div class="flex items-center text-xs">
                             <span class="text-[#BA68C8] font-light">Awaiting customer pickup</span>
                         </div>
@@ -304,10 +319,13 @@
                                 </svg>
                             </div>
                         </div>
-                        <p class="text-2xl font-semibold text-white mb-1">{{ \App\Models\OrderModel::whereHas('statusHistories', function($q) use ($startDate, $endDate) {
-                            $q->where('status', 'completed')
+                        <p class="text-2xl font-semibold text-white mb-1">
+                            {{ \App\Models\OrderModel::whereHas('statusHistories', function($q) use ($startDate, $endDate) {
+                                $q->where('status', 'completed')
+                                ->where('is_current', true)
                                 ->whereBetween('updated_at', [$startDate, $endDate]);
-                        })->count() }}</p>
+                            })->count() }}
+                        </p>
                         <div class="flex items-center text-xs">
                             <span class="text-[#81C784] font-light">Successfully delivered</span>
                         </div>
@@ -324,10 +342,13 @@
                                 </svg>
                             </div>
                         </div>
-                        <p class="text-2xl font-semibold text-white mb-1">{{ \App\Models\OrderModel::whereHas('statusHistories', function($q) use ($startDate, $endDate) {
-                            $q->where('status', 'cancelled')
+                        <p class="text-2xl font-semibold text-white mb-1">
+                            {{ \App\Models\OrderModel::whereHas('statusHistories', function($q) use ($startDate, $endDate) {
+                                $q->where('status', 'cancelled')
+                                ->where('is_current', true)
                                 ->whereBetween('updated_at', [$startDate, $endDate]);
-                        })->count() }}</p>
+                            })->count() }}
+                        </p>
                         <div class="flex items-center text-xs">
                             <span class="text-[#E57373] font-light">Order cancelled</span>
                         </div>

@@ -15,6 +15,7 @@ class OrderHistoryModel extends Model
         'status',
         'updated_at',
         'updated_by',
+        'is_current',
         'is_read'  // <-- Add this
     ];
 
