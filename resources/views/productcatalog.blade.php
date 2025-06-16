@@ -390,62 +390,72 @@
                 </button>
             </div>
             <hr class="border-[.5px] border-white mb-6 -mx-6">
-            <table class="liquid-table">
-                <thead>
-                    <tr>
-                        <th>Image</th>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Price</th>
-                        <th>Total Stock</th>
-                        <th>New Stock</th>
-                        <th>Sizes</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($uniforms as $uniform)
-                    <tr>
-                        <td>
-                            <div class="flex-shrink-0 h-10 w-10">
-                                <img class="h-10 w-10 rounded-full object-cover" src="{{ $uniform->image_url }}" alt="{{ $uniform->name }}">
-                            </div>
-                        </td>
-                        <td>{{ $uniform->uniform_id }}</td>
-                        <td class="font-medium">{{ $uniform->name }}</td>
-                        <td>₱{{ number_format($uniform->price, 2) }}</td>
-                        <td>{{ $uniform->stock_quantity }}</td>
-                        <td>{{ $uniform->new_stock }}</td>
-                        <td>
-                            @if($uniform->size)
-                                @foreach(explode(',', $uniform->size) as $size)
-                                    <span class="variant-badge">{{ $size }}</span>
-                                @endforeach
-                            @endif
-                        </td>
-                        <td class="font-medium">
-                        <button
-                            onclick="openEditProductModal(
-                                '{{ $uniform->uniform_id }}',
-                                '{{ addslashes($uniform->name) }}',
-                                '{{ $uniform->price }}',
-                                '{{ $uniform->stock_quantity}}',
-                                '{{ $uniform->new_stock }}',
-                                `{{ addslashes($uniform->description) }}`,
-                                '{{ $uniform->image_url }}',
-                                '{{ $uniform->size }}'
-                            )"
-                            class="text-indigo-300 hover:text-indigo-100 admin-action-btn mr-3">
-                            Edit
-                        </button>
-                            <button onclick="confirmDelete('{{ $uniform->uniform_id }}')" class="text-red-300 hover:text-red-100 admin-action-btn">
-                                Delete
-                            </button>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+
+            <!-- Table Head -->
+            <div class="mb-3">
+                <table class="liquid-table w-full table-fixed">
+                    <thead class="bg-[#1F1E1E]">
+                        <tr>
+                            <th class="w-[80px]">Image</th>
+                            <th class="w-[80px]">ID</th>
+                            <th class="w-[160px]">Name</th>
+                            <th class="w-[100px]">Price</th>
+                            <th class="w-[120px]">Total Stock</th>
+                            <th class="w-[120px]">New Stock</th>
+                            <th class="w-[180px]">Sizes</th>
+                            <th class="w-[140px]">Actions</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+
+            <!-- Scrollable Body -->
+            <div class="overflow-y-auto" style="max-height: 580px;">
+                <table class="liquid-table w-full table-fixed">
+                    <tbody>
+                        @foreach($uniforms as $uniform)
+                        <tr>
+                            <td>
+                                <div class="flex-shrink-0 h-10 w-10">
+                                    <img class="h-10 w-10 rounded-full object-cover" src="{{ $uniform->image_url }}" alt="{{ $uniform->name }}">
+                                </div>
+                            </td>
+                            <td>{{ $uniform->uniform_id }}</td>
+                            <td class="font-medium">{{ $uniform->name }}</td>
+                            <td>₱{{ number_format($uniform->price, 2) }}</td>
+                            <td>{{ $uniform->stock_quantity }}</td>
+                            <td>{{ $uniform->new_stock }}</td>
+                            <td>
+                                @if($uniform->size)
+                                    @foreach(explode(',', $uniform->size) as $size)
+                                        <span class="variant-badge">{{ $size }}</span>
+                                    @endforeach
+                                @endif
+                            </td>
+                            <td class="font-medium">
+                                <button
+                                    onclick="openEditProductModal(
+                                        '{{ $uniform->uniform_id }}',
+                                        '{{ addslashes($uniform->name) }}',
+                                        '{{ $uniform->price }}',
+                                        '{{ $uniform->stock_quantity}}',
+                                        '{{ $uniform->new_stock }}',
+                                        `{{ addslashes($uniform->description) }}`,
+                                        '{{ $uniform->image_url }}',
+                                        '{{ $uniform->size }}'
+                                    )"
+                                    class="text-indigo-300 hover:text-indigo-100 admin-action-btn mr-3">
+                                    Edit
+                                </button>
+                                <button onclick="confirmDelete('{{ $uniform->uniform_id }}')" class="text-red-300 hover:text-red-100 admin-action-btn">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>      
 </div>
