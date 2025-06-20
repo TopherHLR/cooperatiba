@@ -49,7 +49,6 @@ class DashboardController extends Controller
             ->get()
             ->keyBy('date');
 
-        \Log::info('Average per day raw result:', $avgPerDay->toArray());
 
         $avgData = [];
         $labels = [];

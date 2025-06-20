@@ -106,12 +106,6 @@ class UniformController extends Controller
             return redirect()->route('items')->with('error', 'No valid items found.');
         }
 
-        Log::info('Payment view prepared.', [
-            'uniforms_count' => count($uniforms),
-            'total' => $total,
-            'from_cart' => $fromCart,
-            'payment_method' => $paymentMethod,
-        ]);
 
         return view('payment', [
             'uniforms' => $uniforms,
@@ -140,13 +134,6 @@ class UniformController extends Controller
         $size = $request->input('size');
         $quantity = $request->input('quantity', 1);
         $paymentMethod = $request->input('payment_method', 'gcash');
-
-        Log::info('Uniform found, proceeding to checkout.', [
-            'uniform_id' => $uniform_id,
-            'size' => $size,
-            'quantity' => $quantity,
-            'payment_method' => $paymentMethod,
-        ]);
 
         return view('payment', [
             'uniforms' => [$uniform],
@@ -258,12 +245,6 @@ class UniformController extends Controller
 
             $item['uniform']->decrement('stock_quantity', $item['quantity']);
 
-            Log::info('Stock decremented', [
-                'uniform_id' => $item['uniform']->uniform_id,
-                'size' => $item['size'],
-                'quantity' => $item['quantity'],
-                'new_stock_quantity' => $item['uniform']->stock_quantity
-            ]);
         }
 
         // Record order history
@@ -274,18 +255,8 @@ class UniformController extends Controller
             'updated_by' => $userId
         ]);
 
-        Log::info('Initial status history recorded', [
-            'order_id' => $order->order_id,
-            'status' => 'pending',
-            'updated_by' => $userId
-        ]);
-
         // Remove items from cart if from_cart
         if ($isFromCart) {
-            Log::info('Order originated from cart. Attempting to remove items from cart.', [
-                'user_id' => $userId,
-                'items_count' => count($orderItems)
-            ]);
 
             foreach ($orderItems as $item) {
                 CartsModel::where('user_id', $userId)

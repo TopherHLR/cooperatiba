@@ -17,13 +17,11 @@ class NotificationController extends Controller
 
     public function getNotifications(Request $request)
     {
-        Log::info('getNotifications method called', ['user_id' => Auth::id()]);
 
         $user = Auth::user();
         $student = StudentModel::where('user_id', $user->id)->first();
 
         if (!$student) {
-            Log::warning('No student record found for user', ['user_id' => $user->id]);
             return response()->json([
                 'status' => 'error',
                 'message' => 'Student record not found.'
@@ -31,7 +29,6 @@ class NotificationController extends Controller
         }
 
         $studentId = $student->student_id;
-        Log::info('Student ID resolved', ['student_id' => $studentId]);
 
         // Fetch all notifications
         $notifications = OrderHistoryModel::query()
@@ -59,7 +56,6 @@ class NotificationController extends Controller
             ->where('order_history.is_read', false)
             ->count();
 
-        Log::info('Notifications retrieved', ['count' => count($notifications), 'unreadCount' => $unreadCount]);
 
         return response()->json([
             'status' => 'success',

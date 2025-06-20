@@ -73,16 +73,9 @@ class AdminChatController extends Controller
                 ->where('student_id', $studentId)
                 ->orderBy('timestamp', 'asc')
                 ->get();
-
-            Log::info('Loaded chats for student', [
-                'student_id' => $studentId,
-                'chat_count' => $chats->count(),
-            ]);
-
             return view('admin.chat.index', compact('studentChats', 'student', 'chats'));
         }
 
-        Log::info('Admin loaded chat view with no student selected');
 
         return view('admin.chat.index', [
             'studentChats' => $studentChats,
@@ -105,12 +98,7 @@ class AdminChatController extends Controller
             'message' => $request->message,
             'timestamp' => now(),
         ]);
-            Log::info('Message successfully sent by admin.', [
-                'student_id' => $student->student_id,
-                'admin_id' => $admin->id,
-                'message_id' => $request->message,
-                'timestamp' => now(),
-            ]);
+
 
         // ✅ Send email notification to the student
         try {
@@ -123,11 +111,6 @@ class AdminChatController extends Controller
                 ];
 
                 Mail::to($student->email)->queue(new NotificationMessage($notification));
-                                // ✅ Add this
-                Log::info('Email sent successfully to student.', [
-                    'email' => $student->email,
-                    'student_id' => $student->user_id,
-                ]);
             }
         } catch (\Exception $e) {
             Log::error('Failed to send message email', [

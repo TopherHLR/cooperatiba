@@ -45,10 +45,6 @@ class ChatController extends Controller
 
     public function sendMessage(Request $request)
     {
-        Log::info('Student is attempting to send a message.', [
-            'user_id' => Auth::id(),
-            'payload' => $request->all()
-        ]);
 
         $request->validate([
             'message' => 'required|string|max:1000',
@@ -59,13 +55,11 @@ class ChatController extends Controller
             $student = $user->student;
 
             if (!$student) {
-                Log::warning('Authenticated user has no associated student record.', ['user_id' => $user->id]);
                 return response()->json(['error' => 'Student record not found.'], 404);
             }
 
             $admin = User::where('role', 'admin')->first();
             if (!$admin) {
-                Log::error('No admin found in the system when trying to send a message.', ['user_id' => $user->id]);
                 return response()->json(['error' => 'No admin available'], 500);
             }
 
@@ -78,12 +72,6 @@ class ChatController extends Controller
                 'is_read' => false,
             ]);
 
-            Log::info('Message successfully sent by student.', [
-                'student_id' => $student->student_id,
-                'admin_id' => $admin->id,
-                'message_id' => $chat->chat_id,
-                'timestamp' => $chat->timestamp,
-            ]);
 
             return response()->json([
                 'message' => $chat->message,

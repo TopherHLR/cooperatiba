@@ -113,18 +113,12 @@ class StudentController extends Controller
         $loginInput = $request->input('login');
         $passwordInput = $request->input('password');
 
-        Log::info('Login attempt', [
-            'login_input' => $loginInput,
-            'is_email' => filter_var($loginInput, FILTER_VALIDATE_EMAIL),
-        ]);
-
         // Determine user by email or student_number
         if (filter_var($loginInput, FILTER_VALIDATE_EMAIL)) {
             $user = User::where('email', $loginInput)->where('role', 'admin')->first();
         } else {
             $user = User::where('student_number', $loginInput)->where('role', 'student')->first();
         }
-        Log::debug('Password length', ['length' => strlen($request->password)]);
         if ($user) {
             Log::info('User found', [
                 'user_id' => $user->id,
@@ -177,12 +171,9 @@ class StudentController extends Controller
     }
     public function update(Request $request)
     {
-        // Initial log with all request data
-        Log::info('Update method called', ['request_data' => $request->all(), 'user_id' => Auth::id()]);
 
         /** @var \App\Models\User $user */
         $user = Auth::user();
-        Log::debug('Authenticated user', ['user' => $user->toArray()]);
 
         /** @var \App\Models\StudentModel $student */
         $student = $user->student;
@@ -192,7 +183,6 @@ class StudentController extends Controller
             return back()->withErrors(['error' => 'Student record not found.']);
         }
         
-        Log::debug('Student record found', ['student' => $student->toArray()]);
 
         $validatedData = $request->validate([
             'first_name' => 'required|string|max:255',
@@ -207,7 +197,6 @@ class StudentController extends Controller
             'weight' => 'nullable|numeric|min:0',
         ]);
         
-        Log::info('Validation passed', ['validated_data' => $validatedData]);
 
         DB::beginTransaction();
         Log::info('Database transaction started');
@@ -242,12 +231,9 @@ class StudentController extends Controller
                 'suggested_size' => $request->suggested_size,
             ];
             
-            Log::debug('Updating student with data', $studentUpdateData);
             $student->update($studentUpdateData);
-            Log::info('Student updated successfully');
 
             DB::commit();
-            Log::info('Transaction committed successfully');
             
             return back()->with('success', 'Account updated successfully!');
 
@@ -268,10 +254,6 @@ class StudentController extends Controller
         try {
             $user = Auth::user();
             if (!$user) {
-                Log::warning('User not authenticated for /orders', [
-                    'ip_address' => $request->ip(),
-                    'session_id' => $request->session()->getId()
-                ]);
                 return response()->json([
                     'success' => false,
                     'message' => 'Unauthenticated'
@@ -280,10 +262,7 @@ class StudentController extends Controller
 
             $student = \App\Models\StudentModel::where('student_number', $user->student_number)->first();
             if (!$student) {
-                Log::warning('No student found for user', [
-                    'user_id' => $user->id,
-                    'student_number' => $user->student_number
-                ]);
+
                 return response()->json([
                     'success' => false,
                     'message' => 'Student record not found.'
@@ -295,12 +274,6 @@ class StudentController extends Controller
                 ->orderBy('order_date', 'desc')
                 ->get();
 
-            Log::info('Orders fetched successfully', [
-                'user_id' => $user->id,
-                'student_id' => $student->student_id,
-                'student_number' => $user->student_number,
-                'order_count' => $orders->count(),
-            ]);
 
             return response()->json([
                 'success' => true,

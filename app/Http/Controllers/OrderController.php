@@ -70,26 +70,12 @@ class OrderController extends Controller
         $orderData = $order->toArray();
         $orderData['latest_status'] = $latestStatus;
 
-        // Log for debugging
-        Log::info('Order Show Debug:', [
-            'order_id' => $order->order_id ?? $order->id,
-            'latest_status' => $latestStatus,
-            'statusHistories' => $order->statusHistories,
-            'orderData' => $orderData
-        ]);
 
         return response()->json($orderData, 200, [], JSON_PRETTY_PRINT);
     }
 
     public function updateStatus(Request $request, OrderModel $order)
     {
-        Log::info('Status update initiated', [
-            'order_id' => $order->order_id,
-            'user_id' => auth()->id(),
-            'user_role' => auth()->user()->role,
-            'requested_status' => $request->input('status'),
-            'ip_address' => $request->ip()
-        ]);
 
         if (auth()->user()->role !== 'admin') {
             Log::warning('Unauthorized status update attempt', [
@@ -104,10 +90,7 @@ class OrderController extends Controller
             $validated = $request->validate([
                 'status' => 'required|in:pending,paid,processing,readyforpickup,completed,cancelled'
             ]);
-            Log::debug('Status validation passed', [
-                'order_id' => $order->order_id,
-                'validated_status' => $validated['status']
-            ]);
+
         } catch (\Illuminate\Validation\ValidationException $e) {
             Log::error('Status validation failed', [
                 'order_id' => $order->order_id,
@@ -190,12 +173,6 @@ class OrderController extends Controller
                 ];
 
                 Mail::to($student->email)->send(new NotificationMail($formatted));
-
-                Log::info('Status change email sent to student', [
-                    'order_id' => $order->order_id,
-                    'email' => $student->email,
-                    'status' => $latestStatus
-                ]);
             }
         } catch (\Exception $e) {
             Log::error('Failed to send status change email', [
@@ -206,12 +183,6 @@ class OrderController extends Controller
 
         // ✅ Format Notification for return or logging
         $formattedNotification = $this->formatNotification($historyRecord);
-
-        Log::info('Status update completed successfully', [
-            'order_id' => $order->order_id,
-            'new_status' => $validated['status'],
-            'processing_time_ms' => microtime(true) - LARAVEL_START
-        ]);
 
         return response()->json([
             'success' => true,
@@ -276,13 +247,7 @@ class OrderController extends Controller
     }
     public function cancel(OrderModel $order)
     {
-        Log::info('Cancel order attempt started', [
-            'order_id' => $order->order_id,
-            'user_id' => auth()->id(),
-            'user_role' => auth()->user()->role,
-            'current_status' => $order->current_status,
-            'ip_address' => request()->ip()
-        ]);
+
 
         if (auth()->user()->role !== 'admin') {
             Log::warning('Unauthorized attempt to cancel order', [
@@ -309,13 +274,7 @@ class OrderController extends Controller
 
         try {
             $historyRecord = $order->recordStatusChange('cancelled', auth()->id());
-            Log::info('Order status history recorded', [
-                'order_id' => $order->order_id,
-                'history_id' => $historyRecord->history_id,
-                'new_status' => $historyRecord->status,
-                'updated_by' => $historyRecord->updated_by,
-                'updated_at' => $historyRecord->updated_at
-            ]);
+
 
             return response()->json([
                 'success' => true,

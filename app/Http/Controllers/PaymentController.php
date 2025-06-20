@@ -10,7 +10,6 @@ class PaymentController extends Controller
 {
     public function showPayment(Request $request)
     {
-        Log::info('Payment view initiated.', ['request_data' => $request->all()]);
 
         // Get items from request (array of {uniform_id, size, quantity})
         $items = $request->input('items', []);
@@ -72,12 +71,6 @@ class PaymentController extends Controller
             return redirect()->route('items')->with('error', 'No valid items found.');
         }
 
-        Log::info('Payment view prepared.', [
-            'uniforms_count' => count($uniforms),
-            'total' => $total,
-            'from_cart' => $fromCart,
-            'payment_method' => $paymentMethod,
-        ]);
 
         return view('payment', [
             'uniforms' => $uniforms,
