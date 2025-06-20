@@ -172,7 +172,7 @@
         margin-bottom: 5px;
     }
         /* Updated Table Styles */
-        .liquid-table {
+    .liquid-table {
         width: 100%;
         border-collapse: separate;
         border-spacing: 0;
@@ -383,76 +383,68 @@
                 <h2 class="text-2xl font-bold text-white" style="font-family: 'Kalam', cursive; text-shadow: -2px 1px 0px #047705;">USER MANAGEMENT</h2>
             </div>
             <hr class="border-[.5px] border-white mb-6 -mx-6">
-            <!-- Table Header -->
-            <div class="mb-3">
-                <table class="liquid-table w-full">
-                    <thead class="bg-[#1F1E1E]">
-                        <tr>
-                            <th>Avatar</th>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Program</th>
-                            <th>Order Count</th>
-                            <th>Activity Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
+            <table class="liquid-table">
+                <thead>
+                    <tr>
+                        <th>Avatar</th>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Program</th>
+                        <th>Order Count</th>
+                        <th>Activity Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($students as $student)
+                    <tr>
+                        <td>
+                            <div class="flex-shrink-0 h-10 w-10">
+                                <img class="h-10 w-10 rounded-full object-cover" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Default Profile">
+                            </div>
+                        </td>
+                        <td>{{ $student->user_id }}</td>
+                        <td class="font-medium">{{ $student->first_name }} {{ $student->middle_initial ? $student->middle_initial . '.' : '' }} {{ $student->last_name }}</td>
+                        <td>{{ $student->email }}</td>
+                        <td>{{ $student->program }}</td>
+                        <td>{{ $student->orders->count()}}</span>
+                        </td>
+                        <td>
+                            @php
+                                $latestOrder = $student->orders->sortByDesc('order_date')->first();
+                                $now = now();
 
-            <!-- Scrollable Table Body -->
-            <div class="overflow-y-auto" style="max-height: 600px;">
-                <table class="liquid-table w-full">
-                    <tbody>
-                        @foreach($students as $student)
-                        <tr>
-                            <td>
-                                <div class="flex-shrink-0 h-10 w-10">
-                                    <img class="h-10 w-10 rounded-full object-cover" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Default Profile">
-                                </div>
-                            </td>
-                            <td>{{ $student->user_id }}</td>
-                            <td class="font-medium">{{ $student->first_name }} {{ $student->middle_initial ? $student->middle_initial . '.' : '' }} {{ $student->last_name }}</td>
-                            <td>{{ $student->email }}</td>
-                            <td>{{ $student->program }}</td>
-                            <td>{{ $student->orders->count() }}</td>
-                            <td>
-                                @php
-                                    $latestOrder = $student->orders->sortByDesc('order_date')->first();
-                                    $now = now();
-
-                                    if ($latestOrder && $latestOrder->order_date >= $now->copy()->subYear()) {
-                                        $status = 'Active';
-                                        $badgeClass = 'bg-green-500';
+                                if ($latestOrder && $latestOrder->order_date >= $now->copy()->subYear()) {
+                                    $status = 'Active';
+                                    $badgeClass = 'bg-green-500';
+                                } else {
+                                    if ($latestOrder) {
+                                        $yearsInactive = $latestOrder->order_date->diffInYears($now);
+                                        $status = 'Inactive for ' . $yearsInactive . ' year' . ($yearsInactive > 1 ? 's' : '');
                                     } else {
-                                        if ($latestOrder) {
-                                            $yearsInactive = $latestOrder->order_date->diffInYears($now);
-                                            $status = 'Inactive for ' . $yearsInactive . ' year' . ($yearsInactive > 1 ? 's' : '');
-                                        } else {
-                                            $status = 'Inactive (No Orders)';
-                                        }
-                                        $badgeClass = 'bg-red-500';
+                                        $status = 'Inactive (No Orders)';
                                     }
-                                @endphp
+                                    $badgeClass = 'bg-red-500';
+                                }
+                            @endphp
 
-                                <span class="variant-badge {{ $badgeClass }}">
-                                    {{ $status }}
-                                </span>
-                            </td>
-                            <td class="font-medium">
-                                <a href="{{ route('admin.chat.show', $student->user_id) }}" class="text-blue-300 hover:text-blue-100 admin-action-btn">
-                                    Message
-                                </a>
-                                <button onclick="confirmDelete('{{ $student->user_id }}')" class="text-red-300 hover:text-red-100 admin-action-btn">
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+                            <span class="variant-badge {{ $badgeClass }}">
+                                {{ $status }}
+                            </span>
+                        </td>
+                        <td class="font-medium">
+                            <a href="{{ route('admin.chat.show', $student->user_id) }}" class="text-blue-300 hover:text-blue-100 admin-action-btn">
+                                Message
+                            </a>
+                            <button onclick="confirmDelete('{{ $student->user_id }}')" class="text-red-300 hover:text-red-100 admin-action-btn">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>      
 </div>
