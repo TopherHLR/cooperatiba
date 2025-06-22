@@ -83,7 +83,7 @@ Route::name('admin.')->group(function () {
         // Use POST instead of PUT to avoid method spoofing issues
     Route::post('/uniforms/update/{uniform_id}', [AdminUniformController::class, 'update'])->name('uniforms.update');
     // User management routes
-    Route::get('/users', [UserManagementController::class, 'index'])->name('users.index')->middleware('auth');
+    Route::get('/users', [UserManagementController::class, 'usermanage'])->name('users.index')->middleware('auth');
     Route::delete('/users/{user_id}', [UserManagementController::class, 'destroy'])->name('users.destroy')->middleware('auth');
 });
 

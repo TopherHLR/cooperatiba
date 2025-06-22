@@ -106,12 +106,6 @@
                             Account Settings
                         </h2>
                         <div id="buttonContainer" class="md:col-span-2 flex justify-end gap-2 mt-2">
-                                                        <!-- Submit Button (Initially hidden) -->
-                            <div id="submitButton" class="hidden">
-                                <button type="submit" class="account-nav-btn hover:bg-green-700 text-white font-medium py-2 px-6 rounded-lg transition duration-300 text-sm shadow-md">
-                                    Save Changes
-                                </button>
-                            </div>
                             <button id="editToggle" class="account-nav-btn text-white font-medium py-2 px-4 transition duration-300 text-sm">
                                 <span class="account-btn-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -139,6 +133,14 @@
                                 </ul>
                             </div>
                             @endif     
+                        <div id="buttonContainer" class="md:col-span-2 flex justify-end gap-2 mt-2">
+                            <!-- Submit Button (Initially hidden) -->
+                            <div id="submitButton" class="hidden">
+                                <button type="submit" class="account-nav-btn hover:bg-green-700 text-white font-medium py-2 px-6 rounded-lg transition duration-300 text-sm shadow-md">
+                                    Save Changes
+                                </button>
+                            </div>
+                        </div>
                             <!-- Student Information Section -->
                             <div class="md:col-span-2 space-y-4">
                                 <h3 class="text-lg font-semibold text-white flex items-center">

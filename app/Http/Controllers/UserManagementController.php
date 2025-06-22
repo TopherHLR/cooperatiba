@@ -11,12 +11,46 @@ class UserManagementController extends Controller
     /**
      * Display the user management page with students.
      */
-    public function index()
+    public function usermanage(Request $request)
     {
-        // Fetch students with their orders
-        $students = StudentModel::with('orders')->get();
+        // Fetch distinct programs for the filter dropdown
+        $programs = StudentModel::select('program')->distinct()->pluck('program');
 
-        return view('usermanage', compact('students'));
+        // Start building the query
+        $query = StudentModel::with('orders');
+
+        // Search filter (name or email)
+        if ($search = $request->input('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->whereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%$search%"])
+                  ->orWhere('email', 'LIKE', "%$search%");
+            });
+        }
+
+        // Program filter
+        if ($program = $request->input('program')) {
+            $query->where('program', $program);
+        }
+
+        // Activity status filter
+        if ($status = $request->input('status')) {
+            $query->where(function ($q) use ($status) {
+                if ($status === 'active') {
+                    $q->whereHas('orders', function ($q) {
+                        $q->where('order_date', '>=', now()->subYear());
+                    });
+                } elseif ($status === 'inactive') {
+                    $q->whereDoesntHave('orders', function ($q) {
+                        $q->where('order_date', '>=', now()->subYear());
+                    })->orWhereDoesntHave('orders');
+                }
+            });
+        }
+
+        // Fetch filtered students
+        $students = $query->get();
+
+        return view('usermanage', compact('students', 'programs'));
     }
 
     /**
@@ -67,5 +101,4 @@ class UserManagementController extends Controller
             return response()->json(['message' => 'Failed to delete user: ' . $e->getMessage()], 500);
         }
     }
-
 }

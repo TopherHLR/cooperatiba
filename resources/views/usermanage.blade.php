@@ -389,6 +389,37 @@
 </style>
 @endsection
 @section('admin-content')
+<!-- Filter Section -->
+<div class="mb-6">
+    <form method="GET" action="{{ route('admin.users.index') }}" class="flex flex-col sm:flex-row gap-4">
+        <!-- Search by Name or Email -->
+        <div class="flex-1">
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by name or email" class="w-full px-4 py-2 rounded-lg bg-[#1F1E1E]/80 text-white border-[.5px] border-white focus:outline-none focus:ring-2 focus:ring-green-500">
+        </div>
+        <!-- Filter by Program -->
+        <div class="flex-1">
+            <select name="program" class="w-full px-4 py-2 rounded-lg bg-[#1F1E1E]/80 text-white border-[.5px] border-white focus:outline-none focus:ring-2 focus:ring-green-500">
+                <option value="">All Programs</option>
+                @foreach($programs as $program)
+                    <option value="{{ $program }}" {{ request('program') == $program ? 'selected' : '' }}>{{ $program }}</option>
+                @endforeach
+            </select>
+        </div>
+        <!-- Filter by Activity Status -->
+        <div class="flex-1">
+            <select name="status" class="w-full px-4 py-2 rounded-lg bg-[#1F1E1E]/80 text-white border-[.5px] border-white focus:outline-none focus:ring-2 focus:ring-green-500">
+                <option value="">All Statuses</option>
+                <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Active</option>
+                <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
+            </select>
+        </div>
+        <!-- Submit Button -->
+        <button type="submit" class="px-4 py-2 liquid-btn text-white rounded-lg">Filter</button>
+        <!-- Reset Button -->
+        <a href="{{ route('admin.users.index') }}" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600">Reset</a>
+    </form>
+</div>
+
 <!-- User Management Table -->
 <div class="overflow-x-auto">
     <div class="h-[750px]">
@@ -422,8 +453,7 @@
                         <td class="font-medium">{{ $student->first_name }} {{ $student->middle_initial ? $student->middle_initial . '.' : '' }} {{ $student->last_name }}</td>
                         <td>{{ $student->email }}</td>
                         <td>{{ $student->program }}</td>
-                        <td>{{ $student->orders->count()}}</span>
-                        </td>
+                        <td>{{ $student->orders->count() }}</td>
                         <td>
                             @php
                                 $latestOrder = $student->orders->sortByDesc('order_date')->first();
