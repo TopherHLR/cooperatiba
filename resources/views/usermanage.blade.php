@@ -61,7 +61,13 @@
         box-shadow: 0 8px 32px rgba(0, 28, 0, 0.3);
         transition: all 0.5s ease;
     }
-    
+    /* Add this to your existing styles */
+    .table-container {
+        flex-grow: 1; /* Allow the container to take available space */
+        overflow-y: auto; /* Enable vertical scrolling */
+        max-height: calc(100% - 80px); /* Adjust height to account for header and margin */
+        position: relative; /* Ensure proper positioning */
+    }
     .liquid-card::before {
         content: '';
         position: absolute;
@@ -171,7 +177,7 @@
         margin-right: 5px;
         margin-bottom: 5px;
     }
-        /* Updated Table Styles */
+
     .liquid-table {
         width: 100%;
         border-collapse: separate;
@@ -183,7 +189,11 @@
         box-shadow: 0 8px 32px rgba(0, 28, 0, 0.3);
     }
     
+    /* Sticky table header */
     .liquid-table thead {
+        position: sticky;
+        top: 0;
+        z-index: 10;
         background: linear-gradient(90deg, #047705 0%, #0aad0a 100%);
     }
     
@@ -195,6 +205,10 @@
         text-transform: uppercase;
         font-size: 0.75rem;
         letter-spacing: 0.5px;
+    }
+        /* Optional: Add a subtle shadow under sticky header */
+    .liquid-table thead th {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
     
     .liquid-table td {

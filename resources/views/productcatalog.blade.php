@@ -23,6 +23,21 @@
         font-family: 'Inria Sans', sans-serif;
         overflow-x: hidden;
     }
+    .table-container {
+        flex-grow: 1;
+        overflow-y: auto;
+        max-height: calc(100% - 80px); /* Adjust for header and margins */
+        position: relative;
+    }
+    .liquid-table thead {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: linear-gradient(90deg, #047705 0%, #0aad0a 100%);
+    }
+    .liquid-table th {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
     
     /* Enhanced Moving Background */
     body::before {
@@ -390,11 +405,9 @@
                 </button>
             </div>
             <hr class="border-[.5px] border-white mb-6 -mx-6">
-
-            <!-- Table Head -->
-            <div class="mb-3">
+            <div class="table-container">
                 <table class="liquid-table w-full table-fixed">
-                    <thead class="bg-[#1F1E1E]">
+                    <thead>
                         <tr>
                             <th class="w-[80px]">Image</th>
                             <th class="w-[80px]">ID</th>
@@ -406,12 +419,6 @@
                             <th class="w-[140px]">Actions</th>
                         </tr>
                     </thead>
-                </table>
-            </div>
-
-            <!-- Scrollable Body -->
-            <div class="overflow-y-auto" style="max-height: 580px;">
-                <table class="liquid-table w-full table-fixed">
                     <tbody>
                         @foreach($uniforms as $uniform)
                         <tr>
@@ -459,6 +466,7 @@
         </div>
     </div>      
 </div>
+
 
 <!-- Add Product Modal -->
 <div id="addProductModal" class="hidden fixed inset-0 overflow-y-auto z-[1000]">

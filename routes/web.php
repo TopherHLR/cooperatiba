@@ -76,7 +76,7 @@ Route::name('web.')->group(function () {
 Route::name('admin.')->group(function () {
     Route::view('/adminslayout', 'adminslayout')->name('adminslayout')->middleware('auth');
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
+    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard')->middleware('auth');
     Route::get('/orderManage', [OrderController::class, 'index'])->name('orderManage')->middleware('auth');
     Route::get('/productcatalog', [AdminUniformController::class, 'index'])->name('productcatalog')->middleware('auth');
     Route::resource('uniforms', AdminUniformController::class);
@@ -108,7 +108,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/admin/chats/{studentId}/send', [AdminChatController::class, 'sendMessage'])->name('admin.chat.send');
 });
 
-Route::get('/search', [SearchController::class, 'search'])->name('search');
+Route::get('/search', [SearchController::class, 'search'])->name(name: 'search');
 Route::post('/notifications/mark-read', [NotificationController::class, 'markNotificationsAsRead']);
 
 Route::get('/forgot-password', function () {
